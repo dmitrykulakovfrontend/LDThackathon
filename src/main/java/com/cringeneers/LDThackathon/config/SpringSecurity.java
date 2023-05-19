@@ -29,9 +29,9 @@ public class SpringSecurity {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
-                                .requestMatchers("/**").permitAll()
                                 .requestMatchers("/index").permitAll()
                                 .requestMatchers("/users").hasRole("ADMIN")
+                                .requestMatchers("/**").permitAll()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")

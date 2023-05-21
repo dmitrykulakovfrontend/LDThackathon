@@ -6,6 +6,7 @@ import com.cringeneers.LDThackathon.entity.Role;
 import com.cringeneers.LDThackathon.entity.User;
 import com.cringeneers.LDThackathon.repository.RoleRepository;
 import com.cringeneers.LDThackathon.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto){
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpDto signUpDto){
 
         // add check for username exists in a DB
         if(userRepository.existsByUsername(signUpDto.getUsername())){
@@ -64,7 +65,7 @@ public class AuthController {
         user.setEmail(signUpDto.getEmail());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
-        Role roles = roleRepository.findByName("ROLE_ADMIN").get();
+        Role roles = roleRepository.findByName("ROLE_USER").get();
         user.setRoles(Collections.singleton(roles));
 
         userRepository.save(user);

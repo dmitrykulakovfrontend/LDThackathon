@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cringeneers</groupId>
-	<artifactId>LDThackathon</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>ldt</artifactId>
 	<packaging>war</packaging>
-	<name>LDThackathon</name>
+	<version>1</version>
+	<name>ldt</name>
 	<description>Project made for russian LDThackathon</description>
 	<properties>
 		<java.version>17</java.version>

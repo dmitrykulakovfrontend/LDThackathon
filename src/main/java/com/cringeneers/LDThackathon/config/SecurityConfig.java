@@ -43,10 +43,17 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
-                        authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/**").permitAll()
-                                .anyRequest().authenticated()
+                        {
+                            try {
+                                authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                                        .requestMatchers("/api/auth/**").permitAll()
+                                        .requestMatchers("/**").permitAll()
+                                        .anyRequest().authenticated()
+                                        .and().rememberMe();
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
 
                 );
 

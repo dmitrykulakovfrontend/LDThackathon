@@ -22,7 +22,7 @@ const SignInSchema = Yup.object().shape({
 function SignIn() {
   const navigate = useNavigate();
   async function handleSubmit({ login, password }: Values) {
-    const res = await fetch("/api/auth/signin", {
+    const res = await fetch("../api/auth/signin", {
       method: "POST",
       body: JSON.stringify({ usernameOrEmail: login, password }),
       headers: {

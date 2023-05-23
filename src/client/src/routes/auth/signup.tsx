@@ -12,7 +12,7 @@ function SignUp() {
   const navigate = useNavigate();
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const res = await fetch("/api/auth/signup", {
+    const res = await fetch("../api/auth/signup", {
       method: "POST",
       body: JSON.stringify(form),
       headers: {

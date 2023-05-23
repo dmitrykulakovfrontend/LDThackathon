@@ -12,7 +12,7 @@ const isDev = import.meta.env.DEV;
 
 const router = createBrowserRouter([
   {
-    path: !isDev ? "/" : "/ldt-1",
+    path: isDev ? "/" : "/ldt-1",
     element: <Root />,
     errorElement: <ErrorPage />,
     loader: async () => {

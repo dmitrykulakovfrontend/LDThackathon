@@ -8,9 +8,11 @@ import "./tailwind.css";
 import SignUp from "./routes/auth/signup";
 import SignIn from "./routes/auth/signin";
 
+const isDev = import.meta.env.DEV;
+
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: !isDev ? "/" : "/ldt-1",
     element: <Root />,
     errorElement: <ErrorPage />,
     loader: async () => {
@@ -19,7 +21,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Index /> },
       {
-        path: "/auth",
+        path: "auth",
         children: [
           { path: "signup", element: <SignUp /> },
           { path: "signin", element: <SignIn /> },

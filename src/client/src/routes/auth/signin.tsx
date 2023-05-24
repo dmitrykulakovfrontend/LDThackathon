@@ -51,6 +51,7 @@ function SignIn() {
       >
         {({ errors, touched }) => (
           <FormikForm>
+            <h1 className="mx-auto text-3xl font-semibold">Авторизация</h1>
             <FormikField
               type="text"
               name="login"

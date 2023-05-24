@@ -17,16 +17,13 @@ interface Values {
   job: string;
   password: string;
 }
-
 const SignUpSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   username: Yup.string().required("Username is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   organisation: Yup.string().required("Organisation is required"),
   inn: Yup.string().required("INN is required"),
-  website: Yup.string()
-    .url("Invalid website URL")
-    .required("Website is required"),
+  website: Yup.string().required("Website is required"),
   country: Yup.string().required("Country is required"),
   city: Yup.string().required("City is required"),
   business_type: Yup.string().required("Business type is required"),
@@ -45,7 +42,7 @@ function Signup() {
       },
     });
     if (res.ok) {
-      navigate("/");
+      navigate("/ldt-1");
     } else if (res.status === 400) {
       console.log("Incorrect form");
     }

@@ -23,6 +23,13 @@ public class User {
     private String name;
     private String username;
     private String email;
+    private String organisation;
+    private String inn;
+    private String website;
+    private String country;
+    private String city;
+    private String business_type;
+    private String job;
 
     private String password;
 

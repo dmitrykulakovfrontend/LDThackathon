@@ -51,18 +51,18 @@ function Signup() {
     }
   }
 
-  const initialValues = {
-    name: "Dmitry",
-    username: "atomeistee",
-    email: "atomeistee@gmail.com",
-    organisation: "Cringeneers",
-    inn: "1337228",
-    website: "https://cringeneers.com",
-    country: "Russia",
-    city: "Moscow",
-    business_type: "Web-development",
-    job: "Frontend",
-    password: "testtest",
+  const Values = {
+    name: "",
+    username: "",
+    email: "",
+    organisation: "",
+    inn: "",
+    website: "",
+    country: "",
+    city: "",
+    business_type: "",
+    job: "",
+    password: "",
   };
 
   return (

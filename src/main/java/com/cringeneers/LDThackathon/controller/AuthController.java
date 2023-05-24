@@ -63,6 +63,13 @@ public class AuthController {
         user.setName(signUpDto.getName());
         user.setUsername(signUpDto.getUsername());
         user.setEmail(signUpDto.getEmail());
+        user.setOrganisation(signUpDto.getOrganisation());
+        user.setInn(signUpDto.getInn());
+        user.setWebsite(signUpDto.getWebsite());
+        user.setCountry(signUpDto.getCountry());
+        user.setCity(signUpDto.getCity());
+        user.setBusiness_type(signUpDto.getBusiness_type());
+        user.setJob(signUpDto.getJob());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
         Role roles = roleRepository.findByName("ROLE_USER").get();

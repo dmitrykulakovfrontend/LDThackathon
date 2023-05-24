@@ -49,7 +49,7 @@ public class SecurityConfig {
                                         .requestMatchers("/api/auth/**").permitAll()
                                         .requestMatchers("/**").permitAll()
                                         .anyRequest().authenticated()
-                                        .and().rememberMe();
+                                        .and().rememberMe().userDetailsService(userDetailsService);
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }

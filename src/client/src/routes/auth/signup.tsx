@@ -51,7 +51,7 @@ function Signup() {
     }
   }
 
-  const Values = {
+  const initialValues = {
     name: "",
     username: "",
     email: "",

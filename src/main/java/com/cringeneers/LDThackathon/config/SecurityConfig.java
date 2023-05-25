@@ -52,7 +52,8 @@ public class SecurityConfig {
                                         .and().rememberMe().userDetailsService(userDetailsService).alwaysRemember(true)
                                         .and()
                                         .logout()
-                                        .logoutSuccessUrl("/");
+                                        .logoutSuccessUrl("/")
+                                        .deleteCookies("remember-me", "JSESSIONID").invalidateHttpSession(true).clearAuthentication(true);
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }

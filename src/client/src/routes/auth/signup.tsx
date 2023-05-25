@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import FormikField from "../../components/Forms/FormikField";
 import FormikForm from "../../components/Forms/FormikForm";
+import { API_URL } from "@/constants";
 
 interface Values {
   name: string;
@@ -33,8 +34,8 @@ const SignUpSchema = Yup.object().shape({
 function Signup() {
   const navigate = useNavigate();
   async function handleSubmit(form: Values) {
-    console.log(form);
-    const res = await fetch("../api/auth/signup", {
+    console.log(`${API_URL}/auth/signup`);
+    const res = await fetch(`${API_URL}/auth/signup`, {
       method: "POST",
       body: JSON.stringify(form),
       headers: {
@@ -42,7 +43,7 @@ function Signup() {
       },
     });
     if (res.ok) {
-      navigate("/ldt-1");
+      navigate("/");
     } else if (res.status === 400) {
       console.log("Incorrect form");
     }

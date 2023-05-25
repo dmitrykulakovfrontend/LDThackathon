@@ -12,6 +12,7 @@
   "dependencies": {
     "formik": "^2.2.9",
     "react": "^18.2.0",
+    "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
     "vite-plugin-fonts": "^0.7.0",

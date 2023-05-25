@@ -3,6 +3,8 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import FormikField from "../../components/Forms/FormikField";
 import FormikForm from "../../components/Forms/FormikForm";
+import { API_URL } from "@/constants";
+import { useCookies } from "react-cookie";
 
 interface Values {
   login: string;
@@ -21,8 +23,9 @@ const SignInSchema = Yup.object().shape({
 });
 function SignIn() {
   const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(["authStuff"]);
   async function handleSubmit({ login, password }: Values) {
-    const res = await fetch("../api/auth/signin", {
+    const res = await fetch(`${API_URL}/auth/signin`, {
       method: "POST",
       body: JSON.stringify({ usernameOrEmail: login, password }),
       headers: {
@@ -30,6 +33,11 @@ function SignIn() {
       },
     });
     if (res.ok) {
+      console.log(await res.text());
+      setCookie("authStuff", "logged in", {
+        path: "/",
+        expires: new Date(Date.now() + 3600000),
+      });
       navigate("/");
     } else if (res.status === 400) {
       console.log("Incorrect form");

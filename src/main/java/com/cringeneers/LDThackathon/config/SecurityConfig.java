@@ -49,6 +49,7 @@ public class SecurityConfig {
                     .logoutSuccessUrl("/")
                 .and()
                     .rememberMe()
+                        .alwaysRemember(true)
                 .and()
                     .csrf().disable();
 

@@ -53,8 +53,6 @@ public class SecurityConfig {
                         .alwaysRemember(true)
                         .tokenValiditySeconds(86400) // Время действия куки (24 часа)
                         .userDetailsService(userDetailsService)
-                        .key("secret")
-                        .useSecureCookie(false)
                 .and()
                     .csrf().disable();
 

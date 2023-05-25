@@ -51,7 +51,7 @@ public class SecurityConfig {
                                         .anyRequest().authenticated()
                                         .and().rememberMe().userDetailsService(userDetailsService).alwaysRemember(true)
                                         .and()
-                                        .logout()
+                                        .logout().logoutUrl("/api/auth/logout")
                                         .logoutSuccessUrl("/")
                                         .deleteCookies("remember-me", "JSESSIONID").invalidateHttpSession(true).clearAuthentication(true);
                             } catch (Exception e) {

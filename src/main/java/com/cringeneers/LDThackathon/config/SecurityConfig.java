@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 @Configuration
 @EnableMethodSecurity
@@ -49,7 +50,8 @@ public class SecurityConfig {
                     .logoutSuccessUrl("/")
                 .and()
                     .rememberMe()
-                        .alwaysRemember(true)
+                    .useSecureCookie(false)
+                        .rememberMeServices(rememberMeServices())
                 .and()
                     .csrf().disable();
 
@@ -59,5 +61,11 @@ public class SecurityConfig {
 
 
         return http.build();
+    }
+    @Bean
+    public TokenBasedRememberMeServices rememberMeServices() {
+        TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices("secret", userDetailsService);
+        rememberMeServices.setAlwaysRemember(true);
+        return rememberMeServices;
     }
 }

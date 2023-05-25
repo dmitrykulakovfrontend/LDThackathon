@@ -49,7 +49,11 @@ public class SecurityConfig {
                                         .requestMatchers("/api/auth/**").permitAll()
                                         .requestMatchers("/**").permitAll()
                                         .anyRequest().authenticated()
-                                        .and().rememberMe().userDetailsService(userDetailsService);
+                                        .and()
+                                        .rememberMe()
+                                        .alwaysRemember(true)
+                                        .tokenValiditySeconds(30*5)
+                                        .rememberMeCookieName("userInfo");
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }

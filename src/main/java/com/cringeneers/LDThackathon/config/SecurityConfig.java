@@ -49,11 +49,10 @@ public class SecurityConfig {
                                         .requestMatchers("/api/auth/**").permitAll()
                                         .requestMatchers("/**").permitAll()
                                         .anyRequest().authenticated()
-                                        .and().rememberMe().userDetailsService(userDetailsService).alwaysRemember(true)
                                         .and()
-                                        .logout().logoutUrl("/api/auth/logout")
+                                        .logout().logoutUrl("/api/auth/logout").permitAll()
                                         .logoutSuccessUrl("/")
-                                        .deleteCookies("remember-me", "JSESSIONID").invalidateHttpSession(true).clearAuthentication(true);
+                                        .and().rememberMe().alwaysRemember(true);
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }

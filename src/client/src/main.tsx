@@ -7,29 +7,40 @@ import Index from "./routes";
 import "./tailwind.css";
 import SignUp from "./routes/auth/signup";
 import SignIn from "./routes/auth/signin";
+import NewCalculator from "./routes/calculator/new";
+import ExistingCalculator from "./routes/calculator/existing";
 
 const isDev = import.meta.env.DEV;
 
-const router = createBrowserRouter([
-  {
-    path: isDev ? "/" : "/ldt-1",
-    element: <Root />,
-    errorElement: <ErrorPage />,
-    loader: async () => {
-      return { companies: [1, 2, 3] };
-    },
-    children: [
-      { index: true, element: <Index /> },
-      {
-        path: "auth",
-        children: [
-          { path: "signup", element: <SignUp /> },
-          { path: "signin", element: <SignIn /> },
-        ],
+const router = createBrowserRouter(
+  [
+    {
+      element: <Root />,
+      errorElement: <ErrorPage />,
+      loader: async () => {
+        return { companies: [1, 2, 3] };
       },
-    ],
-  },
-]);
+      children: [
+        { index: true, element: <Index /> },
+        {
+          path: "auth",
+          children: [
+            { path: "signup", element: <SignUp /> },
+            { path: "signin", element: <SignIn /> },
+          ],
+        },
+        {
+          path: "calculator",
+          children: [
+            { path: "new", element: <NewCalculator /> },
+            { path: "existing", element: <ExistingCalculator /> },
+          ],
+        },
+      ],
+    },
+  ],
+  { basename: isDev ? "/" : "/ldt-1" }
+);
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ReactDOM.createRoot(document.getElementById("root")!).render(

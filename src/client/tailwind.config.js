@@ -6,6 +6,10 @@ export default {
       colors: {
         "ldt-red": "#D71616",
         "ldt-gray": "#DBDBDB",
+        "ldt-dark-gray": "#979797",
+      },
+      fontFamily: {
+        manrope: ["Manrope", "sans-serif"],
       },
     },
   },

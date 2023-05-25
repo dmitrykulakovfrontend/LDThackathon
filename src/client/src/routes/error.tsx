@@ -1,12 +1,13 @@
+import Root from "./root";
 function ErrorPage() {
   return (
-    <div className={` font-exo2 text-black bg-gray-100 min-h-screen`}>
-      <div className="flex">
-        <div className="flex flex-col items-center justify-center flex-1 min-h-screen">
-          <h1 className="text-2xl font-bold">404 not found or error</h1>
+    <Root>
+      <div className="flex min-h-[calc(100vh-101px)] items-center justify-center">
+        <div className="flex flex-col items-center justify-center flex-1">
+          <h1 className="text-2xl font-bold">404 Страница не найдена</h1>
         </div>
       </div>
-    </div>
+    </Root>
   );
 }
 

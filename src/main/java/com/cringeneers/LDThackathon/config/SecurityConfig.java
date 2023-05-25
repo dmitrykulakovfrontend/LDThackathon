@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 @Configuration
 @EnableMethodSecurity
@@ -50,6 +51,8 @@ public class SecurityConfig {
                 .and()
                     .rememberMe()
                         .alwaysRemember(true)
+                        .tokenValiditySeconds(86400) // Время действия куки (24 часа)
+                        .userDetailsService(userDetailsService)
                 .and()
                     .csrf().disable();
 
@@ -59,5 +62,11 @@ public class SecurityConfig {
 
 
         return http.build();
+    }
+    @Bean
+    public TokenBasedRememberMeServices rememberMeServices() {
+        TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices("secret", userDetailsService);
+        rememberMeServices.setAlwaysRemember(true);
+        return rememberMeServices;
     }
 }

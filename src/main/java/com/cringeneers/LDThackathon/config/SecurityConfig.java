@@ -39,26 +39,24 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                    .logout().logoutUrl("/api/auth/logout").permitAll()
+                    .logoutSuccessUrl("/")
+                .and()
+                    .rememberMe()
+                        .alwaysRemember(true)
+                .and()
+                    .csrf().disable();
 
-        http.csrf().disable()
-                .authorizeHttpRequests((authorize) ->
-                        //authorize.anyRequest().authenticated()
-                        {
-                            try {
-                                authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                                        .requestMatchers("/api/auth/**").permitAll()
-                                        .requestMatchers("/**").permitAll()
-                                        .anyRequest().authenticated()
-                                        .and()
-                                        .logout().logoutUrl("/api/auth/logout").permitAll()
-                                        .logoutSuccessUrl("/")
-                                        .and().rememberMe().alwaysRemember(true);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
 
-                );
+
+
+
 
         return http.build();
     }

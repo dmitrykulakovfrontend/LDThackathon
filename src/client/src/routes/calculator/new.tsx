@@ -46,9 +46,11 @@ function NewCalculator() {
   return (
     <>
       <h1 className="text-2xl font-bold mt-14">Расчет инвестиций</h1>
-      <div className="text-xl">
+      <div className="text-xl max-sm:text-xs">
         создание нового предприятия{" "}
-        <span className="relative text-3xl font-bold top-1">/</span>{" "}
+        <span className="relative text-3xl font-bold max-sm:text-lg top-1">
+          /
+        </span>{" "}
         <Link
           to="/calculator/existing"
           className="border-b-2 border-dotted text-ldt-dark-gray"
@@ -63,59 +65,55 @@ function NewCalculator() {
       >
         {({ errors, touched }) => (
           <FormikForm className="flex justify-between gap-5 mt-12 max-md:flex-col">
-            <div className="flex flex-col flex-1 gap-5">
-              <div className="flex gap-5">
-                <FormikDropdown
-                  name="business_type"
-                  labelClassname="flex-grow"
-                  touched={touched.business_type}
-                  errors={errors.business_type}
-                  title="Отрасль ведения хозяйственной деятельности"
-                >
-                  <option disabled value="">
-                    Не выбрано
-                  </option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                </FormikDropdown>
-                <FormikField
-                  type="text"
-                  labelClassname="flex-grow-[0.5]"
-                  name="n_employee"
-                  placeholder="Укажите число"
-                  touched={touched.n_employee}
-                  errors={errors.n_employee}
-                >
-                  Число сотрудников
-                </FormikField>
-              </div>
-              <div className="flex gap-5">
-                <FormikField
-                  type="text"
-                  name="square_area"
-                  labelClassname="flex-grow"
-                  placeholder="Укажите кол-во кв. м"
-                  touched={touched.square_area}
-                  errors={errors.square_area}
-                >
-                  Площадь земельного участка для расположения промышленного
-                  производства
-                </FormikField>
-                <FormikField
-                  type="text"
-                  name="square_buildings"
-                  labelClassname="flex-grow-[0.5]"
-                  placeholder="Укажите кол-во кв. м"
-                  touched={touched.square_buildings}
-                  errors={errors.square_buildings}
-                >
-                  Площадь объектов капитального строительства
-                </FormikField>
-              </div>
+            <div className="flex flex-wrap flex-1 gap-5 max-md:text-center ">
+              <FormikDropdown
+                name="business_type"
+                labelClassname="flex-grow flex-shrink"
+                touched={touched.business_type}
+                errors={errors.business_type}
+                title="Отрасль ведения хозяйственной деятельности"
+              >
+                <option disabled value="">
+                  Не выбрано
+                </option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+              </FormikDropdown>
+              <FormikField
+                type="text"
+                labelClassname="flex-grow-0 flex-shrink max-md:flex-grow"
+                name="n_employee"
+                placeholder="Укажите число"
+                touched={touched.n_employee}
+                errors={errors.n_employee}
+              >
+                Число сотрудников
+              </FormikField>
+              <FormikField
+                type="text"
+                name="square_area"
+                labelClassname="flex-grow flex-shrink"
+                placeholder="Укажите кол-во кв. м"
+                touched={touched.square_area}
+                errors={errors.square_area}
+              >
+                Площадь земельного участка для расположения промышленного
+                производства
+              </FormikField>
+              <FormikField
+                type="text"
+                name="square_buildings"
+                labelClassname="flex-grow-0 flex-shrink basis-0 max-md:flex-grow"
+                placeholder="Укажите кол-во кв. м"
+                touched={touched.square_buildings}
+                errors={errors.square_buildings}
+              >
+                Площадь объектов капитального строительства
+              </FormikField>
             </div>
             <div className="flex flex-col gap-3">
               Территория расположения производства
-              <img src={fakeMapSrc} alt="" />
+              <img src={fakeMapSrc} className="w-full" alt="" />
             </div>
           </FormikForm>
         )}

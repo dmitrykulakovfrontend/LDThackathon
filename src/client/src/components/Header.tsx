@@ -33,12 +33,18 @@ function Header() {
   return (
     <>
       <div className="text-white bg-ldt-red">
-        <div className=" max-w-[1400px] p-5 mx-auto flex justify-between py-2">
-          <Link to={"/"} className="flex gap-6 text-lg font-medium">
+        <div className=" max-w-[1400px] p-5 mx-auto gap-5 flex justify-between py-2">
+          <Link
+            to={"/"}
+            className="flex gap-6 text-lg font-medium max-md:text-sm"
+          >
             <LogoIcon />
             Инвестиционный калькулятор города Москвы
           </Link>
-          <Link to={"/auth/signin"} className="flex gap-2 font-medium">
+          <Link
+            to={"/auth/signin"}
+            className="flex gap-2 font-medium max-md:text-sm"
+          >
             <User />
             Личный кабинет
           </Link>
@@ -46,7 +52,7 @@ function Header() {
       </div>
       <header className="mx-auto border-b border-ldt-gray">
         <nav className="max-w-[1400px] p-5 mx-auto py-4">
-          <ul className="flex gap-8">
+          <ul className="flex flex-wrap gap-8 max-lg:gap-4 max-lg:justify-center">
             {navigation.map(({ to, name }, i) => (
               <li key={i}>
                 <NavLink

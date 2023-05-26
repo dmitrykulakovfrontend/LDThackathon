@@ -387,7 +387,7 @@ function NewCalculator() {
               Территория расположения производства{" "}
               {values.district ? `(${values.district})` : ""}
               {isMapActive ? (
-                <div className="relative w-full">
+                <div className="relative z-10 w-full">
                   <img src={fakeMapSrc} className="opacity-0" alt="" />
                   <MapContainer
                     zoom={10}

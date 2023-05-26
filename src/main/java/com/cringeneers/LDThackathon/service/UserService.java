@@ -1,13 +1,16 @@
-//package com.cringeneers.LDThackathon.service;
-//
-//import com.cringeneers.LDThackathon.entity.User;
-//
-//import java.util.List;
-//
-//public interface UserService {
-//    void saveUser(UserDto userDto);
-//
-//    User findUserByEmail(String email);
-//
-//    List<UserDto> findAllUsers();
-//}
+package com.cringeneers.LDThackathon.service;
+
+import com.cringeneers.LDThackathon.dto.LoginDto;
+import com.cringeneers.LDThackathon.dto.SignUpDto;
+import com.cringeneers.LDThackathon.entity.Role;
+import com.cringeneers.LDThackathon.entity.User;
+import org.springframework.http.ResponseEntity;
+
+public interface UserService {
+
+    String authenticate(LoginDto loginDto);
+    ResponseEntity<?> register (SignUpDto registerDto);
+    Role saveRole(Role role);
+
+    User saveUser (User user) ;
+}

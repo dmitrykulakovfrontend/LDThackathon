@@ -47,9 +47,10 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                     .logout()
-                    .deleteCookies("remember-me")
                     .logoutUrl("/api/auth/logout").permitAll()
                     .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
                 .and()
                     .csrf().disable();
 

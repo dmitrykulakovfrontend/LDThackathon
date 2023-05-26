@@ -2,6 +2,7 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import LogoIcon from "@/assets/small-logo.svg";
 import User from "@/assets/user.svg";
+import { useCookies } from "react-cookie";
 const navigation = [
   {
     name: "Калькулятор",
@@ -30,6 +31,9 @@ const navigation = [
 ];
 
 function Header() {
+  const [cookies, setCookie, removeCookie] = useCookies();
+  console.log(cookies);
+
   return (
     <>
       <div className="text-white bg-ldt-red">
@@ -46,7 +50,7 @@ function Header() {
             className="flex gap-2 font-medium max-md:text-sm"
           >
             <User />
-            Личный кабинет
+            {cookies["remember-me"] ? cookies["remember-me"] : "Личный кабинет"}
           </Link>
         </div>
       </div>

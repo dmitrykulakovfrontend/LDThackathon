@@ -79,99 +79,88 @@ function Signup() {
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.name}
               errors={errors.name}
-            >
-              ФИО
-            </FormikField>
+              title="ФИО"
+            />
             <FormikField
               type="text"
               name="username"
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.username}
               errors={errors.username}
-            >
-              Имя аккаунта
-            </FormikField>
+              title="Имя аккаунта"
+            />
             <FormikField
               type="password"
               name="password"
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.password}
               errors={errors.password}
-            >
-              Пароль
-            </FormikField>
+              title="Пароль"
+            />
             <FormikField
               type="email"
               name="email"
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.email}
               errors={errors.email}
-            >
-              Почта
-            </FormikField>
+              title="Почта"
+            />
             <FormikField
               type="text"
               name="organisation"
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.organisation}
               errors={errors.organisation}
-            >
-              Организация
-            </FormikField>
+              title="Организация"
+            />
             <FormikField
               type="text"
               name="inn"
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.inn}
               errors={errors.inn}
-            >
-              ИНН
-            </FormikField>
+              title="ИНН"
+            />
             <FormikField
               type="url"
               name="website"
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.website}
               errors={errors.website}
-            >
-              Вебсайт
-            </FormikField>
+              title="Вебсайт"
+            />
             <FormikField
               type="text"
               name="country"
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.country}
               errors={errors.country}
-            >
-              Страна
-            </FormikField>
+              title="Страна"
+            />
             <FormikField
               type="text"
               name="city"
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.city}
               errors={errors.city}
-            >
-              Город
-            </FormikField>
+              title="Город"
+            />
             <FormikField
               type="text"
               name="business_type"
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.business_type}
               errors={errors.business_type}
-            >
-              Тип бизнеса
-            </FormikField>
+              title="Тип бизнеса"
+            />
             <FormikField
               type="text"
               name="job"
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.job}
               errors={errors.job}
-            >
-              job
-            </FormikField>
+              title="job"
+            />
             <button
               type="submit"
               className="px-8 py-2 mx-auto tracking-wide text-white rounded-xl w-fit bg-ldt-red"

@@ -6,12 +6,14 @@ import { API_URL } from "@/constants";
 function Index() {
   const navigate = useNavigate();
   async function handleLogout() {
-    const res = await fetch(`${API_URL}/auth/logout`);
-    if (res.ok) {
-      navigate("/auth/signin");
-    } else {
-      console.log(await res.text());
-      console.log("Incorrect smh");
+    try {
+      const res = await fetch(`${API_URL}/auth/logout`);
+      if (res.ok) {
+        navigate("/");
+        window.location.reload();
+      }
+    } catch (error) {
+      window.location.reload();
     }
   }
   return (

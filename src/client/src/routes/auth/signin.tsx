@@ -23,7 +23,6 @@ const SignInSchema = Yup.object().shape({
 });
 function SignIn() {
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(["authStuff"]);
   async function handleSubmit({ login, password }: Values) {
     const res = await fetch(`${API_URL}/auth/signin`, {
       method: "POST",
@@ -34,10 +33,6 @@ function SignIn() {
     });
     if (res.ok) {
       console.log(await res.text());
-      setCookie("authStuff", "logged in", {
-        path: "/",
-        expires: new Date(Date.now() + 3600000),
-      });
       navigate("/");
     } else if (res.status === 400) {
       console.log("Incorrect form");
@@ -66,18 +61,16 @@ function SignIn() {
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.login}
               errors={errors.login}
-            >
-              Логин / Адрес электронной почты
-            </FormikField>
+              title="Логин / Адрес электронной почты"
+            />
             <FormikField
               type="password"
               name="password"
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.password}
               errors={errors.password}
-            >
-              Пароль
-            </FormikField>
+              title="Пароль"
+            />
             <button
               type="submit"
               className="px-8 py-2 mx-auto tracking-wide text-white rounded-xl w-fit bg-ldt-red"

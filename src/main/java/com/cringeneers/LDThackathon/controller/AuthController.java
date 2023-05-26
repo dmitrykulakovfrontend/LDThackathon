@@ -44,7 +44,7 @@ public class AuthController {
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Set-Cookie","remember-me=" + SecurityContextHolder.getContext().getAuthentication().getName() + "; Max-Age=80600");
+        headers.add("Set-Cookie","remember-me=" + SecurityContextHolder.getContext().getAuthentication().getName() + "; Max-Age=80600; Path=/");
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 

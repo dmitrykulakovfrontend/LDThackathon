@@ -17,9 +17,6 @@ function Index() {
     } catch (error) {
       window.location.reload();
     }
-    if (import.meta.env.DEV) {
-      removeCookie("remember-me", { path: "/" });
-    }
   }
   return (
     <div className="flex flex-col items-center justify-center gap-4 px-4 py-12 sm:px-6 lg:px-8 max-sm:py-2">

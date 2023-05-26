@@ -32,7 +32,6 @@ function SignIn() {
       headers: {
         "Content-Type": "application/json",
       },
-      mode: "no-cors",
     });
 
     console.log(await res.text());

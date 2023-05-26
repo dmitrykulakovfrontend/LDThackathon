@@ -42,10 +42,10 @@ public class AuthController {
     public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Set-Cookie","remember-me=" + SecurityContextHolder.getContext().getAuthentication().getName() + "; Max-Age=80600");
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        HttpHeaders headers = new HttpHeaders();
+        String usernameOrEmail = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getCredentials());
+        headers.add("Set-Cookie","remember-me=" + usernameOrEmail + SecurityContextHolder.getContext().getAuthentication().getName() + "; Max-Age=80600");
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 

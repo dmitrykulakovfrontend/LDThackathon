@@ -8,7 +8,6 @@ import "./tailwind.css";
 import SignUp from "./routes/auth/signup";
 import SignIn from "./routes/auth/signin";
 import NewCalculator from "./routes/calculator/new";
-import ExistingCalculator from "./routes/calculator/existing";
 
 const isDev = import.meta.env.DEV;
 
@@ -31,10 +30,7 @@ const router = createBrowserRouter(
         },
         {
           path: "calculator",
-          children: [
-            { path: "new", element: <NewCalculator /> },
-            { path: "existing", element: <ExistingCalculator /> },
-          ],
+          children: [{ path: "new", element: <NewCalculator /> }],
         },
       ],
     },

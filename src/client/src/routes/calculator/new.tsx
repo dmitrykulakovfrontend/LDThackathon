@@ -80,18 +80,6 @@ function NewCalculator() {
   return (
     <>
       <h1 className="text-2xl font-bold mt-14">Расчет инвестиций</h1>
-      <div className="text-xl max-sm:text-xs">
-        создание нового предприятия{" "}
-        <span className="relative text-3xl font-bold max-sm:text-lg top-1">
-          /
-        </span>{" "}
-        <Link
-          to="/calculator/existing"
-          className="border-b-2 border-dotted text-ldt-dark-gray"
-        >
-          развитие промышленного предприятия
-        </Link>
-      </div>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
@@ -386,7 +374,7 @@ function NewCalculator() {
                 </button>
               </div>
             </div>
-            <div className="flex flex-col gap-3 max-xl:max-w-lg">
+            <div className="flex flex-col gap-3 mt-12 max-xl:max-w-lg">
               Территория расположения производства{" "}
               {values.district ? `(${values.district})` : ""}
               {isMapActive ? (

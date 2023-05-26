@@ -39,14 +39,14 @@ function Header() {
         <div className="max-w-[1400px] p-5 mx-auto gap-5 flex justify-between py-2">
           <Link
             to={"/"}
-            className="flex gap-6 text-lg font-medium max-md:text-sm"
+            className="flex items-center gap-6 text-lg font-medium max-md:text-sm"
           >
             <LogoIcon />
             Инвестиционный калькулятор города Москвы
           </Link>
           <Link
             to={"/auth/signin"}
-            className="flex gap-2 font-medium max-md:text-sm max-sm:flex-col max-sm:items-center"
+            className="flex items-center gap-2 font-medium max-md:text-sm"
           >
             <User />
             <span className="overflow-hidden truncate text-ellipsis w-[10ch]">

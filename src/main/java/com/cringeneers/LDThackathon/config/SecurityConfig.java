@@ -46,7 +46,9 @@ public class SecurityConfig {
                 .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                    .logout().logoutUrl("/api/auth/logout").permitAll()
+                    .logout()
+                    .deleteCookies("remember-me")
+                    .logoutUrl("/api/auth/logout").permitAll()
                     .logoutSuccessUrl("/")
                 .and()
                     .csrf().disable();

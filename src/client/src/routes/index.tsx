@@ -2,9 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import React from "@/assets/react.svg";
 import Vite from "@/assets/vite.svg";
 import { API_URL } from "@/constants";
+import { useCookies } from "react-cookie";
 
 function Index() {
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies();
+  console.log(cookies);
   async function handleLogout() {
     try {
       const res = await fetch(`${API_URL}/auth/logout`);
@@ -14,6 +17,9 @@ function Index() {
       }
     } catch (error) {
       window.location.reload();
+    }
+    if (import.meta.env.DEV) {
+      removeCookie("remember-me", { path: "/" });
     }
   }
   return (

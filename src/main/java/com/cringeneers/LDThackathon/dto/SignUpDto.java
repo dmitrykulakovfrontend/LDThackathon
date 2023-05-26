@@ -10,8 +10,6 @@ import lombok.Data;
 public class SignUpDto {
     @NotBlank(message = "Необходимо указать имя")
     private String name;
-    @NotBlank(message = "Необходимо указать логин")
-    private String username;
     @Email(message = "Email должен быть корректным адресом электронной почты")
     private String email;
     @NotBlank(message = "Необходимо указать наименование организации")

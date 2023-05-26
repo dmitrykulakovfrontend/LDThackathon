@@ -14,6 +14,7 @@ import {
 } from "react-leaflet";
 import industryTypes from "@/industry.json";
 import equipmentTypes from "@/equipmentTypes.json";
+import { API_URL } from "@/constants";
 // type Props = {};
 const initialValues = {
   business_type: "",
@@ -64,7 +65,15 @@ const FormSchema = Yup.object().shape({
 
 function NewCalculator() {
   async function handleSubmit(form: Values) {
-    console.log(form);
+    const res = await fetch(`${API_URL}/invest/calculate`, {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    console.log("backend-response: ", data);
   }
   const [accountingPapers, setAccountingPapers] = useState(1);
   const [isPatent, setIsPatent] = useState(false);

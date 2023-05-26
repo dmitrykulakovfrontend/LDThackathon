@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import LogoIcon from "@/assets/small-logo.svg";
 import User from "@/assets/user.svg";
 import { useCookies } from "react-cookie";
+import { decodeToken, useJwt } from "react-jwt";
 const navigation = [
   {
     name: "Калькулятор",
@@ -30,9 +31,28 @@ const navigation = [
   },
 ];
 
+type Token = {
+  sub: string;
+  role: string[];
+  iat: number;
+  exp: number;
+};
+
 function Header() {
   const [cookies, setCookie, removeCookie] = useCookies();
-
+  const [user, setUser] = useState<Token | null>();
+  const { decodedToken, isExpired, reEvaluateToken } = useJwt<Token>(
+    localStorage.getItem("user") as string
+  );
+  console.log({ decodedToken, isExpired, reEvaluateToken });
+  useEffect(() => {
+    if (isExpired) {
+      localStorage.removeItem("user");
+      setUser(null);
+    } else {
+      setUser(decodedToken);
+    }
+  }, [decodedToken, isExpired]);
   return (
     <>
       <div className="text-white bg-ldt-red">
@@ -49,10 +69,8 @@ function Header() {
             className="flex items-center gap-2 font-medium max-md:text-sm"
           >
             <User />
-            <span className="overflow-hidden truncate text-ellipsis w-[10ch]">
-              {cookies["remember-me"]
-                ? cookies["remember-me"]
-                : "Личный кабинет"}
+            <span className="max-sm:truncate  max-sm:w-[10ch]">
+              {!isExpired ? user?.sub : "Личный кабинет"}
             </span>
           </Link>
         </div>

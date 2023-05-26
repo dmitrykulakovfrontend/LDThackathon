@@ -23,7 +23,6 @@ const SignInSchema = Yup.object().shape({
 });
 function SignIn() {
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies();
 
   async function handleSubmit({ email, password }: Values) {
     const res = await fetch(`${API_URL}/auth/signin`, {
@@ -33,17 +32,15 @@ function SignIn() {
         "Content-Type": "application/json",
       },
     });
+    const data = await res.text();
 
-    console.log(await res.text());
+    console.log(data);
     if (res.ok) {
-      if (import.meta.env.DEV) {
-        setCookie("remember-me", email, { path: "/" });
-      }
+      localStorage.setItem("user", JSON.stringify(data));
       navigate("/");
     } else if (res.status === 400) {
       console.log("Incorrect form");
     }
-    console.log({ email, password });
   }
 
   const initialValues = {

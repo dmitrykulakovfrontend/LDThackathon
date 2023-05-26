@@ -7,8 +7,6 @@ import { useCookies } from "react-cookie";
 
 function Index() {
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies();
-  console.log(cookies);
   async function handleLogout() {
     try {
       const res = await fetch(`${API_URL}/auth/logout`);

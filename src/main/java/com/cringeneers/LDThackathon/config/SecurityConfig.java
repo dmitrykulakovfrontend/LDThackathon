@@ -28,7 +28,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public static PasswordEncoder passwordEncoder(){
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -48,11 +48,6 @@ public class SecurityConfig {
                 .and()
                     .logout().logoutUrl("/api/auth/logout").permitAll()
                     .logoutSuccessUrl("/")
-                .and()
-                    .rememberMe()
-                        .alwaysRemember(true)
-                        .tokenValiditySeconds(86400) // Время действия куки (24 часа)
-                        .userDetailsService(userDetailsService)
                 .and()
                     .csrf().disable();
 

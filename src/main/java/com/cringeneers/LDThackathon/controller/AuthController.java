@@ -6,8 +6,10 @@ import com.cringeneers.LDThackathon.entity.Role;
 import com.cringeneers.LDThackathon.entity.User;
 import com.cringeneers.LDThackathon.repository.RoleRepository;
 import com.cringeneers.LDThackathon.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,9 +42,11 @@ public class AuthController {
     public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Set-Cookie","remember-me; Max-Age=604800");
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
     @PostMapping("/signup")

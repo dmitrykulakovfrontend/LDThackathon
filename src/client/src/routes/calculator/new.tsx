@@ -5,16 +5,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import fakeMapSrc from "@/assets/fake-map.png";
-
+import "./new.css";
 // type Props = {};
-
-interface Values {
-  business_type: string;
-  n_employee: string;
-  square_area: string;
-  square_buildings: string;
-  buildings_type: string;
-}
 
 const initialValues = {
   business_type: "",
@@ -29,7 +21,10 @@ const initialValues = {
       name: "",
     },
   ],
+  entity: "ip",
+  taxes: "6%",
 };
+type Values = typeof initialValues;
 
 const FormSchema = Yup.object().shape({
   business_type: Yup.string().required("Обязательное поле"),
@@ -42,7 +37,6 @@ const FormSchema = Yup.object().shape({
   square_buildings: Yup.string()
     .matches(/^\d+$/, "Должны быть только цифры")
     .required("Обязательное поле"),
-  buildings_type: Yup.string().required("Обязательное поле"),
   equipments: Yup.array().of(
     Yup.object().shape({
       number: Yup.string().required("Обязательное поле"),
@@ -52,6 +46,8 @@ const FormSchema = Yup.object().shape({
       name: Yup.string().required("Обязательное поле"),
     })
   ),
+  entity: Yup.string().required("Обязательное поле"),
+  taxes: Yup.string().required("Обязательное поле"),
 });
 
 function NewCalculator() {
@@ -232,17 +228,42 @@ function NewCalculator() {
                           </span>
                         </button>
                       )}
-                      <div>
-                        <button
-                          type="submit"
-                          className="px-4 py-2 text-white bg-blue-500 rounded-xl"
-                        >
-                          Расчитать
-                        </button>
-                      </div>
                     </div>
                   )}
                 />
+              </div>
+              <h2 className="mt-12 text-xl font-bold">
+                Предоставление бухгалтерских услуг
+              </h2>
+              <h3 className="mt-8 text-lg font-medium">Юридическое лицо</h3>
+              <div className="flex gap-5 my-5 radio-toolbar">
+                <Field type="radio" name="entity" value="ip" id="entity1" />
+                <label htmlFor="entity1">ИП</label>
+                <Field type="radio" name="entity" value="ooo" id="entity2" />
+                <label htmlFor="entity2">ООО</label>
+                <Field type="radio" name="entity" value="zao" id="entity3" />
+                <label htmlFor="entity3">ЗАО</label>
+                <Field type="radio" name="entity" value="pao" id="entity4" />
+                <label htmlFor="entity4">ПАО</label>
+              </div>
+              <h3 className="mt-8 text-lg font-medium">
+                Ставка налогообложения
+              </h3>
+              <div className="flex gap-5 my-5 radio-toolbar">
+                <Field type="radio" name="taxes" value="6%" id="taxes1" />
+                <label htmlFor="taxes1">УСН 6%</label>
+                <Field type="radio" name="taxes" value="15%" id="taxes2" />
+                <label htmlFor="taxes2">УСН 15%</label>
+                <Field type="radio" name="taxes" value="OCH" id="taxes3" />
+                <label htmlFor="taxes3">ОСН</label>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-white bg-blue-500 rounded-xl"
+                >
+                  Расчитать
+                </button>
               </div>
             </div>
             <div className="flex flex-col gap-3 max-xl:max-w-lg">

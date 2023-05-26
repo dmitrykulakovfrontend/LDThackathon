@@ -7,12 +7,12 @@ import { API_URL } from "@/constants";
 import { useCookies } from "react-cookie";
 
 interface Values {
-  login: string;
+  email: string;
   password: string;
 }
 
 const SignInSchema = Yup.object().shape({
-  login: Yup.string()
+  email: Yup.string()
     .min(2, "Минимум 2 символа")
     .max(50, "Максимум 50 символов")
     .required("Обязательное поле"),
@@ -25,28 +25,30 @@ function SignIn() {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies();
 
-  async function handleSubmit({ login, password }: Values) {
+  async function handleSubmit({ email, password }: Values) {
     const res = await fetch(`${API_URL}/auth/signin`, {
       method: "POST",
-      body: JSON.stringify({ usernameOrEmail: login, password }),
+      body: JSON.stringify({ email, password }),
       headers: {
         "Content-Type": "application/json",
       },
+      mode: "no-cors",
     });
+
+    console.log(await res.text());
     if (res.ok) {
-      console.log(await res.text());
       if (import.meta.env.DEV) {
-        setCookie("remember-me", login, { path: "/" });
+        setCookie("remember-me", email, { path: "/" });
       }
       navigate("/");
     } else if (res.status === 400) {
       console.log("Incorrect form");
     }
-    console.log({ login, password });
+    console.log({ email, password });
   }
 
   const initialValues = {
-    login: "",
+    email: "",
     password: "",
   };
 
@@ -62,10 +64,10 @@ function SignIn() {
             <h1 className="mx-auto text-3xl font-semibold">Авторизация</h1>
             <FormikField
               type="text"
-              name="login"
+              name="email"
               placeholder="alexandra.moroz1703@gmail.com"
-              touched={touched.login}
-              errors={errors.login}
+              touched={touched.email}
+              errors={errors.email}
               title="Логин / Адрес электронной почты"
             />
             <FormikField

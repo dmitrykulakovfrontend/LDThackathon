@@ -32,7 +32,6 @@ const navigation = [
 
 function Header() {
   const [cookies, setCookie, removeCookie] = useCookies();
-  console.log(cookies);
 
   return (
     <>

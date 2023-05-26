@@ -1,0 +1,18 @@
+.radio-toolbar input[type="radio"] {
+  display: none;
+}
+
+.radio-toolbar label {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.035);
+  color: rgba(0, 0, 0, 0.38);
+  padding: 6px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 16px;
+}
+
+.radio-toolbar input[type="radio"]:checked + label {
+  background-color: #2f80ed;
+  color: white;
+}

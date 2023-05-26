@@ -23,9 +23,9 @@ function Index() {
       <img
         src={indexImgSrc}
         alt=""
-        className="absolute left-0 w-screen top-24 max-sm:hidden"
+        className="absolute left-0 w-screen top-24 max-sm:hidden max-md:top-10"
       />
-      <div className="absolute z-10 max-w-3xl text-white max-sm:static top-60 left-32 max-xl:top-28 max-xl:left-16 max-md:max-w-sm max-sm:top-36">
+      <div className="absolute z-10 max-w-3xl text-white max-sm:static top-60 left-32 max-xl:top-28 max-xl:left-16 max-md:max-w-sm max-sm:mt-8 max-md:top-16">
         <h2 className="text-6xl font-bold max-md:text-3xl max-sm:text-black max-sm:text-center">
           С нами инвестировать всегда выгодно
         </h2>

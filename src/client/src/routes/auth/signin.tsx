@@ -38,6 +38,7 @@ function SignIn() {
     if (res.ok) {
       localStorage.setItem("user", JSON.stringify(data));
       navigate("/");
+      window.location.reload();
     } else if (res.status === 400) {
       console.log("Incorrect form");
     }

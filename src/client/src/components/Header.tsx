@@ -62,7 +62,7 @@ function Header() {
   return (
     <>
       <div className="z-50 w-full  text-white min-h-[56px] bg-ldt-red max-md:fixed">
-        <div className="max-w-[1400px] mt-2 items-center h-full p-5 mx-auto gap-5 flex justify-between  py-2">
+        <div className="max-w-[1400px] max-md:mt-2 items-center h-full p-5 mx-auto gap-5 flex justify-between  py-3">
           <button
             className="hidden max-md:block"
             onClick={() => setMobileMenu(!mobileMenu)}

@@ -36,7 +36,7 @@ function Header() {
   return (
     <>
       <div className="text-white bg-ldt-red">
-        <div className=" max-w-[1400px] p-5 mx-auto gap-5 flex justify-between py-2">
+        <div className="max-w-[1400px] p-5 mx-auto gap-5 flex justify-between py-2">
           <Link
             to={"/"}
             className="flex gap-6 text-lg font-medium max-md:text-sm"
@@ -46,10 +46,14 @@ function Header() {
           </Link>
           <Link
             to={"/auth/signin"}
-            className="flex gap-2 font-medium max-md:text-sm"
+            className="flex gap-2 font-medium max-md:text-sm max-sm:flex-col max-sm:items-center"
           >
             <User />
-            {cookies["remember-me"] ? cookies["remember-me"] : "Личный кабинет"}
+            <span className="overflow-hidden truncate text-ellipsis w-[10ch]">
+              {cookies["remember-me"]
+                ? cookies["remember-me"]
+                : "Личный кабинет"}
+            </span>
           </Link>
         </div>
       </div>

@@ -23,6 +23,8 @@ const SignInSchema = Yup.object().shape({
 });
 function SignIn() {
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies();
+
   async function handleSubmit({ login, password }: Values) {
     const res = await fetch(`${API_URL}/auth/signin`, {
       method: "POST",
@@ -33,6 +35,9 @@ function SignIn() {
     });
     if (res.ok) {
       console.log(await res.text());
+      if (import.meta.env.DEV) {
+        setCookie("remember-me", login, { path: "/" });
+      }
       navigate("/");
     } else if (res.status === 400) {
       console.log("Incorrect form");

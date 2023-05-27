@@ -13,7 +13,7 @@ function Root({ children }: { children?: React.ReactNode }) {
       {location.pathname === "/" ? (
         <Index />
       ) : (
-        <div className="max-w-[1400px] p-5 flex-grow-[4] mx-auto">
+        <div className="max-w-[1400px] p-5 flex-grow-[4] w-full mx-auto">
           <div className="max-md:mt-[58px]">
             <Outlet />
             {children}

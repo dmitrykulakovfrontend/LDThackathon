@@ -339,7 +339,7 @@ function NewCalculator() {
                 <div className="flex-1 mt-28 max-md:mt-4">
                   <label
                     htmlFor="customRange1"
-                    className="inline-block mb-2 text-neutral-700 dark:text-neutral-200"
+                    className="inline-block mb-2 text-neutral-700"
                   >
                     Количество операций в месяц
                   </label>
@@ -366,7 +366,7 @@ function NewCalculator() {
                       <span>1</span>
                       <span>1000</span>
                     </div>
-                    <span className="absolute left-0 w-full h-full text-center top-6 text-neutral-700 dark:bg-blue-500">
+                    <span className="absolute left-0 w-full h-full text-center top-6 text-neutral-700">
                       {isHover ? accountingPapers : ""}
                     </span>
                   </div>

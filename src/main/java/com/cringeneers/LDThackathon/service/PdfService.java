@@ -35,10 +35,21 @@ public class PdfService {
         BigInteger taxes = BigInteger.valueOf(investResponseDto.getLandTax().intValue() + investResponseDto.getPropertyTax().intValue());
         BigInteger building_rent = investResponseDto.getBuilding().toBigInteger();
         String business_type = investRequestDto.getBusiness_type();
-        String organisation_type = investRequestDto.getEntity();
+        StringBuilder organisation_type = new StringBuilder();
+        if (investRequestDto.getEntity().equalsIgnoreCase("ooo")) {
+              organisation_type.append("OOO");
+        } else if (investRequestDto.getEntity().equalsIgnoreCase("zao")) {
+            organisation_type.append("ЗАО");
+        } else if (investRequestDto.getEntity().equalsIgnoreCase("oao")) {
+            organisation_type.append("ОАО");
+        } else if (investRequestDto.getEntity().equalsIgnoreCase("pao")) {
+            organisation_type.append("ПАО");
+        } else if (investRequestDto.getEntity().equalsIgnoreCase("ip")) {
+            organisation_type.append("ИП");
+        }
         long employees_number = investRequestDto.getN_employee();
         String district = investRequestDto.getDistrict();
-        return insertNumbersInTemplate(medic, retire, options, total, personal, taxes, building_rent, business_type, organisation_type, employees_number, district);
+        return insertNumbersInTemplate(medic, retire, options, total, personal, taxes, building_rent, business_type, String.valueOf(organisation_type), employees_number, district);
     }
     public ByteArrayOutputStream insertNumbersInTemplate(BigInteger medic, BigInteger retire, Integer options, BigInteger total, BigInteger personal, BigInteger taxes, BigInteger building_rent, String business_type, String organisation_type, long employeesNumber, String district) {
         InputStream inputStream = PdfService.class.getClassLoader().getResourceAsStream("static/template.pdf");

@@ -51,7 +51,7 @@ public class InvestController {
                 // Устанавливаем заголовки ответа для скачивания файла
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_PDF);
-                headers.setContentDisposition(ContentDisposition.builder("attachment").filename("document.pdf").build());
+                headers.setContentDisposition(ContentDisposition.builder("attachment").filename("review.pdf").build());
 
                 // Возвращаем ResponseEntity с данными PDF и заголовками
                 return new ResponseEntity<>(pdfData.toByteArray(), headers, HttpStatus.OK);

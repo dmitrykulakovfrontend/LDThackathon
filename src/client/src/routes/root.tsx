@@ -19,7 +19,7 @@ function Root({ children }: { children?: React.ReactNode }) {
         <Index />
       ) : (
         <div className="max-w-[1400px] p-5 flex-grow-[4] w-full mx-auto">
-          <div className="max-md:mt-[58px]">
+          <div className="max-md:mt-[72px]">
             <Outlet />
             {children}
           </div>

@@ -13,7 +13,7 @@ export type User = {
   website: string;
   country: string;
   city: string;
-  businessType: string;
+  business_type: string;
   job: string;
   password: string;
   roles: Role[];

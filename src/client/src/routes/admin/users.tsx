@@ -44,10 +44,10 @@ function Users() {
     })
       .then((res) => res.json())
       .then((data) => setUsers(data));
-  }, []);
+  }, [decodedToken]);
   console.log(users);
   return (
-    <>
+    <div className="mt-5 overflow-x-auto">
       <table className="border-collapse border-ldt-gray">
         <thead className="border-2 border-ldt-gray">
           <tr>
@@ -71,7 +71,7 @@ function Users() {
                 inn,
                 city,
                 organisation,
-                businessType,
+                business_type,
                 job,
               }) => ({
                 id,
@@ -80,14 +80,14 @@ function Users() {
                 inn,
                 city,
                 organisation,
-                businessType,
+                business_type,
                 job,
               })
             )
             .map((user, i) => (
-              <tr key={i} className=" border-ldt-gray">
+              <tr key={i} className="border-2 border-ldt-gray">
                 {Object.values(user).map((value, i) => (
-                  <td key={i} className="p-3 border-ldt-gray">
+                  <td key={i} className="p-3 border-2 border-ldt-gray">
                     {value}
                   </td>
                 ))}
@@ -96,7 +96,7 @@ function Users() {
         </tbody>
         <tfoot></tfoot>
       </table>
-    </>
+    </div>
   );
 }
 

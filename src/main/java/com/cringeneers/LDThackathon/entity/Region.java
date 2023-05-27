@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "equipment")
-public class Equipment {
+@Table(name = "region_district")
+public class Region {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "equipment_type")
-    private String type;
-    @Column(name = "cost_r")
-    private Double cost;
+    @Column(name = "region")
+    private String name;
+    @Column(name = "district")
+    private String district;
 }

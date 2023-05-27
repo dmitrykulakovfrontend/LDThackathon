@@ -8,11 +8,10 @@ import com.cringeneers.LDThackathon.service.InvestService;
 import com.cringeneers.LDThackathon.service.PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -20,6 +19,9 @@ import java.io.InputStream;
 @RestController
 @RequestMapping("/api/invest")
 public class InvestController {
+
+    private InvestRequestDto investRequestDto;
+    private InvestResponseDto investResponseDto;
     @Autowired
     private UserRepository userRepository;
 
@@ -34,25 +36,37 @@ public class InvestController {
 
     @PostMapping("/calculate")
     public InvestResponseDto calculateInvestigations(@RequestBody InvestRequestDto investRequestDto) {
+        this.investRequestDto = investRequestDto;
+        this.investResponseDto = investService.calculate(investRequestDto);
         return investService.calculate(investRequestDto);
     }
 
     @RequestMapping(path = "/download", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> download() throws IOException {
-        InputStream inputNewStream = PdfService.class.getClassLoader().getResourceAsStream("static/templateNew.pdf");
-        assert inputNewStream != null;
-        InputStreamResource resource = new InputStreamResource(inputNewStream);
+    public ResponseEntity<byte[]> download() throws IOException {
+        ByteArrayOutputStream pdfData = pdfService.makePDF(investRequestDto, investResponseDto);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=templateNew.pdf");
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(inputNewStream.available())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(resource);
+        if (pdfData != null) {
+            try {
+                // Устанавливаем заголовки ответа для скачивания файла
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_PDF);
+                headers.setContentDisposition(ContentDisposition.builder("attachment").filename("review.pdf").build());
+
+                // Возвращаем ResponseEntity с данными PDF и заголовками
+                return new ResponseEntity<>(pdfData.toByteArray(), headers, HttpStatus.OK);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Если возникла ошибка, возвращаем ResponseEntity с ошибкой
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
+
+
+
+
+
+

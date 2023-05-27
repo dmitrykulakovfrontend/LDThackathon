@@ -14,7 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.DELETE, RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS}, allowCredentials = "false", allowedHeaders = { "*" }, exposedHeaders = { "*" })
 @RestController
 @RequestMapping("/api/invest")
 public class InvestController {
@@ -27,9 +27,6 @@ public class InvestController {
     private InvestService investService;
     @PostMapping("/calculate")
     public InvestResponseDto calculateInvestigations(@RequestBody InvestRequestDto investRequestDto){
-
-
-
         return investService.calculate(investRequestDto);
     }
 }

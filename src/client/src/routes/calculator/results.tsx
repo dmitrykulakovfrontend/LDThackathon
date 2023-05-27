@@ -7,7 +7,7 @@ import LocationIconSrc from "@/assets/location.png";
 import TaxesIconSrc from "@/assets/taxes.png";
 import OneTimePayIconSrc from "@/assets/one-time-pay.png";
 import YearlyPayIconSrc from "@/assets/yearly-pay.png";
-import { FormValues, entityMap } from "@/types/form";
+import { FormValues, entityMap, Results } from "@/types/form";
 import { papersTypeMap } from "../../types/form";
 
 function Results() {
@@ -18,7 +18,7 @@ function Results() {
     form,
   }: {
     form: FormValues;
-    results: any;
+    results: Results;
   } = location.state;
   console.log({
     results,
@@ -27,6 +27,21 @@ function Results() {
   function handlePrint() {
     navigate("/auth/signin");
   }
+  const oneTimePay =
+    results.building +
+    results.land +
+    results.patentRegistration +
+    results.equipment +
+    results.entityRegistration;
+  const yearlyPay =
+    results.salaries +
+    results.ndfl +
+    results.medic +
+    results.retire +
+    results.landTax +
+    results.propertyTax +
+    results.amortisation +
+    results.accounting;
   return (
     <>
       <h1 className="text-3xl font-bold uppercase max-sm:text-2xl">
@@ -96,20 +111,20 @@ function Results() {
           <img src={OneTimePayIconSrc} alt="" />
           <span className="uppercase">единовременные затраты:</span>
           <span className="text-xl font-semibold">
-            {formatNumber(300_000_000)}
+            {formatNumber(oneTimePay)}
           </span>
         </div>
         <div className="flex flex-col items-start justify-start gap-4 p-8 max-sm:pl-0">
           <img src={YearlyPayIconSrc} alt="" />
           <span className="uppercase">постоянные затраты (за 1 год):</span>
           <span className="text-xl font-semibold">
-            {formatNumber(60_000_000)}
+            {formatNumber(yearlyPay)}
           </span>
         </div>
       </div>
       <h2 className="mt-12 text-2xl font-bold uppercase">
         итого:{" "}
-        <span className="text-blue-500">{formatNumber(360_000_000)}</span>
+        <span className="text-blue-500">{formatNumber(results.total)}</span>
         <span className="relative text-xl text-ldt-dark-gray -top-2 left-1">
           *
         </span>

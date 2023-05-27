@@ -44,4 +44,21 @@ export const initialValues = {
   district: "",
 };
 
+export type Results = {
+  total: number;
+  building: number;
+  land: number;
+  entityRegistration: number;
+  equipment: number;
+  salaries: number;
+  ndfl: number;
+  retire: number;
+  medic: number;
+  landTax: number;
+  propertyTax: number;
+  amortisation: number;
+  patentRegistration: number;
+  accounting: number;
+};
+
 export type FormValues = typeof initialValues;

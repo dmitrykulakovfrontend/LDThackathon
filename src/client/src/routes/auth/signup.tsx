@@ -71,8 +71,10 @@ function Signup() {
         validationSchema={SignUpSchema}
       >
         {({ errors, touched }) => (
-          <FormikForm className="flex flex-col w-full max-w-xl gap-8 px-20 py-14 border shadow-[0_0_1px_0px_rgb(215,22,22)_inset,_0_0_1px_0px_rgb(215,22,22)] border-ldt-red rounded-xl">
-            <h1 className="mx-auto text-3xl font-semibold">Регистрация</h1>
+          <FormikForm className="flex flex-col w-full max-w-xl gap-8 px-20 py-14 border shadow-[0_0_1px_0px_rgb(215,22,22)_inset,_0_0_1px_0px_rgb(215,22,22)] border-ldt-red rounded-xl max-sm:py-7 max-sm:px-10">
+            <h1 className="mx-auto text-3xl font-semibold max-sm:text-xl">
+              Регистрация
+            </h1>
             <FormikField
               type="text"
               name="name"
@@ -159,13 +161,13 @@ function Signup() {
               placeholder="alexandra.moroz1703@gmail.com"
               touched={touched.job}
               errors={errors.job}
-              title="job"
+              title="Должность"
             />
             <button
               type="submit"
-              className="px-8 py-2 mx-auto tracking-wide text-white rounded-xl w-fit bg-ldt-red"
+              className="px-8 py-2 mx-auto tracking-wide text-white rounded-xl w-fit bg-ldt-red max-sm:px-4 max-sm:py-2"
             >
-              Зарегистрироваться
+              Регистрация
             </button>
           </FormikForm>
         )}

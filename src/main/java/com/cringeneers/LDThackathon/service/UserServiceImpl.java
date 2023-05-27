@@ -87,5 +87,8 @@ public class UserServiceImpl implements UserService{
         user.getRoles().forEach(r-> rolesNames.add(r.getName()));
         return jwtUtilities.generateToken(user.getUsername(),rolesNames);
     }
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
 }

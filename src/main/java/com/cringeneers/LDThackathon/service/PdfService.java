@@ -53,7 +53,7 @@ public class PdfService {
     }
     public ByteArrayOutputStream insertNumbersInTemplate(BigInteger medic, BigInteger retire, Integer options, BigInteger total, BigInteger personal, BigInteger taxes, BigInteger building_rent, String business_type, String organisation_type, long employeesNumber, String district) {
         InputStream inputStream = PdfService.class.getClassLoader().getResourceAsStream("static/template.pdf");
-        InputStream fontStream = PdfService.class.getClassLoader().getResourceAsStream("static/azbuka01.TTF");
+        InputStream fontStream = PdfService.class.getClassLoader().getResourceAsStream("static/Manrope.TTF");
         try (PDDocument document = PDDocument.load(inputStream)) {
             PDPage page = document.getPage(2); // Получаем первую страницу
             PDPage nextPage = document.getPage(3); // Получаем первую страницу

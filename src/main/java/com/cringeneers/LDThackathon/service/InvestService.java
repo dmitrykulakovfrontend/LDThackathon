@@ -29,8 +29,8 @@ public class InvestService {
     private final static double SQUARE_PRICE = 100000;
     private final DistrictRepository districtRepository;
     private final RegionRepository regionRepository;
-    private final BusinessRepository businessRepository;
-    private final EquipmentRepository equipmentRepository;
+    private final BusinessService businessService;
+    private final EquipmentService equipmentService;
     private final PdfService pdfService;
 
 
@@ -40,7 +40,7 @@ public class InvestService {
         investResponseDto.setBuilding(new BigDecimal(investRequestDto.getSquare_buildings() * SQUARE_PRICE));
         investResponseDto.setLand(BigDecimal.valueOf(investRequestDto.getSquare_area() * districtRepository.findByName(regionRepository.findByName(investRequestDto.district).getDistrict()).getCost()));
         investResponseDto.setEntityRegistration(investRequestDto.getEntity().equalsIgnoreCase("ip") ? 4000.0 : 800.0  );
-        investResponseDto.setSalaries(BigDecimal.valueOf(1000 * investRequestDto.getN_employee() * businessRepository.findByType(investRequestDto.getBusiness_type()).getMinimalSalary()));
+        investResponseDto.setSalaries(BigDecimal.valueOf(1000 * investRequestDto.getN_employee() * businessService.getBusinessByType(investRequestDto.getBusiness_type()).getMinimalSalary()));
         investResponseDto.setNdfl(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * NDFL)));
         investResponseDto.setMedic(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * MEDIC)));
         investResponseDto.setRetire(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * RETIRE)));
@@ -48,7 +48,7 @@ public class InvestService {
         investResponseDto.setPropertyTax((BigDecimal.valueOf(investResponseDto.getLand().doubleValue() * 0.022)));
         investResponseDto.setEquipment(BigDecimal.valueOf(calculateEquipment(investRequestDto.getEquipments())));
         investResponseDto.setAmortisation(BigDecimal.valueOf(calculateAmortisation(investRequestDto.getEquipments())));
-        investResponseDto.setPatentRegistration(BigDecimal.valueOf(investRequestDto.isPatent ? 1000 * businessRepository.findByType(investRequestDto.getBusiness_type()).getCost() : 0));
+        investResponseDto.setPatentRegistration(BigDecimal.valueOf(investRequestDto.isPatent ? 1000 * businessService.getBusinessByType(investRequestDto.getBusiness_type()).getCost() : 0));
         if (investRequestDto.getAccounting_type().equalsIgnoreCase("6%")) {
             account_base = 3000;
         } else if (investRequestDto.getAccounting_type().equalsIgnoreCase("15%")) {
@@ -65,14 +65,14 @@ public class InvestService {
     private Double calculateEquipment(ArrayList<EquipmentDto> equipments) {
         double cost = 0;
         for (EquipmentDto equipment : equipments) {
-            cost += equipment.getAmount() * equipmentRepository.findByType(equipment.getType()).getCost();
+            cost += equipment.getAmount() * equipmentService.getEquipmentByType(equipment.getType()).getCost();
         }
         return cost;
     }
     private Double calculateAmortisation(ArrayList<EquipmentDto> equipments) {
         double cost = 0;
         for (EquipmentDto equipment : equipments) {
-            cost += equipment.getAmount() * equipmentRepository.findByType(equipment.getType()).getCost();
+            cost += equipment.getAmount() * equipmentService.getEquipmentByType(equipment.getType()).getCost();
             cost *= (1.0 / (equipment.getTime() * 12));
         }
         return cost;

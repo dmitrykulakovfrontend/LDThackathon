@@ -62,7 +62,6 @@ function Header() {
       to: "/help",
     },
   ];
-  console.log(navigation);
   useEffect(() => {
     setMobileMenu(false);
   }, [location]);

@@ -70,6 +70,7 @@ function NewCalculator() {
   const [isPatent, setIsPatent] = useState(false);
   const [data, setData] = useState<null | GeoJsonObject>(null);
   const [isMapActive, setIsMapActive] = useState(false);
+  const [isHover, setHover] = useState(false);
 
   useEffect(() => {
     import("@/moscowGeo.json").then((data) => {
@@ -315,7 +316,11 @@ function NewCalculator() {
                   >
                     Количество операций в месяц
                   </label>
-                  <div className="relative max-w-md mt-4">
+                  <div
+                    className="relative max-w-md mt-4"
+                    onMouseEnter={() => setHover(true)}
+                    onMouseLeave={() => setHover(false)}
+                  >
                     <input
                       type="range"
                       name="accounting_papers"
@@ -334,7 +339,7 @@ function NewCalculator() {
                       <span>300</span>
                     </div>
                     <span className="absolute left-0 w-full h-full text-center top-6 text-neutral-700 dark:bg-blue-500">
-                      {accountingPapers}
+                      {isHover ? accountingPapers : ""}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2 mb-8 switch">
@@ -377,6 +382,7 @@ function NewCalculator() {
                   <MapContainer
                     zoom={10}
                     center={[55.751244, 37.618423]}
+                    attributionControl={false}
                     // className="h-[370px] w-[535px]  max-sm:w-[290px] max-sm:h-[300px] max-md:w-[380px] rounded-xl"
                     className="absolute top-0 left-0 w-full h-full rounded-xl"
                   >

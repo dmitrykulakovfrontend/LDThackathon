@@ -1,5 +1,6 @@
 package com.cringeneers.LDThackathon.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +26,7 @@ public class PdfService {
         this.resourceLoader = resourceLoader;
     }
 
-    public void makePDF(InvestRequestDto investRequestDto, InvestResponseDto investResponseDto) {
+    public ByteArrayOutputStream makePDF(InvestRequestDto investRequestDto, InvestResponseDto investResponseDto) {
         BigInteger medic = investResponseDto.getMedic().toBigInteger();
         BigInteger retire = investResponseDto.getRetire().toBigInteger();
         Integer options = 100000;
@@ -37,9 +38,9 @@ public class PdfService {
         String organisation_type = investRequestDto.getEntity();
         long employees_number = investRequestDto.getN_employee();
         String district = investRequestDto.getDistrict();
-        insertNumbersInTemplate(medic, retire, options, total, personal, taxes, building_rent, business_type, organisation_type, employees_number, district);
+        return insertNumbersInTemplate(medic, retire, options, total, personal, taxes, building_rent, business_type, organisation_type, employees_number, district);
     }
-    public  void insertNumbersInTemplate(BigInteger medic, BigInteger retire, Integer options, BigInteger total, BigInteger personal, BigInteger taxes, BigInteger building_rent, String business_type, String organisation_type, long employeesNumber, String district) {
+    public ByteArrayOutputStream insertNumbersInTemplate(BigInteger medic, BigInteger retire, Integer options, BigInteger total, BigInteger personal, BigInteger taxes, BigInteger building_rent, String business_type, String organisation_type, long employeesNumber, String district) {
         InputStream inputStream = PdfService.class.getClassLoader().getResourceAsStream("static/template.pdf");
         InputStream fontStream = PdfService.class.getClassLoader().getResourceAsStream("static/azbuka01.TTF");
         try (PDDocument document = PDDocument.load(inputStream)) {
@@ -134,9 +135,13 @@ public class PdfService {
             contentStream.close();
             contentStream2.close();
 
-            document.save(new File("templateNew.pdf"));
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            document.save(outputStream);
+            document.close();
+            return outputStream;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 }

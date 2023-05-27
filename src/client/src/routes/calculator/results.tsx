@@ -9,6 +9,7 @@ import OneTimePayIconSrc from "@/assets/one-time-pay.png";
 import YearlyPayIconSrc from "@/assets/yearly-pay.png";
 import { FormValues, entityMap, Results } from "@/types/form";
 import { papersTypeMap } from "../../types/form";
+import { API_URL } from "@/constants";
 
 function Results() {
   const location = useLocation();
@@ -24,8 +25,18 @@ function Results() {
     results,
     form,
   });
-  function handlePrint() {
-    navigate("/auth/signin");
+  async function handlePrint() {
+    try {
+      // manually navigate user
+      window.location.href = `${API_URL}/invest/download`;
+      // const res = await fetch();
+      // console.log(res);
+      // const data = await res.json();
+      // console.log(data);
+    } catch (e) {
+      console.error(e);
+    }
+    // navigate("/auth/signin");
   }
   const oneTimePay =
     results.building +

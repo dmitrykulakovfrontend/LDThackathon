@@ -10,6 +10,7 @@ import com.cringeneers.LDThackathon.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -30,6 +31,7 @@ public class InvestService {
     private final RegionRepository regionRepository;
     private final BusinessRepository businessRepository;
     private final EquipmentRepository equipmentRepository;
+    private final PdfService pdfService;
 
 
     public InvestResponseDto calculate(InvestRequestDto investRequestDto) {
@@ -54,8 +56,10 @@ public class InvestService {
         } else {
             account_base = 7000;
         }
-        investResponseDto.setAccounting(BigDecimal.valueOf(account_base * Math.pow(2, (investRequestDto.getAccounting_papers().doubleValue() / 20)) + (investRequestDto.getN_employee() * ACCOUNT_BASE_PERSON)));
+        investResponseDto.setAccounting(BigDecimal.valueOf(BigDecimal.valueOf(account_base * (investRequestDto.getAccounting_papers().doubleValue() / 20)).doubleValue() + (investRequestDto.getN_employee() * ACCOUNT_BASE_PERSON)));
         investResponseDto.setTotal(BigDecimal.valueOf(investResponseDto.getBuilding().doubleValue() + investResponseDto.getLand().doubleValue() + investResponseDto.getEntityRegistration().doubleValue() + investResponseDto.getSalaries().doubleValue() + investResponseDto.getNdfl().doubleValue() + investResponseDto.getMedic().doubleValue() + investResponseDto.getRetire().doubleValue() + investResponseDto.getLandTax().doubleValue() + investResponseDto.getPropertyTax().doubleValue() + investResponseDto.getEquipment().doubleValue() + investResponseDto.getAmortisation().doubleValue() + investResponseDto.getPatentRegistration().doubleValue() + investResponseDto.getAccounting().doubleValue()));
+
+        pdfService.makePDF(investRequestDto, investResponseDto);
         return investResponseDto;
     }
     private Double calculateEquipment(ArrayList<EquipmentDto> equipments) {

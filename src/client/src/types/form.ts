@@ -59,6 +59,8 @@ export type Results = {
   amortisation: number;
   patentRegistration: number;
   accounting: number;
+  engineerOnce: number;
+  engineerYear: number;
 };
 
 export type FormValues = typeof initialValues;

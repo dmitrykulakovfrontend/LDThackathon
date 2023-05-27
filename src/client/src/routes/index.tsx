@@ -2,8 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import indexImgSrc from "@/assets/index.webp";
 import { API_URL } from "@/constants";
 
+/**
+ * Главная странина, ничего сложного, картинка и 2 кнопки
+ */
 function Index() {
-  const navigate = useNavigate();
   return (
     <div className={`flex flex-col flex-[4] items-center justify-center gap-4`}>
       <img src={indexImgSrc} alt="" className="flex-1" />

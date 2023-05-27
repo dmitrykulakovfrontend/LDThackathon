@@ -22,6 +22,11 @@ import { RequireAdmin } from "./components/RequireAdmin";
 
 const isDev = import.meta.env.DEV;
 
+/**
+ * Это реакт роутер,
+ * Он содержит все маршруты на которые клиент может попасть и которые будут отображаться
+ * @link https://reactrouter.com/en/6.11.2/start/tutorial
+ */
 const router = createBrowserRouter(
   [
     {
@@ -78,9 +83,15 @@ const router = createBrowserRouter(
       ],
     },
   ],
+  // на нашем сервере путь начинается с /ldt-1 так что в зависимости от режима работы мы меняем базовый путь
   { basename: isDev ? "/" : "/ldt-1" }
 );
 
+/**
+ * Главный компонент который создает провайдер пользовательского контекста для получения информации о пользователе
+ *
+ * @returns {any}
+ */
 function App() {
   const [user, setUser] = useState<Token | null>(null);
   return (

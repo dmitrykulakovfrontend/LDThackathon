@@ -15,23 +15,22 @@ import {
 import industryTypes from "@/industry.json";
 import equipmentTypes from "@/equipmentTypes.json";
 import { API_URL } from "@/constants";
-// type Props = {};
 const initialValues = {
   business_type: "",
   n_employee: "",
   square_area: "",
   square_buildings: "",
-  equipment: [
+  equipments: [
     {
       time: "",
-      price: "",
+      amount: "",
       type: "",
     },
   ],
   entity: "ip",
   accounting_type: "6%",
   accounting_papers: 1,
-  is_patent: false,
+  ispatent: false,
   district: "",
 };
 type Values = typeof initialValues;
@@ -49,7 +48,7 @@ const FormSchema = Yup.object().shape({
     .required("Обязательное поле"),
   equipments: Yup.array().of(
     Yup.object().shape({
-      price: Yup.string().required("Обязательное поле"),
+      amount: Yup.string().required("Обязательное поле"),
       time: Yup.string()
         .matches(/^\d+$/, "Должны быть только цифры")
         .required("Обязательное поле"),
@@ -59,12 +58,13 @@ const FormSchema = Yup.object().shape({
   entity: Yup.string().required("Обязательное поле"),
   accounting_type: Yup.string().required("Обязательное поле"),
   accounting_papers: Yup.number().required("Обязательное поле"),
-  is_patent: Yup.boolean().required("Обязательное поле"),
+  ispatent: Yup.boolean().required("Обязательное поле"),
   district: Yup.string().required("Укажите район"),
 });
 
 function NewCalculator() {
   async function handleSubmit(form: Values) {
+    console.log(form);
     const res = await fetch(`${API_URL}/invest/calculate`, {
       method: "POST",
       body: JSON.stringify(form),
@@ -155,20 +155,20 @@ function NewCalculator() {
               </h2>
               <div>
                 <FieldArray
-                  name="equipment"
+                  name="equipments"
                   render={(arrayHelpers) => (
                     <div>
-                      {values.equipment && values.equipment.length > 0 ? (
+                      {values.equipments && values.equipments.length > 0 ? (
                         <>
-                          {values.equipment.map((equipment, index) => (
+                          {values.equipments.map((equipment, index) => (
                             <div key={index}>
                               <div className="max-w-md">
                                 <FormikField
-                                  name={`equipment.${index}.type`}
+                                  name={`equipments.${index}.type`}
                                   touched={
-                                    touched.equipment &&
-                                    touched.equipment.length > 0 &&
-                                    touched.equipment[index]?.type
+                                    touched.equipments &&
+                                    touched.equipments.length > 0 &&
+                                    touched.equipments[index]?.type
                                   }
                                   labelClassname="w-full max-w-none"
                                   isSelect
@@ -186,26 +186,16 @@ function NewCalculator() {
                                 <div className="flex gap-5 max-sm:flex-col">
                                   <FormikField
                                     type="text"
-                                    name={`equipment.${index}.price`}
+                                    name={`equipments.${index}.amount`}
                                     placeholder="Укажите число"
                                     labelClassname="w-[336px] max-md:w-full max-md:max-w-none"
-                                    touched={
-                                      touched.equipment &&
-                                      touched.equipment.length > 0 &&
-                                      touched.equipment[index]?.price
-                                    }
                                     title="Количество оборудования"
                                   />
                                   <FormikField
                                     type="text"
-                                    name={`equipment.${index}.time`}
+                                    name={`equipments.${index}.time`}
                                     placeholder="Укажите годы"
                                     labelClassname="w-[336px] max-md:w-full max-md:max-w-none"
-                                    touched={
-                                      touched.equipment &&
-                                      touched.equipment.length > 0 &&
-                                      touched.equipment[index]?.time
-                                    }
                                     title="Срок использования"
                                   />
                                 </div>
@@ -364,11 +354,11 @@ function NewCalculator() {
                         className="relative w-10 h-5 transition-all duration-200 ease-in-out bg-gray-400 rounded-full shadow-inner outline-none appearance-none cursor-pointer mt-7 "
                         type="checkbox"
                         onChange={() => {
-                          setFieldValue("is_patent", !isPatent);
+                          setFieldValue("ispatent", !isPatent);
                           setIsPatent(!isPatent);
                         }}
                         checked={isPatent}
-                        name="is_patent"
+                        name="ispatent"
                       />
                     </label>
                   </div>

@@ -2,7 +2,7 @@ import FormikField from "@/components/Forms/FormikField";
 import FormikForm from "@/components/Forms/FormikForm";
 import { Field, FieldArray, Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import fakeMapSrc from "@/assets/fake-map.png";
 import "./new.css";
@@ -15,37 +15,24 @@ import {
 import industryTypes from "@/industry.json";
 import equipmentTypes from "@/equipmentTypes.json";
 import { API_URL } from "@/constants";
-const initialValues = {
-  business_type: "",
-  n_employee: "",
-  square_area: "",
-  square_buildings: "",
-  equipments: [
-    {
-      time: "",
-      amount: "",
-      type: "",
-    },
-  ],
-  entity: "ip",
-  accounting_type: "6%",
-  accounting_papers: 1,
-  ispatent: false,
-  district: "",
-};
-type Values = typeof initialValues;
+import {
+  EntityEnum,
+  PapersEnum,
+  FormValues,
+  initialValues,
+} from "@/types/form";
 
 const FormSchema = Yup.object().shape({
-  business_type: Yup.string().required("Обязательное поле"),
+  business_type: Yup.string().required("Укажите отрасль"),
   n_employee: Yup.string()
     .matches(/^\d+$/, "Должны быть только цифры")
-    .required("Укажите численность"),
+    .required("Укажите численность сотрудников"),
   square_area: Yup.string()
     .matches(/^\d+$/, "Должны быть только цифры")
-    .required("Обязательное поле"),
+    .required("Укажите площадь земельного участка"),
   square_buildings: Yup.string()
     .matches(/^\d+$/, "Должны быть только цифры")
-    .required("Обязательное поле"),
+    .required("Укажите площадь объектов"),
   equipments: Yup.array().of(
     Yup.object().shape({
       amount: Yup.string().required("Обязательное поле"),
@@ -55,25 +42,31 @@ const FormSchema = Yup.object().shape({
       type: Yup.string().required("Обязательное поле"),
     })
   ),
-  entity: Yup.string().required("Обязательное поле"),
-  accounting_type: Yup.string().required("Обязательное поле"),
-  accounting_papers: Yup.number().required("Обязательное поле"),
-  ispatent: Yup.boolean().required("Обязательное поле"),
+  entity: Yup.string(),
+  accounting_type: Yup.string(),
+  accounting_papers: Yup.number(),
+  ispatent: Yup.boolean(),
   district: Yup.string().required("Укажите район"),
 });
 
 function NewCalculator() {
-  async function handleSubmit(form: Values) {
+  const navigate = useNavigate();
+  async function handleSubmit(form: FormValues) {
     console.log(form);
-    const res = await fetch(`${API_URL}/invest/calculate`, {
-      method: "POST",
-      body: JSON.stringify(form),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await res.json();
-    console.log("backend-response: ", data);
+    try {
+      const res = await fetch(`${API_URL}/invest/calculate`, {
+        method: "POST",
+        body: JSON.stringify(form),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const results = await res.json();
+      console.log("backend-response: ", results);
+      navigate("../results", { state: { results, form } });
+    } catch (e) {
+      navigate("../results", { state: { results: {}, form } });
+    }
   }
   const [accountingPapers, setAccountingPapers] = useState(1);
   const [isPatent, setIsPatent] = useState(false);
@@ -330,7 +323,7 @@ function NewCalculator() {
                       type="range"
                       name="accounting_papers"
                       min="1"
-                      max="1000000"
+                      max="300"
                       onChange={(e) => {
                         setFieldValue("accounting_papers", +e.target.value);
                         setAccountingPapers(+e.target.value);
@@ -341,7 +334,7 @@ function NewCalculator() {
                     />
                     <div className="flex justify-between w-full">
                       <span>1</span>
-                      <span>1000000</span>
+                      <span>300</span>
                     </div>
                     <span className="absolute left-0 w-full h-full text-center top-6 text-neutral-700 dark:bg-blue-500">
                       {accountingPapers}
@@ -364,10 +357,15 @@ function NewCalculator() {
                   </div>
                 </div>
               </div>
-              <div>
+              <div className="flex flex-col">
+                <ul className="text-ldt-red">
+                  {Object.entries(errors).map(([key, value]) => (
+                    <li key={key}>{typeof value === "string" ? value : ""}</li>
+                  ))}
+                </ul>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-white bg-blue-500 rounded-xl"
+                  className="px-4 py-2 mt-5 text-white bg-blue-500 w-fit rounded-xl"
                 >
                   Расчитать
                 </button>

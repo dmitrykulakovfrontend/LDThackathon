@@ -38,7 +38,7 @@ function FormikField({
         className={`flex flex-col  max-w-md gap-2 h-fit ${labelClassname}`}
       >
         <span className="font-semibold">{title}</span>
-        {isError && <div>{errors}</div>}
+        {isError && <div className="text-ldt-red">{errors}</div>}
         <div className="relative w-full">
           {isSelect ? (
             <>

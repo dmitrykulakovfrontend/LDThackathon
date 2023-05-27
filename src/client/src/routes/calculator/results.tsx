@@ -89,7 +89,7 @@ function Results() {
               Количество сотрудников:
             </div>
             <div className="h-fit max-sm:text-center">
-              {form.n_employee} человек
+              {form.n_employee} человек(а)
             </div>
           </div>
         </div>

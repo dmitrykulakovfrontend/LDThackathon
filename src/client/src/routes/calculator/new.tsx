@@ -1,6 +1,6 @@
 import FormikField from "@/components/Forms/FormikField";
 import FormikForm from "@/components/Forms/FormikForm";
-import { Field, FieldArray, Formik } from "formik";
+import { Field, FieldArray, Formik, getIn } from "formik";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
@@ -35,7 +35,9 @@ const FormSchema = Yup.object().shape({
     .required("Укажите площадь объектов"),
   equipments: Yup.array().of(
     Yup.object().shape({
-      amount: Yup.string().required("Обязательное поле"),
+      amount: Yup.string()
+        .matches(/^\d+$/, "Должны быть только цифры")
+        .required("Обязательное поле"),
       time: Yup.string()
         .matches(/^\d+$/, "Должны быть только цифры")
         .required("Обязательное поле"),
@@ -159,7 +161,12 @@ function NewCalculator() {
                                   touched={
                                     touched.equipments &&
                                     touched.equipments.length > 0 &&
-                                    touched.equipments[index]?.type
+                                    getIn(touched.equipments[index], "type")
+                                  }
+                                  errors={
+                                    errors.equipments &&
+                                    errors.equipments.length > 0 &&
+                                    getIn(errors.equipments[index], "type")
                                   }
                                   labelClassname="w-full max-w-none"
                                   isSelect
@@ -178,6 +185,16 @@ function NewCalculator() {
                                   <FormikField
                                     type="text"
                                     name={`equipments.${index}.amount`}
+                                    touched={
+                                      touched.equipments &&
+                                      touched.equipments.length > 0 &&
+                                      getIn(touched.equipments[index], "amount")
+                                    }
+                                    errors={
+                                      errors.equipments &&
+                                      errors.equipments.length > 0 &&
+                                      getIn(errors.equipments[index], "amount")
+                                    }
                                     placeholder="Укажите число"
                                     labelClassname="w-[336px] max-md:w-full max-md:max-w-none"
                                     title="Количество оборудования"
@@ -185,6 +202,16 @@ function NewCalculator() {
                                   <FormikField
                                     type="text"
                                     name={`equipments.${index}.time`}
+                                    touched={
+                                      touched.equipments &&
+                                      touched.equipments.length > 0 &&
+                                      getIn(touched.equipments[index], "time")
+                                    }
+                                    errors={
+                                      errors.equipments &&
+                                      errors.equipments.length > 0 &&
+                                      getIn(errors.equipments[index], "time")
+                                    }
                                     placeholder="Укажите годы"
                                     labelClassname="w-[336px] max-md:w-full max-md:max-w-none"
                                     title="Срок использования"
@@ -320,12 +347,13 @@ function NewCalculator() {
                     className="relative max-w-md mt-4"
                     onMouseEnter={() => setHover(true)}
                     onMouseLeave={() => setHover(false)}
+                    onTouchMove={() => setHover(true)}
                   >
                     <input
                       type="range"
                       name="accounting_papers"
                       min="1"
-                      max="300"
+                      max="1000"
                       onChange={(e) => {
                         setFieldValue("accounting_papers", +e.target.value);
                         setAccountingPapers(+e.target.value);
@@ -336,7 +364,7 @@ function NewCalculator() {
                     />
                     <div className="flex justify-between w-full">
                       <span>1</span>
-                      <span>300</span>
+                      <span>1000</span>
                     </div>
                     <span className="absolute left-0 w-full h-full text-center top-6 text-neutral-700 dark:bg-blue-500">
                       {isHover ? accountingPapers : ""}

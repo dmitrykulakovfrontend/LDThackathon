@@ -6,6 +6,8 @@ import com.cringeneers.LDThackathon.entity.Role;
 import com.cringeneers.LDThackathon.entity.User;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface UserService {
 
     String authenticate(LoginDto loginDto);
@@ -13,4 +15,6 @@ public interface UserService {
     Role saveRole(Role role);
 
     User saveUser (User user) ;
+
+    List<User> getAllUsers();
 }

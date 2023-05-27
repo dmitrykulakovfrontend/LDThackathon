@@ -2,6 +2,7 @@ package com.cringeneers.LDThackathon.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 
 import com.cringeneers.LDThackathon.dto.InvestRequestDto;
@@ -11,10 +12,18 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PdfService {
+    private final ResourceLoader resourceLoader;
+
+    public PdfService(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
     public void makePDF(InvestRequestDto investRequestDto, InvestResponseDto investResponseDto) {
         BigInteger medic = investResponseDto.getMedic().toBigInteger();
@@ -30,11 +39,13 @@ public class PdfService {
         String district = investRequestDto.getDistrict();
         insertNumbersInTemplate(medic, retire, options, total, personal, taxes, building_rent, business_type, organisation_type, employees_number, district);
     }
-    public static void insertNumbersInTemplate(BigInteger medic, BigInteger retire, Integer options, BigInteger total, BigInteger personal, BigInteger taxes, BigInteger building_rent, String business_type, String organisation_type, long employeesNumber, String district) {
-        try (PDDocument document = PDDocument.load(new File("template.pdf"))) {
+    public  void insertNumbersInTemplate(BigInteger medic, BigInteger retire, Integer options, BigInteger total, BigInteger personal, BigInteger taxes, BigInteger building_rent, String business_type, String organisation_type, long employeesNumber, String district) {
+        InputStream inputStream = PdfService.class.getClassLoader().getResourceAsStream("static/template.pdf");
+        InputStream fontStream = PdfService.class.getClassLoader().getResourceAsStream("static/azbuka01.TTF");
+        try (PDDocument document = PDDocument.load(inputStream)) {
             PDPage page = document.getPage(2); // Получаем первую страницу
             PDPage nextPage = document.getPage(3); // Получаем первую страницу
-            PDFont font = PDType0Font.load(document, new File("azbuka01.TTF"));
+            PDFont font = PDType0Font.load(document, fontStream);
 
             PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true);
             PDPageContentStream contentStream2 = new PDPageContentStream(document, nextPage, PDPageContentStream.AppendMode.APPEND, true, true);

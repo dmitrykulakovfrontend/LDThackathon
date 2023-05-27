@@ -1,8 +1,11 @@
 import { useAuth } from "@/contexts/useAuth";
-import React from "react";
+import React, { useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import useEffect from "react";
-const users = [
+import { API_URL } from "@/constants";
+import { Token, User } from "@/types/auth";
+import { useJwt } from "react-jwt";
+const usersData = [
   {
     id: 1,
     fullname: "Крапивина Антонина Геннадьевна",
@@ -21,17 +24,28 @@ const users = [
 const headers = [
   "№",
   "ФИО",
+  "Почта",
+  "ИНН",
+  "Город",
+  "Организация",
   "Отрасль",
-  "Кол-во посещений",
-  "Последнее посещение",
+  "Должность",
 ];
 function Users() {
-  const { user } = useAuth();
-  console.log(user);
-  console.log();
-  if (!user?.role.includes("ROLE_ADMIN")) {
-    redirect("/auth/signin");
-  }
+  const [users, setUsers] = useState<User[]>([]);
+  const { decodedToken } = useJwt<Token>(
+    localStorage.getItem("user") as string
+  );
+  React.useEffect(() => {
+    fetch(`${API_URL}/admin/users`, {
+      headers: {
+        Authorization: `Bearer ${decodedToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setUsers(data));
+  }, []);
+  console.log(users);
   return (
     <>
       <table className="border-collapse border-ldt-gray">
@@ -47,16 +61,38 @@ function Users() {
             ))}
           </tr>
         </thead>
-        <tbody className=" border-ldt-gray">
-          {users.map((user, i) => (
-            <tr key={i} className=" border-ldt-gray">
-              {Object.values(user).map((value, i) => (
-                <td key={i} className="p-3 border-ldt-gray">
-                  {value}
-                </td>
-              ))}
-            </tr>
-          ))}
+        <tbody className="border-2 border-ldt-gray">
+          {users
+            .map(
+              ({
+                id,
+                name,
+                email,
+                inn,
+                city,
+                organisation,
+                businessType,
+                job,
+              }) => ({
+                id,
+                name,
+                email,
+                inn,
+                city,
+                organisation,
+                businessType,
+                job,
+              })
+            )
+            .map((user, i) => (
+              <tr key={i} className=" border-ldt-gray">
+                {Object.values(user).map((value, i) => (
+                  <td key={i} className="p-3 border-ldt-gray">
+                    {value}
+                  </td>
+                ))}
+              </tr>
+            ))}
         </tbody>
         <tfoot></tfoot>
       </table>

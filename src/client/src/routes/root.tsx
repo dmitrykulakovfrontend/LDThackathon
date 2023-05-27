@@ -5,6 +5,11 @@ import { Outlet, useLocation } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Index from ".";
 
+/**
+ * Корневой элемент который отображает всю разметку страницы включая header, footer и остальные компоненты
+ *
+ * Так как главная страница требует уникальную разметку то для нее отдельное условие рендера что бы не было ограничения в 1440px
+ */
 function Root({ children }: { children?: React.ReactNode }) {
   const location = useLocation();
   return (

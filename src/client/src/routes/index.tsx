@@ -1,9 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import React from "@/assets/react.svg";
-import Vite from "@/assets/vite.svg";
-import indexImgSrc from "@/assets/index.png";
+import indexImgSrc from "@/assets/index.webp";
 import { API_URL } from "@/constants";
-import { useCookies } from "react-cookie";
 
 function Index() {
   const navigate = useNavigate();

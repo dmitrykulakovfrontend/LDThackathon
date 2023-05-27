@@ -34,7 +34,6 @@ function SignIn() {
     });
     const data = await res.text();
 
-    console.log(data);
     if (res.ok) {
       localStorage.setItem("user", JSON.stringify(data));
       navigate("/");

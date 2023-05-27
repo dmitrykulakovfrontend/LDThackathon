@@ -52,7 +52,6 @@ const FormSchema = Yup.object().shape({
 function NewCalculator() {
   const navigate = useNavigate();
   async function handleSubmit(form: FormValues) {
-    console.log(form);
     try {
       const res = await fetch(`${API_URL}/invest/calculate`, {
         method: "POST",
@@ -62,7 +61,6 @@ function NewCalculator() {
         },
       });
       const results = await res.json();
-      console.log("backend-response: ", results);
       navigate("../results", { state: { results, form } });
     } catch (e) {
       navigate("../results", { state: { results: {}, form } });
@@ -78,7 +76,6 @@ function NewCalculator() {
       setData(data as GeoJsonObject);
     });
   }, []);
-  console.log(data);
   return (
     <>
       <h1 className="text-2xl font-bold mt-14">Расчет инвестиций</h1>

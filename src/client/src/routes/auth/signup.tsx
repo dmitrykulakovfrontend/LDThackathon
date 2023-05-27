@@ -34,7 +34,6 @@ const SignUpSchema = Yup.object().shape({
 function Signup() {
   const navigate = useNavigate();
   async function handleSubmit(form: Values) {
-    console.log(`${API_URL}/auth/signup`);
     const res = await fetch(`${API_URL}/auth/signup`, {
       method: "POST",
       body: JSON.stringify(form),

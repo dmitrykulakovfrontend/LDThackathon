@@ -12,8 +12,7 @@ const iUserContextState = {
   setUser: () => {},
 };
 
-const UserContext = createContext<UserContextType>(iUserContextState);
+export const UserContext = createContext<UserContextType>(iUserContextState);
 export function useAuth() {
   return useContext(UserContext);
 }
-export default UserContext;

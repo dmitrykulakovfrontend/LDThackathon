@@ -10,10 +10,13 @@ import YearlyPayIconSrc from "@/assets/yearly-pay.png";
 import { FormValues, entityMap, Results } from "@/types/form";
 import { papersTypeMap } from "../../types/form";
 import { API_URL } from "@/constants";
+import { ToastContainer, toast } from "react-toastify";
+import { useAuth } from "../../contexts/useAuth";
 
 function Results() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const {
     results,
     form,
@@ -26,17 +29,16 @@ function Results() {
     form,
   });
   async function handlePrint() {
-    try {
-      // manually navigate user
+    if (user) {
       window.location.href = `${API_URL}/invest/download`;
-      // const res = await fetch();
-      // console.log(res);
-      // const data = await res.json();
-      // console.log(data);
-    } catch (e) {
-      console.error(e);
+    } else {
+      toast.error(
+        "Регистрация обязательна для получения более подробных результатов",
+        {
+          position: toast.POSITION.TOP_CENTER,
+        }
+      );
     }
-    // navigate("/auth/signin");
   }
   const oneTimePay =
     results.building +
@@ -55,6 +57,7 @@ function Results() {
     results.accounting;
   return (
     <>
+      <ToastContainer />
       <h1 className="text-3xl font-bold uppercase max-sm:text-2xl">
         Обзор предварительных расходов
       </h1>

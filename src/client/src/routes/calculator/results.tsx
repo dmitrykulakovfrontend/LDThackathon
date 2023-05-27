@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import IndustryIconSrc from "@/assets/industry.png";
 import EntityIconSrc from "@/assets/entity.png";
@@ -15,8 +15,8 @@ import { useAuth } from "../../contexts/useAuth";
 
 function Results() {
   const location = useLocation();
-  const navigate = useNavigate();
   const { user } = useAuth();
+  const [isHover, setIsHover] = useState(false);
   const {
     results,
     form,
@@ -56,7 +56,7 @@ function Results() {
     results.amortisation +
     results.accounting;
   return (
-    <>
+    <div className="">
       <ToastContainer />
       <h1 className="text-3xl font-bold uppercase max-sm:text-2xl">
         Обзор предварительных расходов
@@ -64,57 +64,72 @@ function Results() {
       <h2 className="mt-12 mb-6 text-xl font-semibold uppercase">
         Информация о вашей организации
       </h2>
-      <div>
-        <div className="flex items-center gap-6">
-          <img src={IndustryIconSrc} className="pb-4" />
-          <div className="flex pb-4 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
-            <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
-              отрасль:{" "}
+      <div className="flex items-center gap-32 max-lg:flex-col-reverse max-lg:gap-8 max-lg:items-start">
+        <div>
+          <div className="flex items-center gap-6">
+            <img src={IndustryIconSrc} className="pb-4" />
+            <div className="flex pb-4 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
+              <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
+                отрасль:{" "}
+              </div>
+              <div className="h-fit max-sm:text-center">
+                {form.business_type}
+              </div>
             </div>
-            <div className="h-fit max-sm:text-center">{form.business_type}</div>
+          </div>
+          <div className="flex items-center gap-6">
+            <img src={EntityIconSrc} className="pb-4" />
+            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
+              <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
+                Тип организации:
+              </div>
+              <div className="h-fit max-sm:text-center">
+                {entityMap[form.entity]}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-6">
+            <img src={EmployeesIconSrc} className="pb-4" />
+            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
+              <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
+                Количество сотрудников:
+              </div>
+              <div className="h-fit max-sm:text-center">
+                {form.n_employee} человек(а)
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-6">
+            <img src={LocationIconSrc} className="pb-4" />
+            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
+              <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
+                Район раположения производсва:
+              </div>
+              <div className="h-fit max-sm:text-center">{form.district}</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-6">
+            <img src={TaxesIconSrc} className="pb-4" />
+            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
+              <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
+                предполагаемая ставка налогообложения:
+              </div>
+              <div className="h-fit max-sm:text-center">
+                {papersTypeMap[form.accounting_type]}
+              </div>
+            </div>
           </div>
         </div>
-        <div className="flex items-center gap-6">
-          <img src={EntityIconSrc} className="pb-4" />
-          <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
-            <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
-              Тип организации:
-            </div>
-            <div className="h-fit max-sm:text-center">
-              {entityMap[form.entity]}
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-6">
-          <img src={EmployeesIconSrc} className="pb-4" />
-          <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
-            <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
-              Количество сотрудников:
-            </div>
-            <div className="h-fit max-sm:text-center">
-              {form.n_employee} человек(а)
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-6">
-          <img src={LocationIconSrc} className="pb-4" />
-          <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
-            <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
-              Район раположения производсва:
-            </div>
-            <div className="h-fit max-sm:text-center">{form.district}</div>
-          </div>
-        </div>
-        <div className="flex items-center gap-6">
-          <img src={TaxesIconSrc} className="pb-4" />
-          <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
-            <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
-              предполагаемая ставка налогообложения:
-            </div>
-            <div className="h-fit max-sm:text-center">
-              {papersTypeMap[form.accounting_type]}
-            </div>
-          </div>
+
+        <div className="max-w-md border-l-[5px] border-ldt-red py-2 px-6">
+          Спасибо, что воспользовались электронным сервисом{" "}
+          <span className="font-bold">
+            “Инвестиционный калькулятор города Москвы”
+          </span>
+          ! Мы надеемся, что предоставленная возможность предварительного
+          расчета расходов на содержание персонала организации, размещение
+          промышленных объектов на территории города Москвы, а также необходимые
+          регистрационные и прочие услуги была полезна для Вас
         </div>
       </div>
       <h2 className="mt-12 mb-6 text-xl font-semibold uppercase">
@@ -146,8 +161,17 @@ function Results() {
       <div className="flex w-full max-w-2xl">
         <button
           onClick={handlePrint}
-          className="px-12 py-2 mt-4 ml-auto text-blue-500 border-2 border-blue-500 max-sm:mx-auto rounded-xl"
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+          className="relative px-12 py-2 mt-4 ml-auto text-blue-500 transition-all border-2 border-blue-500 hover:bg-blue-500 hover:text-white max-sm:mx-auto rounded-xl"
         >
+          {isHover && !user && (
+            <div className="absolute flex bg-white items-center justify-center w-[300px] p-5 text-black border-2 bottom-16 left-28 h-fit rounded-xl border-ldt-red max-lg:right-60 max-lg:left-auto max-sm:right-[50%] max-sm:left-[50%] max-sm:translate-x-[-50%]">
+              Данная возможность существует только у зарегестрированных
+              пользователей. Авторизуйтесь или пройдите регистрацию, это займет
+              пару минут.
+            </div>
+          )}
           Распечатать
         </button>
       </div>
@@ -158,7 +182,7 @@ function Results() {
         расчетом необходимо обратиться в Департамент инвестиционной и
         промышленной политики города Москвы.
       </span>
-    </>
+    </div>
   );
 }
 function formatNumber(num: number) {

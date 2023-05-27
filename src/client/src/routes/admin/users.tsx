@@ -5,22 +5,17 @@ import useEffect from "react";
 import { API_URL } from "@/constants";
 import { Token, User } from "@/types/auth";
 import { useJwt } from "react-jwt";
-const usersData = [
-  {
-    id: 1,
-    fullname: "Крапивина Антонина Геннадьевна",
-    industry: "Пищевая промышленность",
-    visited: 4,
-    lastTimeSeen: "20.05.2023",
-  },
-  {
-    id: 2,
-    fullname: "Кулаков Дмитрий Андреевич",
-    industry: "Веб-разработка",
-    visited: 253,
-    lastTimeSeen: "27.05.2023",
-  },
-];
+type shortUser = Pick<
+  User,
+  | "id"
+  | "name"
+  | "email"
+  | "inn"
+  | "city"
+  | "organisation"
+  | "business_type"
+  | "job"
+>;
 const headers = [
   "№",
   "ФИО",
@@ -85,13 +80,11 @@ function Users() {
               })
             )
             .map((user, i) => (
-              <tr key={i} className="border-2 border-ldt-gray">
-                {Object.values(user).map((value, i) => (
-                  <td key={i} className="p-3 border-2 border-ldt-gray">
-                    {value}
-                  </td>
-                ))}
-              </tr>
+              <UserDisplay
+                key={i}
+                user={user}
+                detailedUser={users.find((u) => u.id === user.id) as User}
+              />
             ))}
         </tbody>
         <tfoot></tfoot>
@@ -100,4 +93,71 @@ function Users() {
   );
 }
 
+function UserDisplay({
+  user,
+  detailedUser,
+}: {
+  user: shortUser;
+  detailedUser: User;
+}) {
+  const [hover, setHover] = useState(false);
+  const mouse = useMousePosition();
+  return (
+    <>
+      <tr
+        className="border-2 border-ldt-gray"
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+      >
+        {Object.values(user).map((value, i) => (
+          <td key={i} className="p-3 border-2 border-ldt-gray">
+            {value}
+            {hover && mouse.x && mouse.y ? (
+              <div
+                className="absolute p-6 bg-white border-2 border-ldt-gray rounded-xl"
+                style={{ left: mouse.x, top: mouse.y }}
+              >
+                <div className="flex items-center justify-between">
+                  <span>{detailedUser.name}</span>
+                  <span>{detailedUser.email}</span>
+                </div>
+                <div className="flex flex-col gap-2 mt-4">
+                  <span>Страна: {detailedUser.country}</span>
+                  <span>Город: {detailedUser.city}</span>
+                  <span>ИНН: {detailedUser.inn}</span>
+                </div>
+                <div className="flex flex-col gap-2 mt-4">
+                  <span>Организация: {detailedUser.organisation}</span>
+                  <span>Должность: {detailedUser.job}</span>
+                  <span>Веб-сайт: {detailedUser.website}</span>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+          </td>
+        ))}
+      </tr>
+    </>
+  );
+}
+const useMousePosition = () => {
+  const [mousePosition, setMousePosition] = React.useState<{
+    x: null | number;
+    y: null | number;
+  }>({
+    x: null,
+    y: null,
+  });
+  React.useEffect(() => {
+    const updateMousePosition = (ev: MouseEvent) => {
+      setMousePosition({ x: ev.clientX, y: ev.clientY });
+    };
+    window.addEventListener("mousemove", updateMousePosition);
+    return () => {
+      window.removeEventListener("mousemove", updateMousePosition);
+    };
+  }, []);
+  return mousePosition;
+};
 export default Users;

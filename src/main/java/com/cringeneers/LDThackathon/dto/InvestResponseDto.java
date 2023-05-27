@@ -20,6 +20,8 @@ public class InvestResponseDto {
     public BigDecimal amortisation;
     public BigDecimal patentRegistration;
     public BigDecimal accounting;
+    public BigDecimal engineerOnce;
+    public BigDecimal engineerYear;
 
 
 }

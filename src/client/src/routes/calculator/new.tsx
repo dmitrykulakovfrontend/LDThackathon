@@ -81,7 +81,7 @@ function NewCalculator() {
   }, []);
   return (
     <>
-      <h1 className="text-2xl font-bold mt-14">Расчет инвестиций</h1>
+      <h1 className="mt-24 text-2xl font-bold">Расчет инвестиций</h1>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
@@ -91,7 +91,7 @@ function NewCalculator() {
           <FormikForm className="flex gap-5 max-xl:flex-col-reverse">
             <div>
               <div className="flex flex-1 gap-5 mt-12 max-xl:flex-col">
-                <div>
+                <div className="flex flex-col gap-5">
                   <div className="flex gap-5 max-md:flex-col">
                     <FormikField
                       name="business_type"
@@ -155,7 +155,7 @@ function NewCalculator() {
                         <>
                           {values.equipments.map((equipment, index) => (
                             <div key={index}>
-                              <div className="max-w-md">
+                              <div className="flex flex-col max-w-md gap-5">
                                 <FormikField
                                   name={`equipments.${index}.type`}
                                   touched={

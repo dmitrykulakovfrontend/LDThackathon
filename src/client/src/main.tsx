@@ -16,9 +16,8 @@ import Results from "./routes/calculator/results";
 import Data from "./routes/admin/data";
 import Users from "./routes/admin/users";
 import Statistics from "./routes/admin/statistics";
-import UserContext from "./contexts/useAuth";
 import { Token } from "./types/auth";
-import { useAuth } from "./contexts/useAuth";
+import { useAuth, UserContext } from "./contexts/useAuth";
 import { RequireAdmin } from "./components/RequireAdmin";
 
 const isDev = import.meta.env.DEV;

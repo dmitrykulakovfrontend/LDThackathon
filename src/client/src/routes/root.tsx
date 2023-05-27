@@ -1,17 +1,26 @@
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import Index from ".";
 
 function Root({ children }: { children?: React.ReactNode }) {
+  const location = useLocation();
   return (
-    <div className="relative min-h-screen font-medium bg-white font-manrope">
+    <div className="relative flex flex-col min-h-screen font-medium bg-white font-manrope">
       <Header />
-      <div className="max-w-[1400px] p-5 mx-auto">
-        <div className="max-md:mt-[58px]">
-          <Outlet />
-          {children}
+      {location.pathname === "/" ? (
+        <Index />
+      ) : (
+        <div className="max-w-[1400px] p-5 flex-grow-[4] mx-auto">
+          <div className="max-md:mt-[58px]">
+            <Outlet />
+            {children}
+          </div>
         </div>
-      </div>
+      )}
+      <Footer />
     </div>
   );
 }

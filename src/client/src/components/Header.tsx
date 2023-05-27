@@ -8,6 +8,15 @@ import { Token } from "@/types/auth";
 import { useAuth } from "@/contexts/useAuth";
 
 function Header() {
+  async function handleLogout() {
+    // const res = await fetch(`${API_URL}/auth/logout`);
+    // if (res.ok) {
+    //   navigate("/");
+    //   window.location.reload();
+    // }
+    localStorage.removeItem("user");
+    setUser(null);
+  }
   const [mobileMenu, setMobileMenu] = useState(false);
   const { decodedToken, isExpired, reEvaluateToken } = useJwt<Token>(
     localStorage.getItem("user") as string
@@ -41,27 +50,28 @@ function Header() {
       name: "Данные",
       to: "/admin/data",
     },
-    {
-      name: "Объекты",
-      to: "/objects",
-    },
+    // {
+    //   name: "Объекты",
+    //   to: "/objects",
+    // },
     {
       name: "Услуги",
       to: "/services",
     },
-    {
-      name: "Карта",
-      to: "/map",
-    },
-    {
-      name: "Документы",
-      to: "/documents",
-    },
+    // {
+    //   name: "Карта",
+    //   to: "/map",
+    // },
+    // {
+    //   name: "Документы",
+    //   to: "/documents",
+    // },
     {
       name: "Помощь",
       to: "/help",
     },
-  ];
+  ].filter(Boolean);
+
   useEffect(() => {
     setMobileMenu(false);
   }, [location]);
@@ -82,7 +92,7 @@ function Header() {
             <div className="max-md:hidden">
               <LogoIcon />
             </div>
-            Инвестиционный калькулятор города Москвы
+            Инвестиционный помощник города Москвы
           </Link>
           <Link
             to={
@@ -101,16 +111,18 @@ function Header() {
         </div>
       </div>
       <header
-        className={`z-50 mx-auto border-b border-ldt-gray max-md:fixed max-md:top-20 max-md:bg-white max-md:h-screen max-md:w-full ${
+        className={`z-50 mx-auto w-full border-b border-ldt-gray max-md:fixed max-md:top-20 max-md:bg-white max-md:h-screen max-md:w-full ${
           mobileMenu ? "max-md:block" : "max-md:hidden"
         }`}
       >
         <nav className="max-w-[1400px] p-5 mx-auto py-4">
-          <ul className="flex flex-wrap gap-8 max-lg:gap-4 max-lg:justify-center max-md:flex-col">
+          <ul
+            className={`flex max-md:flex-col gap-8 max-lg:gap-4 max-lg:justify-center`}
+          >
             {navigation.map((item, i) => {
               if (!item) return;
               return (
-                <li key={i}>
+                <li key={i} className="">
                   <NavLink
                     to={item.to}
                     className={({ isActive }) =>
@@ -122,6 +134,13 @@ function Header() {
                 </li>
               );
             })}
+            {user && (
+              <li className="ml-auto">
+                <button className="hover:text-ldt-red" onClick={handleLogout}>
+                  Выйти из аккаунта
+                </button>
+              </li>
+            )}
           </ul>
         </nav>
       </header>

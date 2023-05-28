@@ -93,6 +93,10 @@ function Users() {
   );
 }
 
+/**
+ * Страница отображения всех пользователей для администратора
+ * @returns {any}
+ */
 function UserDisplay({
   user,
   detailedUser,

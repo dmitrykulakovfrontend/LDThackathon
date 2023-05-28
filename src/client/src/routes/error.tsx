@@ -1,5 +1,8 @@
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 import Root from "./root";
+/**
+ * Страница ошибки, отображается в случае не найденного маршрута или ошибкой во времени запроса
+ */
 function ErrorPage() {
   const error = useRouteError();
   console.error(error);

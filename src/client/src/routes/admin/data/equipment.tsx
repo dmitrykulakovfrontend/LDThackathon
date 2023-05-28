@@ -3,35 +3,25 @@ import EditIcon from "@/assets/edit.svg";
 import DeleteIcon from "@/assets/trashcan.svg";
 import { API_URL } from "@/constants";
 
-const headers = ["№", "Наименование", "Код", "Цена", "Действия"];
-const equipments: {
-  [key: string]: string;
-}[] = [
-  {
-    id: "1",
-    name: "Стандарт",
-    code: "S001",
-    price: "1000",
-  },
-  {
-    id: "2",
-    name: "Стандарт 2",
-    code: "S002",
-    price: "2000",
-  },
-];
+const headers = ["№", "Наименование", "Цена", "Действия"];
 
+/**
+ * Страница отображения всего оборудования для администратора
+ * @returns {any}
+ */
 function Equipment() {
-  const [equipmentst, setEquipments] = useState<any[]>();
+  const [equipments, setEquipments] = useState<Equipment[]>();
   const [isCreating, setIsCreating] = useState(false);
+
+  async function fetchData() {
+    const response = await fetch(`${API_URL}/admin/equipments`);
+    const data = await response.json();
+    setEquipments(data);
+  }
   useEffect(() => {
-    fetch(`${API_URL}/admin/equipments`)
-      .then((res) => res.json())
-      .then((data) => {
-        setEquipments(data);
-      });
+    fetchData();
   }, []);
-  console.log(equipmentst);
+  console.log(equipments);
   return (
     <div className="mt-5 overflow-x-auto">
       <div className="flex items-center justify-between">
@@ -59,11 +49,11 @@ function Equipment() {
         <tbody className="border-2 border-ldt-gray">
           {isCreating ? (
             <EquipmentDisplay
+              fetchData={fetchData}
               equipment={{
-                id: "",
-                name: "",
-                code: "",
-                price: "",
+                id: -1,
+                type: "",
+                cost: -1,
               }}
               isCreating
               setIsCreating={setIsCreating}
@@ -71,8 +61,12 @@ function Equipment() {
           ) : (
             ""
           )}
-          {equipments.map((equipment, i) => (
-            <EquipmentDisplay key={i} equipment={equipment} />
+          {equipments?.map((equipment, i) => (
+            <EquipmentDisplay
+              key={i}
+              equipment={equipment}
+              fetchData={fetchData}
+            />
           ))}
         </tbody>
         <tfoot></tfoot>
@@ -80,19 +74,32 @@ function Equipment() {
     </div>
   );
 }
-type Equipment = typeof equipments extends readonly (infer T)[] ? T : never;
+type Equipment = {
+  id: number;
+  type: string;
+  cost: number | null;
+  [key: string]: string | number | null;
+};
 function EquipmentDisplay({
   equipment,
   isCreating,
   setIsCreating,
+  fetchData,
 }: {
   equipment: Equipment;
   isCreating?: boolean;
   setIsCreating?: (value: boolean) => void;
+  fetchData: () => Promise<void>;
 }) {
-  function handleDelete() {
+  async function handleDelete() {
     console.log("delete", equipment);
+    await fetch(`${API_URL}/admin/deleteEquipment`, {
+      method: "DELETE",
+      body: equipment.type,
+    });
+    await fetchData();
   }
+
   function handleEdit() {
     setIsEditMode(true);
     console.log("editing...");
@@ -106,6 +113,10 @@ function EquipmentDisplay({
   function handleSave() {
     setIsEditMode(false);
     console.log("save");
+    fetch(`${API_URL}/admin/updateEquipment`, {
+      method: "PUT",
+      body: JSON.stringify({ type: equipment.type, cost: newEquipment.cost }),
+    }).then((res) => console.log(res));
   }
   async function handleCreate() {
     try {
@@ -115,13 +126,12 @@ function EquipmentDisplay({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          cost: newEquipment.price,
-          type: newEquipment.name,
+          cost: newEquipment.cost,
+          type: newEquipment.type,
         }),
       });
-      const data = await res.text();
-      console.log(data);
       console.log("created");
+      await fetchData();
     } catch (e) {
       console.error(e);
     } finally {
@@ -137,7 +147,7 @@ function EquipmentDisplay({
           <td key={i} className="p-3 border-2 border-ldt-gray">
             {isEditMode || isCreating ? (
               <input
-                value={newEquipment[key]}
+                value={newEquipment[key] as string}
                 onChange={(e) => handleChange(key, e.target.value)}
                 type="text"
                 className="table-cell w-full border border-black"
@@ -151,15 +161,26 @@ function EquipmentDisplay({
           <div className="hover:cursor-pointer" onClick={handleDelete}>
             <DeleteIcon />
           </div>
-          {isEditMode ? (
-            <span onClick={handleSave}>Сохранить</span>
+          {isCreating ? (
+            <span className="hover:cursor-pointer" onClick={handleCreate}>
+              Добавить
+            </span>
+          ) : (
+            ""
+          )}
+          {/* {isEditMode ? (
+            <span className="hover:cursor-pointer" onClick={handleSave}>
+              Сохранить
+            </span>
           ) : isCreating ? (
-            <span onClick={handleCreate}>Добавить</span>
+            <span className="hover:cursor-pointer" onClick={handleCreate}>
+              Добавить
+            </span>
           ) : (
             <div className="hover:cursor-pointer" onClick={handleEdit}>
               <EditIcon />
             </div>
-          )}
+          )} */}
         </td>
       </tr>
     </>

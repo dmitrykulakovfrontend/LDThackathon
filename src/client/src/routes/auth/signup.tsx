@@ -5,32 +5,33 @@ import FormikField from "../../components/Forms/FormikField";
 import FormikForm from "../../components/Forms/FormikForm";
 import { API_URL } from "@/constants";
 import { useState } from "react";
+import industryTypes from "@/industry.json";
 
 type Values = typeof initialValues;
 const SignUpSchema = Yup.object().shape({
-  firstName: Yup.string().required("Обязательное поле"),
-  secondName: Yup.string().required("Обязательное поле"),
-  fatherName: Yup.string().required("Обязательное поле"),
+  firstName: Yup.string().required("Имя обязательное поле"),
+  secondName: Yup.string(),
+  fatherName: Yup.string(),
   phone: Yup.string().matches(
     /^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/,
     "Неправильный формат номера"
   ),
   email: Yup.string()
     .email("Неправильный формат почты")
-    .required("Обязательное поле"),
-  organisation: Yup.string().required("Обязательное поле"),
-  inn: Yup.string().required("Обязательное поле"),
-  website: Yup.string().required("Обязательное поле"),
-  country: Yup.string().required("Обязательное поле"),
-  city: Yup.string().required("Обязательное поле"),
-  business_type: Yup.string().required("Обязательное поле"),
-  job: Yup.string().required("Обязательное поле"),
+    .required("Почта обязательное поле"),
+  organisation: Yup.string().required("Имя организации обязательное поле"),
+  inn: Yup.string().required("ИНН обязательное поле"),
+  website: Yup.string(),
+  country: Yup.string(),
+  city: Yup.string(),
+  business_type: Yup.string().required("Тип бизнеса обязательное поле"),
+  job: Yup.string(),
   password: Yup.string()
     .min(8, "Минимум 8 символов")
-    .required("Обязательное поле"),
+    .required("Пароль обязательное поле"),
   passwordConfirmation: Yup.string()
     .oneOf([Yup.ref("password")], "Пароли не совпадают")
-    .required("Обязательное поле"),
+    .required("Повторите пароль"),
 });
 
 const initialValues = {
@@ -55,6 +56,11 @@ const steps = {
   3: "Установка пароля",
   4: "Завершение регистрации",
 } as const;
+
+/**
+ * Страница регистрации пользователя
+ * @returns {any}
+ */
 function AuthSignUp() {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
@@ -127,6 +133,11 @@ function AuthSignUp() {
           <FormikForm className="w-full">
             <PageRender page={page} errors={errors} touched={touched} />
 
+            <ul className="text-ldt-red">
+              {Object.entries(errors).map(([key, value]) => (
+                <li key={key}>{typeof value === "string" ? value : ""}</li>
+              ))}
+            </ul>
             <div className="flex items-center justify-between w-full gap-4 my-8 max-sm:flex-col">
               <button
                 type="button"
@@ -266,6 +277,7 @@ function PageRender({
             title="Город"
           />
           <FormikField
+            isSelect
             type="text"
             name="business_type"
             placeholder="Пищевая промышленность"
@@ -273,7 +285,20 @@ function PageRender({
             errors={errors.business_type}
             labelClassname="w-full max-w-lg"
             title="Тип бизнеса"
-          />
+          >
+            <option disabled value="">
+              Не выбрано
+            </option>
+            {industryTypes.map((type) => (
+              <option
+                value={type}
+                key={type}
+                style={{ width: "10px!important" }}
+              >
+                {type.length > 40 ? type.slice(0, 40) + "..." : type}
+              </option>
+            ))}
+          </FormikField>
           <FormikField
             type="text"
             name="job"

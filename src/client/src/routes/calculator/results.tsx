@@ -13,6 +13,11 @@ import { API_URL } from "@/constants";
 import { ToastContainer, toast } from "react-toastify";
 import { useAuth } from "../../contexts/useAuth";
 
+/**
+ * Страница результатов расчетов, сюда пользователь попадает после успешной отправки формы к серверу и получению результатов от него
+ * Для распечатывания требуется быть зарегистрированным пользователем, это проверяется при помощь пользовательского контекста от useAuth, данные забираются из предыдущего места, важно что бы предыдущая страница передала state
+ * @returns {any}
+ */
 function Results() {
   const location = useLocation();
   const { user } = useAuth();
@@ -203,6 +208,11 @@ function Results() {
     </div>
   );
 }
+/**
+ * Простая функция для форматирования больших чисел в строки типа "123.23 млн. ₽"
+ * @param {any} num  число для форматирования
+ * @returns {any} отформатированная строка
+ */
 function formatNumber(num: number) {
   const suffixes = ["", "тыс.", "млн.", "млрд.", "трлн.", "квадр."];
   const tier = (Math.log10(Math.abs(num)) / 3) | 0;

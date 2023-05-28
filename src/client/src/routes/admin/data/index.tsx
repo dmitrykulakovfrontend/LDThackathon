@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BusinessTypeDataIcon from "@/assets/business-type-data.svg";
 import EquipmentPriceIcon from "@/assets/equipment-price.svg";
-import TaxesDataIcon from "@/assets/taxes-data.svg";
-import LandPriceDataIcon from "@/assets/land-price-data.svg";
-import PatentDataIcon from "@/assets/patent-data.svg";
-import ObjectsDataIcon from "@/assets/objects-data.svg";
+// import TaxesDataIcon from "@/assets/taxes-data.svg";
+// import LandPriceDataIcon from "@/assets/land-price-data.svg";
+// import PatentDataIcon from "@/assets/patent-data.svg";
+// import ObjectsDataIcon from "@/assets/objects-data.svg";
 
 function DataIndex() {
   const { user } = useAuth();
@@ -29,14 +29,14 @@ function DataIndex() {
           title="Станки средняя цена"
           href="equipment"
         />
-        <Card Icon={TaxesDataIcon} title="Налоговые ставки" href="taxes" />
+        {/* <Card Icon={TaxesDataIcon} title="Налоговые ставки" href="taxes" />
         <Card
           Icon={LandPriceDataIcon}
           title="Средняя кадастровая стоимость по округам"
           href="land-price"
         />
         <Card Icon={PatentDataIcon} title="Патентование" href="patent" />
-        <Card Icon={ObjectsDataIcon} title="Объекты" href="objects" />
+        <Card Icon={ObjectsDataIcon} title="Объекты" href="objects" /> */}
       </div>
     </div>
   );

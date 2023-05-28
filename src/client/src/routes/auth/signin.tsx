@@ -17,6 +17,10 @@ const SignInSchema = Yup.object().shape({
     .min(8, "Минимум 8 символов")
     .required("Обязательное поле"),
 });
+/**
+ * Страница авторизации пользователя
+ * @returns {any}
+ */
 function SignIn() {
   const navigate = useNavigate();
 

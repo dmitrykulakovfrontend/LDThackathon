@@ -7,6 +7,10 @@ import { useJwt } from "react-jwt";
 import { Token } from "@/types/auth";
 import { useAuth } from "@/contexts/useAuth";
 
+/**
+ * Шапка сайта в которой происходит вся авторизация из локального хранилища пользователя
+ * @returns {any}
+ */
 function Header() {
   async function handleLogout() {
     // const res = await fetch(`${API_URL}/auth/logout`);

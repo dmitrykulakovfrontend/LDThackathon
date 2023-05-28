@@ -1,6 +1,10 @@
 import React from "react";
 import footerLogoSrc from "@/assets/footer-logo.png";
 
+/**
+ * Подвал сайта
+ * @returns {any}
+ */
 function Footer() {
   return (
     <footer className="flex-1 py-12 px-8 flex bg-[#EBEFF3] max-sm:py-4 max-sm:px-2">

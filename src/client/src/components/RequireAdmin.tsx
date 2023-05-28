@@ -1,6 +1,10 @@
 import { useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/useAuth";
 
+/**
+ * Компонент-обертка которая требует админские права или перенаправляю на страницу авторизации
+ * @returns {any}
+ */
 export function RequireAdmin({ children }: { children: JSX.Element }) {
   const { user } = useAuth();
 

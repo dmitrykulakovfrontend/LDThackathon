@@ -55,6 +55,11 @@ const steps = {
   3: "Установка пароля",
   4: "Завершение регистрации",
 } as const;
+
+/**
+ * Страница регистрации пользователя
+ * @returns {any}
+ */
 function AuthSignUp() {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);

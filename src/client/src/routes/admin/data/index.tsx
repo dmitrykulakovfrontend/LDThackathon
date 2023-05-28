@@ -29,14 +29,14 @@ function DataIndex() {
           title="Станки средняя цена"
           href="equipment"
         />
-        <Card Icon={TaxesDataIcon} title="Налоговые ставки" href="taxes" />
+        {/* <Card Icon={TaxesDataIcon} title="Налоговые ставки" href="taxes" />
         <Card
           Icon={LandPriceDataIcon}
           title="Средняя кадастровая стоимость по округам"
           href="land-price"
         />
         <Card Icon={PatentDataIcon} title="Патентование" href="patent" />
-        <Card Icon={ObjectsDataIcon} title="Объекты" href="objects" />
+        <Card Icon={ObjectsDataIcon} title="Объекты" href="objects" /> */}
       </div>
     </div>
   );

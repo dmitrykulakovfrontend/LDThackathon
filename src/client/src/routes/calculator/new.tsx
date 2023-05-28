@@ -22,6 +22,10 @@ import {
   initialValues,
 } from "@/types/form";
 
+/**
+ * Схема для валидации пользовательских полей
+ * @returns {any}
+ */
 const FormSchema = Yup.object().shape({
   business_type: Yup.string().required("Укажите отрасль"),
   n_employee: Yup.string()
@@ -51,6 +55,10 @@ const FormSchema = Yup.object().shape({
   district: Yup.string().required("Укажите район"),
 });
 
+/**
+ * Одна из главных страниц сайта, форма для расчета, загружает lazy-loading geojson для отображения карты, и вся валидация происходит при помощи Formik и Yup. После введения правильных полей отправляет запрос на сервер для получения расчета и ссылки для скачивания
+ * @returns {any}
+ */
 function NewCalculator() {
   const navigate = useNavigate();
   async function handleSubmit(form: FormValues) {

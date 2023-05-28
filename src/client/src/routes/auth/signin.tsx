@@ -82,7 +82,7 @@ function SignIn() {
             >
               Войти
             </button>
-            <Link to="/signup" className="text-center text-blue-500">
+            <Link to="/auth/signup" className="text-center text-blue-500">
               Еще не регистрировались?
             </Link>
           </FormikForm>

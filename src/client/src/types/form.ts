@@ -40,7 +40,7 @@ export const initialValues = {
   entity: EntityEnum.ip,
   accounting_type: PapersEnum["6%"],
   accounting_papers: 1,
-  ispatent: false,
+  isPatent: false,
   district: "",
 };
 

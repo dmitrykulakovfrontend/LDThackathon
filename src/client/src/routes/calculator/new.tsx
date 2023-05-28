@@ -47,7 +47,7 @@ const FormSchema = Yup.object().shape({
   entity: Yup.string(),
   accounting_type: Yup.string(),
   accounting_papers: Yup.number(),
-  ispatent: Yup.boolean(),
+  isPatent: Yup.boolean(),
   district: Yup.string().required("Укажите район"),
 });
 
@@ -381,11 +381,11 @@ function NewCalculator() {
                         className="relative w-10 h-5 transition-all duration-200 ease-in-out bg-gray-400 rounded-full shadow-inner outline-none appearance-none cursor-pointer mt-7 "
                         type="checkbox"
                         onChange={() => {
-                          setFieldValue("ispatent", !isPatent);
+                          setFieldValue("isPatent", !isPatent);
                           setIsPatent(!isPatent);
                         }}
                         checked={isPatent}
-                        name="ispatent"
+                        name="isPatent"
                       />
                     </label>
                   </div>

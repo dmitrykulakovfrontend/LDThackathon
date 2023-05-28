@@ -103,7 +103,7 @@ function Signup() {
               title="ИНН"
             />
             <FormikField
-              type="url"
+              type="text"
               name="website"
               placeholder="mos.ru"
               touched={touched.website}

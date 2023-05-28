@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EditIcon from "@/assets/edit.svg";
 import DeleteIcon from "@/assets/trashcan.svg";
 import { API_URL } from "@/constants";
@@ -22,8 +22,16 @@ const equipments: {
 ];
 
 function Equipment() {
-  // function name(params: type) {}
+  const [equipments, setEquipments] = useState<any[]>();
   const [isCreating, setIsCreating] = useState(false);
+  useEffect(() => {
+    fetch(`${API_URL}/equipment`)
+      .then((res) => res.json())
+      .then((data) => {
+        setEquipments(data);
+      });
+  }, []);
+  console.log(equipments);
   return (
     <div className="mt-5 overflow-x-auto">
       <div className="flex items-center justify-between">

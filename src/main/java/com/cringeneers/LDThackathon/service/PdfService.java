@@ -161,7 +161,7 @@ public class PdfService {
             }
 
             if(business_type.length() >= 50) {
-                maxWidth1 = 270;
+                maxWidth1 = 300;
                 currentFontSize1 = 13;
                 currentYOffset1 = 637;
                 currentXOffset1 = 280;

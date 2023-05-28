@@ -15,21 +15,22 @@ function Header() {
     //   window.location.reload();
     // }
     localStorage.removeItem("user");
-    setUser(null);
+    setUser(undefined);
   }
   const [mobileMenu, setMobileMenu] = useState(false);
-  const { decodedToken, isExpired, reEvaluateToken } = useJwt<Token>(
+  const { decodedToken, isExpired } = useJwt<Token>(
     localStorage.getItem("user") as string
   );
   const location = useLocation();
   const { user, setUser } = useAuth();
-  // console.log({ decodedToken, isExpired, reEvaluateToken });
   useEffect(() => {
     if (isExpired) {
       localStorage.removeItem("user");
       setUser(null);
     } else {
-      setUser(decodedToken);
+      if (decodedToken) {
+        setUser(decodedToken);
+      }
     }
   }, [decodedToken, isExpired, setUser]);
 

@@ -110,7 +110,7 @@ const router = createBrowserRouter(
  * @returns {any}
  */
 function App() {
-  const [user, setUser] = useState<Token | null>(null);
+  const [user, setUser] = useState<Token | undefined | null>();
   return (
     <React.StrictMode>
       <UserContext.Provider value={{ user, setUser }}>

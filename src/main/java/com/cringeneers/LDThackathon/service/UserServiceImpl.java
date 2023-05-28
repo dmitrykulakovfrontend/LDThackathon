@@ -38,16 +38,6 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public Role saveRole(Role role) {
-        return roleRepository.save(role);
-    }
-
-    @Override
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
-
-    @Override
     public ResponseEntity<?> register(SignUpDto signUpDto) {
         if(userRepository.existsByEmail(signUpDto.getEmail()))
         { return  new ResponseEntity<>("email is already taken !", HttpStatus.SEE_OTHER); }

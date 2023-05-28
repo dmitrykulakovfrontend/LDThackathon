@@ -8,6 +8,9 @@ export default {
         "ldt-gray": "#DBDBDB",
         "ldt-dark-gray": "#979797",
       },
+      gradientColorStopPositions: {
+        "ldt-pos": "33%",
+      },
       fontFamily: {
         manrope: ["Manrope", "sans-serif"],
       },

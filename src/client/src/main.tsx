@@ -25,6 +25,7 @@ import LandPrice from "./routes/admin/data/land-price";
 import Objects from "./routes/admin/data/objects";
 import Patent from "./routes/admin/data/patent";
 import Taxes from "./routes/admin/data/taxes";
+import AuthSignUp from "./routes/auth/authsignup";
 
 const isDev = import.meta.env.DEV;
 
@@ -47,6 +48,7 @@ const router = createBrowserRouter(
           path: "auth",
           children: [
             { path: "signup", element: <SignUp /> },
+            { path: "better-signup", element: <AuthSignUp /> },
             { path: "signin", element: <SignIn /> },
           ],
         },

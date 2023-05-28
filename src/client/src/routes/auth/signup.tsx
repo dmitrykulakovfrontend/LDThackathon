@@ -5,32 +5,34 @@ import FormikField from "../../components/Forms/FormikField";
 import FormikForm from "../../components/Forms/FormikForm";
 import { API_URL } from "@/constants";
 
-interface Values {
-  name: string;
-  username: string;
-  email: string;
-  organisation: string;
-  inn: string;
-  website: string;
-  country: string;
-  city: string;
-  business_type: string;
-  job: string;
-  password: string;
-}
+type Values = typeof initialValues;
 const SignUpSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  username: Yup.string().required("Username is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  organisation: Yup.string().required("Organisation is required"),
-  inn: Yup.string().required("INN is required"),
-  website: Yup.string().required("Website is required"),
-  country: Yup.string().required("Country is required"),
-  city: Yup.string().required("City is required"),
-  business_type: Yup.string().required("Business type is required"),
-  job: Yup.string().required("Job is required"),
-  password: Yup.string().min(8).required("Password is required"),
+  name: Yup.string().required("Обязательное поле"),
+  email: Yup.string()
+    .email("Неправильный формат почты")
+    .required("Обязательное поле"),
+  organisation: Yup.string().required("Обязательное поле"),
+  inn: Yup.string().required("Обязательное поле"),
+  website: Yup.string().required("Обязательное поле"),
+  country: Yup.string().required("Обязательное поле"),
+  city: Yup.string().required("Обязательное поле"),
+  business_type: Yup.string().required("Обязательное поле"),
+  job: Yup.string().required("Обязательное поле"),
+  password: Yup.string().min(8).required("Обязательное поле"),
 });
+
+const initialValues = {
+  name: "",
+  email: "",
+  organisation: "",
+  inn: "",
+  website: "",
+  country: "",
+  city: "",
+  business_type: "",
+  job: "",
+  password: "",
+};
 function Signup() {
   const navigate = useNavigate();
   async function handleSubmit(form: Values) {
@@ -48,20 +50,6 @@ function Signup() {
     }
   }
 
-  const initialValues = {
-    name: "",
-    username: "",
-    email: "",
-    organisation: "",
-    inn: "",
-    website: "",
-    country: "",
-    city: "",
-    business_type: "",
-    job: "",
-    password: "",
-  };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-4 px-4 py-12 sm:px-6 lg:px-8">
       <Formik
@@ -77,23 +65,15 @@ function Signup() {
             <FormikField
               type="text"
               name="name"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="Иванов Иван Иванович"
               touched={touched.name}
               errors={errors.name}
               title="ФИО"
             />
             <FormikField
-              type="text"
-              name="username"
-              placeholder="alexandra.moroz1703@gmail.com"
-              touched={touched.username}
-              errors={errors.username}
-              title="Имя аккаунта"
-            />
-            <FormikField
               type="password"
               name="password"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="Минимум 8 символов"
               touched={touched.password}
               errors={errors.password}
               title="Пароль"
@@ -101,7 +81,7 @@ function Signup() {
             <FormikField
               type="email"
               name="email"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="ivan.ivanov1999@gmail.com"
               touched={touched.email}
               errors={errors.email}
               title="Почта"
@@ -109,7 +89,7 @@ function Signup() {
             <FormikField
               type="text"
               name="organisation"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="ООО 'Рога и копыта'"
               touched={touched.organisation}
               errors={errors.organisation}
               title="Организация"
@@ -117,7 +97,7 @@ function Signup() {
             <FormikField
               type="text"
               name="inn"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="Только числа"
               touched={touched.inn}
               errors={errors.inn}
               title="ИНН"
@@ -125,7 +105,7 @@ function Signup() {
             <FormikField
               type="url"
               name="website"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="mos.ru"
               touched={touched.website}
               errors={errors.website}
               title="Вебсайт"
@@ -133,7 +113,7 @@ function Signup() {
             <FormikField
               type="text"
               name="country"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="Россия"
               touched={touched.country}
               errors={errors.country}
               title="Страна"
@@ -141,7 +121,7 @@ function Signup() {
             <FormikField
               type="text"
               name="city"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="Москва"
               touched={touched.city}
               errors={errors.city}
               title="Город"
@@ -149,7 +129,7 @@ function Signup() {
             <FormikField
               type="text"
               name="business_type"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="Пищевая промышленность"
               touched={touched.business_type}
               errors={errors.business_type}
               title="Тип бизнеса"
@@ -157,7 +137,7 @@ function Signup() {
             <FormikField
               type="text"
               name="job"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="Менеджер"
               touched={touched.job}
               errors={errors.job}
               title="Должность"

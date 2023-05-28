@@ -9,7 +9,8 @@ export default {
         "ldt-dark-gray": "#979797",
       },
       gradientColorStopPositions: {
-        "ldt-pos": "33%",
+        0: "#ffffff", // White color at 0%
+        20: "#ff0000", // Red color at 20%
       },
       fontFamily: {
         manrope: ["Manrope", "sans-serif"],

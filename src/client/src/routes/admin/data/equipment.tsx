@@ -22,16 +22,16 @@ const equipments: {
 ];
 
 function Equipment() {
-  const [equipments, setEquipments] = useState<any[]>();
+  const [equipmentst, setEquipments] = useState<any[]>();
   const [isCreating, setIsCreating] = useState(false);
   useEffect(() => {
-    fetch(`${API_URL}/equipment`)
+    fetch(`${API_URL}/admin/equipments`)
       .then((res) => res.json())
       .then((data) => {
         setEquipments(data);
       });
   }, []);
-  console.log(equipments);
+  console.log(equipmentst);
   return (
     <div className="mt-5 overflow-x-auto">
       <div className="flex items-center justify-between">

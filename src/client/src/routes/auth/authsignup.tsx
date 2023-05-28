@@ -1,4 +1,4 @@
-import { Formik } from "formik";
+import { Formik, FormikErrors, FormikTouched } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import FormikField from "../../components/Forms/FormikField";
@@ -8,7 +8,13 @@ import { useState } from "react";
 
 type Values = typeof initialValues;
 const SignUpSchema = Yup.object().shape({
-  name: Yup.string().required("Обязательное поле"),
+  firstName: Yup.string().required("Обязательное поле"),
+  secondName: Yup.string().required("Обязательное поле"),
+  fatherName: Yup.string().required("Обязательное поле"),
+  phone: Yup.string().matches(
+    /^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/,
+    "Неправильный формат номера"
+  ),
   email: Yup.string()
     .email("Неправильный формат почты")
     .required("Обязательное поле"),
@@ -19,11 +25,19 @@ const SignUpSchema = Yup.object().shape({
   city: Yup.string().required("Обязательное поле"),
   business_type: Yup.string().required("Обязательное поле"),
   job: Yup.string().required("Обязательное поле"),
-  password: Yup.string().min(8).required("Обязательное поле"),
+  password: Yup.string()
+    .min(8, "Минимум 8 символов")
+    .required("Обязательное поле"),
+  passwordConfirmation: Yup.string()
+    .oneOf([Yup.ref("password")], "Пароли не совпадают")
+    .required("Обязательное поле"),
 });
 
 const initialValues = {
-  name: "",
+  firstName: "",
+  secondName: "",
+  fatherName: "",
+  phone: "",
   email: "",
   organisation: "",
   inn: "",
@@ -33,6 +47,7 @@ const initialValues = {
   business_type: "",
   job: "",
   password: "",
+  passwordConfirmation: "",
 };
 const steps = {
   1: "Персональные данные",
@@ -66,9 +81,10 @@ function AuthSignUp() {
           Уже есть аккаунт
         </Link>
       </div>
-      <div className="flex justify-between w-full">
+      <div className="flex justify-between w-full my-8">
         {Object.entries(steps).map(([stepPage, text]) => (
           <div
+            key={stepPage}
             className={`flex items-center justify-start w-full max-w-xs text-center bg-gradient-to-r ${
               +stepPage === page ? "from-ldt-red" : "from-ldt-gray"
             } via-white to-white`}
@@ -81,7 +97,7 @@ function AuthSignUp() {
               {stepPage}
             </span>
             <span
-              className={`mx-auto uppercase ${
+              className={`ml-auto mr-4 uppercase ${
                 +stepPage === page ? "text-ldt-red" : "text-black"
               }`}
             >
@@ -96,98 +112,193 @@ function AuthSignUp() {
         validationSchema={SignUpSchema}
       >
         {({ errors, touched }) => (
-          <FormikForm>
-            <FormikField
-              type="text"
-              name="name"
-              placeholder="Иванов Иван Иванович"
-              touched={touched.name}
-              errors={errors.name}
-              title="ФИО"
-            />
-            <FormikField
-              type="password"
-              name="password"
-              placeholder="Минимум 8 символов"
-              touched={touched.password}
-              errors={errors.password}
-              title="Пароль"
-            />
-            <FormikField
-              type="email"
-              name="email"
-              placeholder="ivan.ivanov1999@gmail.com"
-              touched={touched.email}
-              errors={errors.email}
-              title="Почта"
-            />
-            <FormikField
-              type="text"
-              name="organisation"
-              placeholder="ООО 'Рога и копыта'"
-              touched={touched.organisation}
-              errors={errors.organisation}
-              title="Организация"
-            />
-            <FormikField
-              type="text"
-              name="inn"
-              placeholder="Только числа"
-              touched={touched.inn}
-              errors={errors.inn}
-              title="ИНН"
-            />
-            <FormikField
-              type="url"
-              name="website"
-              placeholder="mos.ru"
-              touched={touched.website}
-              errors={errors.website}
-              title="Вебсайт"
-            />
-            <FormikField
-              type="text"
-              name="country"
-              placeholder="Россия"
-              touched={touched.country}
-              errors={errors.country}
-              title="Страна"
-            />
-            <FormikField
-              type="text"
-              name="city"
-              placeholder="Москва"
-              touched={touched.city}
-              errors={errors.city}
-              title="Город"
-            />
-            <FormikField
-              type="text"
-              name="business_type"
-              placeholder="Пищевая промышленность"
-              touched={touched.business_type}
-              errors={errors.business_type}
-              title="Тип бизнеса"
-            />
-            <FormikField
-              type="text"
-              name="job"
-              placeholder="Менеджер"
-              touched={touched.job}
-              errors={errors.job}
-              title="Должность"
-            />
-            <button
-              type="submit"
-              className="px-8 py-2 mx-auto tracking-wide text-white rounded-xl w-fit bg-ldt-red max-sm:px-4 max-sm:py-2"
-            >
-              Регистрация
-            </button>
+          <FormikForm className="w-full">
+            <PageRender page={page} errors={errors} touched={touched} />
+
+            <div className="flex items-center justify-between w-full my-8">
+              <button
+                type="button"
+                onClick={() => setPage(page - 1)}
+                disabled={page === 1}
+                className="px-8 py-2 bg-white border-2 rounded-md text-ldt-red border-ldt-red"
+              >
+                Назад
+              </button>
+              <button
+                type="button"
+                onClick={() => setPage(page + 1)}
+                disabled={page === 4}
+                className="px-8 py-2 text-white border-2 rounded-md bg-ldt-red border-ldt-red"
+              >
+                {page === 3 ? "Зарегистрироваться" : "Далее"}
+              </button>
+            </div>
           </FormikForm>
         )}
       </Formik>
     </div>
   );
+}
+/*
+
+
+
+*/
+
+function PageRender({
+  page,
+  errors,
+  touched,
+}: {
+  page: number;
+  touched: FormikTouched<Values>;
+  errors: FormikErrors<Values>;
+}) {
+  switch (page) {
+    case 1:
+      return (
+        <div className="flex flex-wrap gap-16">
+          <FormikField
+            type="text"
+            name="secondName"
+            placeholder="Иванов"
+            touched={touched.secondName}
+            errors={errors.secondName}
+            title="Фамилия"
+            labelClassname="w-full max-w-lg"
+          />
+          <FormikField
+            type="text"
+            name="firstName"
+            placeholder="Иван"
+            touched={touched.firstName}
+            errors={errors.firstName}
+            title="Имя"
+            labelClassname="w-full max-w-lg"
+          />
+          <FormikField
+            type="text"
+            name="fatherName"
+            placeholder="Иванович"
+            touched={touched.fatherName}
+            errors={errors.fatherName}
+            title="Отчество"
+            labelClassname="w-full max-w-lg"
+          />
+          <FormikField
+            type="email"
+            name="email"
+            placeholder="ivan.ivanov1999@gmail.com"
+            touched={touched.email}
+            errors={errors.email}
+            labelClassname="w-full max-w-lg"
+            title="Почта"
+          />
+          <FormikField
+            type="phone"
+            name="phone"
+            placeholder="+7 (-----) -----  ---  --"
+            touched={touched.phone}
+            errors={errors.phone}
+            labelClassname="w-full max-w-lg"
+            title="Телефон"
+          />
+          <FormikField
+            type="text"
+            name="inn"
+            placeholder="345217689035"
+            touched={touched.inn}
+            errors={errors.inn}
+            labelClassname="w-full max-w-lg"
+            title="ИНН"
+          />
+        </div>
+      );
+    case 2:
+      return (
+        <div className="flex flex-wrap gap-16">
+          <FormikField
+            type="text"
+            name="organisation"
+            placeholder="ООО 'Рога и копыта'"
+            touched={touched.organisation}
+            errors={errors.organisation}
+            labelClassname="w-full max-w-lg"
+            title="Организация"
+          />
+          <FormikField
+            type="url"
+            name="website"
+            placeholder="mos.ru"
+            touched={touched.website}
+            errors={errors.website}
+            labelClassname="w-full max-w-lg"
+            title="Вебсайт"
+          />
+          <FormikField
+            type="text"
+            name="country"
+            placeholder="Россия"
+            touched={touched.country}
+            errors={errors.country}
+            labelClassname="w-full max-w-lg"
+            title="Страна"
+          />
+          <FormikField
+            type="text"
+            name="city"
+            placeholder="Москва"
+            touched={touched.city}
+            errors={errors.city}
+            labelClassname="w-full max-w-lg"
+            title="Город"
+          />
+          <FormikField
+            type="text"
+            name="business_type"
+            placeholder="Пищевая промышленность"
+            touched={touched.business_type}
+            errors={errors.business_type}
+            labelClassname="w-full max-w-lg"
+            title="Тип бизнеса"
+          />
+          <FormikField
+            type="text"
+            name="job"
+            placeholder="Менеджер"
+            touched={touched.job}
+            errors={errors.job}
+            labelClassname="w-full max-w-lg"
+            title="Должность"
+          />
+        </div>
+      );
+    case 3:
+      return (
+        <div className="flex flex-col gap-4">
+          <FormikField
+            type="password"
+            name="password"
+            placeholder=""
+            touched={touched.password}
+            errors={errors.password}
+            title="Придумайте пароль"
+          />
+          <FormikField
+            type="password"
+            name="passwordConfirmation"
+            placeholder=""
+            touched={touched.passwordConfirmation}
+            errors={errors.passwordConfirmation}
+            title="Повторите пароль"
+          />
+        </div>
+      );
+    case 4:
+      return <div>4</div>;
+    default:
+      return <div>404</div>;
+  }
 }
 
 export default AuthSignUp;

@@ -1,4 +1,4 @@
-package com.cringeneers.LDThackathon.config;
+package com.cringeneers.LDThackathon.security;
 
 import com.cringeneers.LDThackathon.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;

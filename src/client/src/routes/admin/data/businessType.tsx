@@ -82,7 +82,7 @@ function BusinessType() {
     </div>
   );
 }
-type Business = {
+export type Business = {
   id: number;
   type: string;
   minimalSalary: number;

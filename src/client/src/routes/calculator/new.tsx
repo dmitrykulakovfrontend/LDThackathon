@@ -12,10 +12,10 @@ import {
   GeoJSON as GeoJsonLayer,
   TileLayer,
 } from "react-leaflet";
-import industryTypes from "@/industry.json";
-import equipmentTypes from "@/equipmentTypes.json";
 import { API_URL } from "@/constants";
 import { FormValues, initialValues } from "@/types/form";
+import { Business } from "../admin/data/businessType";
+import { Equipment } from "../admin/data/equipment";
 
 /**
  * Схема для валидации пользовательских полей
@@ -50,8 +50,8 @@ const FormSchema = Yup.object().shape({
   district: Yup.string().required("Укажите район"),
 });
 type FormChoices = {
-  industryTypes: string[];
-  equipmentTypes: string[];
+  industryTypes: Business[];
+  equipmentTypes: Equipment[];
 };
 /**
  * Одна из главных страниц сайта, форма для расчета, загружает lazy-loading geojson для отображения карты, и вся валидация происходит при помощи Formik и Yup. После введения правильных полей отправляет запрос на сервер для получения расчета и ссылки для скачивания
@@ -128,17 +128,19 @@ function NewCalculator() {
                           <option disabled value="">
                             Не выбрано
                           </option>
-                          {industryTypes.map((type) => (
-                            <option
-                              value={type}
-                              key={type}
-                              style={{ width: "10px!important" }}
-                            >
-                              {type.length > 40
-                                ? type.slice(0, 40) + "..."
-                                : type}
-                            </option>
-                          ))}
+                          {formChoices.industryTypes
+                            .map((item) => item.type)
+                            .map((type) => (
+                              <option
+                                value={type}
+                                key={type}
+                                style={{ width: "10px!important" }}
+                              >
+                                {type.length > 40
+                                  ? type.slice(0, 40) + "..."
+                                  : type}
+                              </option>
+                            ))}
                         </>
                       )}
                     </FormikField>
@@ -213,11 +215,13 @@ function NewCalculator() {
                                       <option disabled value="">
                                         Не выбрано
                                       </option>
-                                      {equipmentTypes.map((type) => (
-                                        <option value={type} key={type}>
-                                          {type}
-                                        </option>
-                                      ))}
+                                      {formChoices.equipmentTypes
+                                        .map((item) => item.type)
+                                        .map((type) => (
+                                          <option value={type} key={type}>
+                                            {type}
+                                          </option>
+                                        ))}
                                     </>
                                   )}
                                 </FormikField>

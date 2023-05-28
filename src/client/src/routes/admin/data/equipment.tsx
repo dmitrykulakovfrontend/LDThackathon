@@ -74,7 +74,7 @@ function Equipment() {
     </div>
   );
 }
-type Equipment = {
+export type Equipment = {
   id: number;
   type: string;
   cost: number | null;

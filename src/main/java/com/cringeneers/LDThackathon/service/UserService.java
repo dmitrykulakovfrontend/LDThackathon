@@ -12,9 +12,5 @@ public interface UserService {
 
     String authenticate(LoginDto loginDto);
     ResponseEntity<?> register (SignUpDto registerDto);
-    Role saveRole(Role role);
-
-    User saveUser (User user) ;
-
     List<User> getAllUsers();
 }

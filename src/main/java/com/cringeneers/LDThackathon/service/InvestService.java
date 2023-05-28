@@ -3,14 +3,9 @@ package com.cringeneers.LDThackathon.service;
 import com.cringeneers.LDThackathon.dto.EquipmentDto;
 import com.cringeneers.LDThackathon.dto.InvestRequestDto;
 import com.cringeneers.LDThackathon.dto.InvestResponseDto;
-import com.cringeneers.LDThackathon.repository.BusinessRepository;
 import com.cringeneers.LDThackathon.repository.DistrictRepository;
-import com.cringeneers.LDThackathon.repository.EquipmentRepository;
 import com.cringeneers.LDThackathon.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

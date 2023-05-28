@@ -1,6 +1,5 @@
 package com.cringeneers.LDThackathon.security;
 
-import com.cringeneers.LDThackathon.entity.User;
 import com.cringeneers.LDThackathon.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

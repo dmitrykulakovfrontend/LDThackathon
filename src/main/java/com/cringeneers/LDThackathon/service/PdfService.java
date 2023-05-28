@@ -110,37 +110,37 @@ public class PdfService {
 
             contentStream.beginText();
             contentStream.setFont(font, 20);
-            contentStream.newLineAtOffset(350, 452); // Установите координаты для позиции вставки числа
+            contentStream.newLineAtOffset(350, 452);
             contentStream.showText(String.valueOf(accountingType));
             contentStream.endText();
 
             contentStream.beginText();
             contentStream.setFont(font, 20);
-            contentStream.newLineAtOffset(80, 248); // Установите координаты для позиции вставки числа
+            contentStream.newLineAtOffset(80, 248);
             contentStream.showText(totalOnce + " рублей");
             contentStream.endText();
 
             contentStream.beginText();
             contentStream.setFont(font, 20);
-            contentStream.newLineAtOffset(335, 245); // Установите координаты для позиции вставки числа
+            contentStream.newLineAtOffset(335, 245);
             contentStream.showText(totalYear + " рублей");
             contentStream.endText();
 
             contentStream.beginText();
             contentStream.setFont(font, 20);
-            contentStream.newLineAtOffset(300, 508); // Установите координаты для позиции вставки числа
+            contentStream.newLineAtOffset(300, 508);
             contentStream.showText(String.valueOf(district));
             contentStream.endText();
 
             contentStream.beginText();
             contentStream.setFont(font, 20);
-            contentStream.newLineAtOffset(350, 557); // Установите координаты для позиции вставки числа
+            contentStream.newLineAtOffset(350, 557);
             contentStream.showText(employeesNumber + " человек(а)");
             contentStream.endText();
 
             contentStream.beginText();
             contentStream.setFont(font, 20);
-            contentStream.newLineAtOffset(350, 607); // Установите координаты для позиции вставки числа
+            contentStream.newLineAtOffset(350, 607);
             contentStream.showText(String.valueOf(organisation_type));
             contentStream.endText();
 
@@ -172,7 +172,7 @@ public class PdfService {
             }
 
             for (String word : words) {
-                String tempLine = line.toString() + word + " ";
+                String tempLine = line + word + " ";
                 float stringWidth = font.getStringWidth(tempLine) / 1000 * currentFontSize;
 
                 if (stringWidth <= maxWidth) {
@@ -198,85 +198,85 @@ public class PdfService {
 
             contentStream2.beginText();
             contentStream2.setFont(font, 20);
-            contentStream2.newLineAtOffset(350, 145); // Установите координаты для позиции вставки числа
+            contentStream2.newLineAtOffset(350, 145);
             contentStream2.showText(medic + " рублей");
             contentStream2.endText();
 
             contentStream2.beginText();
             contentStream2.setFont(font, 20);
-            contentStream2.newLineAtOffset(350, 250); // Установите координаты для позиции вставки числа
+            contentStream2.newLineAtOffset(350, 250);
             contentStream2.showText(ndfl + " рублей");
             contentStream2.endText();
 
             contentStream2.beginText();
             contentStream2.setFont(font, 20);
-            contentStream2.newLineAtOffset(350, 195); // Установите координаты для позиции вставки числа
+            contentStream2.newLineAtOffset(350, 195);
             contentStream2.showText(retire + " рублей");
             contentStream2.endText();
 
             contentStream2.beginText();
             contentStream2.setFont(font, 20);
-            contentStream2.newLineAtOffset(350, 400); // Установите координаты для позиции вставки числа
+            contentStream2.newLineAtOffset(350, 400);
             contentStream2.showText(employeesNumber + " человек(а)");
             contentStream2.endText();
 
             contentStream2.beginText();
             contentStream2.setFont(font, 20);
-            contentStream2.newLineAtOffset(350, 300); // Установите координаты для позиции вставки числа
+            contentStream2.newLineAtOffset(350, 300);
             contentStream2.showText(personal + " рублей");
             contentStream2.endText();
 
             contentStream3.beginText();
             contentStream3.setFont(font, 20);
-            contentStream3.newLineAtOffset(300, 674); // Установите координаты для позиции вставки числа
+            contentStream3.newLineAtOffset(300, 674);
             contentStream3.showText(String.valueOf(district));
             contentStream3.endText();
 
             contentStream3.beginText();
             contentStream3.setFont(font, 20);
-            contentStream3.newLineAtOffset(300, 623); // Установите координаты для позиции вставки числа
+            contentStream3.newLineAtOffset(300, 623);
             contentStream3.showText(district_price + " рублей");
             contentStream3.endText();
 
             contentStream3.beginText();
             contentStream3.setFont(font, 20);
-            contentStream3.newLineAtOffset(300, 573); // Установите координаты для позиции вставки числа
+            contentStream3.newLineAtOffset(300, 573);
             contentStream3.showText(square_area + " кв.м");
             contentStream3.endText();
 
             contentStream3.beginText();
             contentStream3.setFont(font, 20);
-            contentStream3.newLineAtOffset(300, 522); // Установите координаты для позиции вставки числа
+            contentStream3.newLineAtOffset(300, 522);
             contentStream3.showText(square_buildings + " кв.м");
             contentStream3.endText();
 
             contentStream3.beginText();
             contentStream3.setFont(font, 20);
-            contentStream3.newLineAtOffset(300, 340); // Установите координаты для позиции вставки числа
+            contentStream3.newLineAtOffset(300, 340);
             contentStream3.showText(land + " рублей");
             contentStream3.endText();
 
             contentStream3.beginText();
             contentStream3.setFont(font, 20);
-            contentStream3.newLineAtOffset(300, 290); // Установите координаты для позиции вставки числа
+            contentStream3.newLineAtOffset(300, 290);
             contentStream3.showText(building_rent + " рублей");
             contentStream3.endText();
 
             contentStream3.beginText();
             contentStream3.setFont(font, 20);
-            contentStream3.newLineAtOffset(300, 195); // Установите координаты для позиции вставки числа
+            contentStream3.newLineAtOffset(300, 195);
             contentStream3.showText(landTax + " рублей");
             contentStream3.endText();
 
             contentStream3.beginText();
             contentStream3.setFont(font, 20);
-            contentStream3.newLineAtOffset(300, 145); // Установите координаты для позиции вставки числа
+            contentStream3.newLineAtOffset(300, 145);
             contentStream3.showText(propertyTax + " рублей");
             contentStream3.endText();
 
             contentStream4.beginText();
             contentStream4.setFont(font, 20);
-            contentStream4.newLineAtOffset(300, 668); // Установите координаты для позиции вставки числа
+            contentStream4.newLineAtOffset(300, 668);
             contentStream4.showText(organisation_type);
             contentStream4.endText();
 
@@ -284,7 +284,7 @@ public class PdfService {
             StringBuilder line1 = new StringBuilder();
 
             for (String word : words1) {
-                String tempLine1 = line1.toString() + word + " ";
+                String tempLine1 = line1 + word + " ";
                 float stringWidth = font.getStringWidth(tempLine1) / 1000 * currentFontSize1;
 
                 if (stringWidth <= maxWidth1) {
@@ -310,56 +310,56 @@ public class PdfService {
 
             contentStream4.beginText();
             contentStream4.setFont(font, 20);
-            contentStream4.newLineAtOffset(300, 568); // Установите координаты для позиции вставки числа
+            contentStream4.newLineAtOffset(300, 568);
             contentStream4.showText(String.valueOf(accountingPapers));
             contentStream4.endText();
 
             contentStream4.beginText();
             contentStream4.setFont(font, 20);
-            contentStream4.newLineAtOffset(300, 518); // Установите координаты для позиции вставки числа
+            contentStream4.newLineAtOffset(300, 518);
             contentStream4.showText(accountingType);
             contentStream4.endText();
 
             contentStream4.beginText();
             contentStream4.setFont(font, 20);
-            contentStream4.newLineAtOffset(300, 287); // Установите координаты для позиции вставки числа
-            contentStream4.showText(String.valueOf(patentRegistration)+ " рублей");
+            contentStream4.newLineAtOffset(300, 287);
+            contentStream4.showText(patentRegistration + " рублей");
             contentStream4.endText();
 
             contentStream4.beginText();
             contentStream4.setFont(font, 20);
             contentStream4.newLineAtOffset(300, 230);
-            contentStream4.showText(String.valueOf(entityRegistration)+ " рублей");
+            contentStream4.showText(entityRegistration + " рублей");
             contentStream4.endText();
 
             contentStream4.beginText();
             contentStream4.setFont(font, 20);
-            contentStream4.newLineAtOffset(300, 140); // Установите координаты для позиции вставки числа
-            contentStream4.showText(String.valueOf(accounting)+ " рублей");
+            contentStream4.newLineAtOffset(300, 140);
+            contentStream4.showText(accounting + " рублей");
             contentStream4.endText();
 
             contentStream5.beginText();
             contentStream5.setFont(font, 20);
-            contentStream5.newLineAtOffset(300, 388); // Установите координаты для позиции вставки числа
-            contentStream5.showText(String.valueOf(engineerOnce)+ " рублей");
+            contentStream5.newLineAtOffset(300, 388);
+            contentStream5.showText(engineerOnce + " рублей");
             contentStream5.endText();
 
             contentStream5.beginText();
             contentStream5.setFont(font, 20);
-            contentStream5.newLineAtOffset(300, 341); // Установите координаты для позиции вставки числа
-            contentStream5.showText(String.valueOf(equipment)+ " рублей");
+            contentStream5.newLineAtOffset(300, 341);
+            contentStream5.showText(equipment + " рублей");
             contentStream5.endText();
 
             contentStream5.beginText();
             contentStream5.setFont(font, 20);
-            contentStream5.newLineAtOffset(300, 228); // Установите координаты для позиции вставки числа
-            contentStream5.showText(String.valueOf(engineerYear)+ " рублей");
+            contentStream5.newLineAtOffset(300, 228);
+            contentStream5.showText(engineerYear + " рублей");
             contentStream5.endText();
 
             contentStream5.beginText();
             contentStream5.setFont(font, 20);
-            contentStream5.newLineAtOffset(300, 173); // Установите координаты для позиции вставки числа
-            contentStream5.showText(String.valueOf(ammortisation + " рублей"));
+            contentStream5.newLineAtOffset(300, 173);
+            contentStream5.showText(ammortisation + " рублей");
             contentStream5.endText();
 
             contentStream.close();

@@ -1,12 +1,9 @@
 package com.cringeneers.LDThackathon.security;
 
-import com.cringeneers.LDThackathon.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,7 +19,7 @@ import org.springframework.security.web.authentication.rememberme.TokenBasedReme
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter ;
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserDetailsService userDetailsService){
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
@@ -43,9 +40,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .httpBasic().disable() // diabled. rest api settings
+                .httpBasic().disable()
                 .csrf().disable()
-                .cors().disable()// rest api. no csrf
+                .cors().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()

@@ -7,7 +7,7 @@ import { API_URL } from "@/constants";
  */
 function Index() {
   return (
-    <div className={`flex flex-col flex-[4] items-center justify-center gap-4`}>
+    <div className={`flex flex-col flex-1 items-center justify-center gap-4`}>
       <img src={indexImgSrc} alt="" className="flex-1" />
       <div className="absolute z-10 max-w-3xl text-white top-60 left-32 max-xl:top-40 max-xl:left-16 max-md:max-w-sm max-sm:mt-8 max-md:top-28 max-sm:left-3 max-sm:top-14">
         <h2 className="text-6xl font-bold max-md:text-3xl ">

@@ -15,12 +15,7 @@ import {
 import industryTypes from "@/industry.json";
 import equipmentTypes from "@/equipmentTypes.json";
 import { API_URL } from "@/constants";
-import {
-  EntityEnum,
-  PapersEnum,
-  FormValues,
-  initialValues,
-} from "@/types/form";
+import { FormValues, initialValues } from "@/types/form";
 
 /**
  * Схема для валидации пользовательских полей
@@ -54,7 +49,10 @@ const FormSchema = Yup.object().shape({
   isPatent: Yup.boolean(),
   district: Yup.string().required("Укажите район"),
 });
-
+type FormChoices = {
+  industryTypes: string[];
+  equipmentTypes: string[];
+};
 /**
  * Одна из главных страниц сайта, форма для расчета, загружает lazy-loading geojson для отображения карты, и вся валидация происходит при помощи Formik и Yup. После введения правильных полей отправляет запрос на сервер для получения расчета и ссылки для скачивания
  * @returns {any}
@@ -81,11 +79,23 @@ function NewCalculator() {
   const [data, setData] = useState<null | GeoJsonObject>(null);
   const [isMapActive, setIsMapActive] = useState(false);
   const [isHover, setHover] = useState(false);
-
+  const [formChoices, setFormChoices] = useState<FormChoices>();
+  async function fetchFormChoices() {
+    const [industryTypesRes, equipmentTypesRes] = await Promise.all([
+      fetch(`${API_URL}/admin/businesses`),
+      fetch(`${API_URL}/admin/equipments`),
+    ]);
+    const [industryTypes, equipmentTypes] = await Promise.all([
+      industryTypesRes.json(),
+      equipmentTypesRes.json(),
+    ]);
+    setFormChoices({ industryTypes, equipmentTypes });
+  }
   useEffect(() => {
     import("@/moscowGeo.json").then((data) => {
       setData(data as GeoJsonObject);
     });
+    fetchFormChoices();
   }, []);
   return (
     <>
@@ -109,18 +119,28 @@ function NewCalculator() {
                       isSelect
                       title="Отрасль ведения хозяйственной деятельности"
                     >
-                      <option disabled value="">
-                        Не выбрано
-                      </option>
-                      {industryTypes.map((type) => (
-                        <option
-                          value={type}
-                          key={type}
-                          style={{ width: "10px!important" }}
-                        >
-                          {type.length > 40 ? type.slice(0, 40) + "..." : type}
+                      {!formChoices?.industryTypes ? (
+                        <option disabled value="">
+                          Загрузка...
                         </option>
-                      ))}
+                      ) : (
+                        <>
+                          <option disabled value="">
+                            Не выбрано
+                          </option>
+                          {industryTypes.map((type) => (
+                            <option
+                              value={type}
+                              key={type}
+                              style={{ width: "10px!important" }}
+                            >
+                              {type.length > 40
+                                ? type.slice(0, 40) + "..."
+                                : type}
+                            </option>
+                          ))}
+                        </>
+                      )}
                     </FormikField>
                     <FormikField
                       type="text"
@@ -184,14 +204,22 @@ function NewCalculator() {
                                   isSelect
                                   title="Укажите виды техники"
                                 >
-                                  <option disabled value="">
-                                    Не выбрано
-                                  </option>
-                                  {equipmentTypes.map((type) => (
-                                    <option value={type} key={type}>
-                                      {type}
+                                  {!formChoices?.equipmentTypes ? (
+                                    <option disabled value="">
+                                      Загрузка...
                                     </option>
-                                  ))}
+                                  ) : (
+                                    <>
+                                      <option disabled value="">
+                                        Не выбрано
+                                      </option>
+                                      {equipmentTypes.map((type) => (
+                                        <option value={type} key={type}>
+                                          {type}
+                                        </option>
+                                      ))}
+                                    </>
+                                  )}
                                 </FormikField>
                                 <div className="flex gap-5 max-sm:flex-col">
                                   <FormikField

@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BusinessTypeDataIcon from "@/assets/business-type-data.svg";
 import EquipmentPriceIcon from "@/assets/equipment-price.svg";
-import TaxesDataIcon from "@/assets/taxes-data.svg";
-import LandPriceDataIcon from "@/assets/land-price-data.svg";
-import PatentDataIcon from "@/assets/patent-data.svg";
-import ObjectsDataIcon from "@/assets/objects-data.svg";
+// import TaxesDataIcon from "@/assets/taxes-data.svg";
+// import LandPriceDataIcon from "@/assets/land-price-data.svg";
+// import PatentDataIcon from "@/assets/patent-data.svg";
+// import ObjectsDataIcon from "@/assets/objects-data.svg";
 
 function DataIndex() {
   const { user } = useAuth();

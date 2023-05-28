@@ -18,18 +18,21 @@ const headers = [
 function BusinessType() {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [isCreating, setIsCreating] = useState(false);
+  async function fetchData() {
+    const response = await fetch(`${API_URL}/admin/businesses`);
+    const data = await response.json();
+    setBusinesses(data);
+  }
   useEffect(() => {
-    fetch(`${API_URL}/admin/businesses`)
-      .then((res) => res.json())
-      .then((data) => {
-        setBusinesses(data);
-      });
+    fetchData();
   }, []);
   console.log(businesses);
   return (
     <div className="mt-5 overflow-x-auto">
       <div className="flex items-center justify-between">
-        <h1 className="my-8 text-3xl font-bold">Средняя цена оборудования</h1>
+        <h1 className="my-8 text-3xl font-bold">
+          Обезличенные данные по отраслям
+        </h1>
         <button
           onClick={() => setIsCreating(true)}
           className="px-12 py-2 text-blue-500 border-2 border-blue-500 h-fit rounded-xl"
@@ -59,6 +62,7 @@ function BusinessType() {
                 minimalSalary: 0,
                 cost: 0,
               }}
+              fetchData={fetchData}
               isCreating
               setIsCreating={setIsCreating}
             />
@@ -66,7 +70,11 @@ function BusinessType() {
             ""
           )}
           {businesses?.map((business, i) => (
-            <BusinessDisplay key={i} business={business} />
+            <BusinessDisplay
+              key={i}
+              business={business}
+              fetchData={fetchData}
+            />
           ))}
         </tbody>
         <tfoot></tfoot>
@@ -85,17 +93,20 @@ function BusinessDisplay({
   business,
   isCreating,
   setIsCreating,
+  fetchData,
 }: {
   business: Business;
   isCreating?: boolean;
   setIsCreating?: (value: boolean) => void;
+  fetchData: () => Promise<void>;
 }) {
-  function handleDelete() {
+  async function handleDelete() {
     console.log("delete", business);
-    fetch(`${API_URL}/admin/deleteBusiness`, {
+    await fetch(`${API_URL}/admin/deleteBusiness`, {
       method: "DELETE",
       body: business.type,
-    }).then((res) => console.log(res));
+    });
+    await fetchData();
   }
 
   function handleEdit() {
@@ -134,6 +145,7 @@ function BusinessDisplay({
         type: newBusiness.type,
         minimalSalary: newBusiness.minimalSalary,
       });
+      await fetchData();
     } catch (e) {
       console.error(e);
     } finally {

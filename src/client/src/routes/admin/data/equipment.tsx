@@ -12,12 +12,14 @@ const headers = ["№", "Наименование", "Цена", "Действи�
 function Equipment() {
   const [equipments, setEquipments] = useState<Equipment[]>();
   const [isCreating, setIsCreating] = useState(false);
+
+  async function fetchData() {
+    const response = await fetch(`${API_URL}/admin/equipments`);
+    const data = await response.json();
+    setEquipments(data);
+  }
   useEffect(() => {
-    fetch(`${API_URL}/admin/equipments`)
-      .then((res) => res.json())
-      .then((data) => {
-        setEquipments(data);
-      });
+    fetchData();
   }, []);
   console.log(equipments);
   return (
@@ -47,6 +49,7 @@ function Equipment() {
         <tbody className="border-2 border-ldt-gray">
           {isCreating ? (
             <EquipmentDisplay
+              fetchData={fetchData}
               equipment={{
                 id: -1,
                 type: "",
@@ -59,7 +62,11 @@ function Equipment() {
             ""
           )}
           {equipments?.map((equipment, i) => (
-            <EquipmentDisplay key={i} equipment={equipment} />
+            <EquipmentDisplay
+              key={i}
+              equipment={equipment}
+              fetchData={fetchData}
+            />
           ))}
         </tbody>
         <tfoot></tfoot>
@@ -77,17 +84,20 @@ function EquipmentDisplay({
   equipment,
   isCreating,
   setIsCreating,
+  fetchData,
 }: {
   equipment: Equipment;
   isCreating?: boolean;
   setIsCreating?: (value: boolean) => void;
+  fetchData: () => Promise<void>;
 }) {
-  function handleDelete() {
+  async function handleDelete() {
     console.log("delete", equipment);
-    fetch(`${API_URL}/admin/deleteEquipment`, {
+    await fetch(`${API_URL}/admin/deleteEquipment`, {
       method: "DELETE",
       body: equipment.type,
-    }).then((res) => console.log(res));
+    });
+    await fetchData();
   }
 
   function handleEdit() {
@@ -120,9 +130,8 @@ function EquipmentDisplay({
           type: newEquipment.type,
         }),
       });
-      const data = await res.text();
-      console.log(data);
       console.log("created");
+      await fetchData();
     } catch (e) {
       console.error(e);
     } finally {
@@ -152,7 +161,14 @@ function EquipmentDisplay({
           <div className="hover:cursor-pointer" onClick={handleDelete}>
             <DeleteIcon />
           </div>
-          {isEditMode ? (
+          {isCreating ? (
+            <span className="hover:cursor-pointer" onClick={handleCreate}>
+              Добавить
+            </span>
+          ) : (
+            ""
+          )}
+          {/* {isEditMode ? (
             <span className="hover:cursor-pointer" onClick={handleSave}>
               Сохранить
             </span>
@@ -164,7 +180,7 @@ function EquipmentDisplay({
             <div className="hover:cursor-pointer" onClick={handleEdit}>
               <EditIcon />
             </div>
-          )}
+          )} */}
         </td>
       </tr>
     </>

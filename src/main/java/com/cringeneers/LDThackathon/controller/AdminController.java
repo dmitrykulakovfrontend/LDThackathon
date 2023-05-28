@@ -47,5 +47,42 @@ public class AdminController {
         List<User> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-
+    @GetMapping("/equipments")
+    public ResponseEntity<List<Equipment>> getAllEquipments() {
+        List<Equipment> equipments = equipmentService.getAllEquipments();
+        return new ResponseEntity<>(equipments, HttpStatus.OK);
+    }
+    @GetMapping("/businesses")
+    public ResponseEntity<List<Business>> getAllBusinesses() {
+        List<Business> businesses = businessService.getAllBusinesess();
+        return new ResponseEntity<>(businesses, HttpStatus.OK);
+    }
+    @PutMapping({"/updateEquipment"})
+    public ResponseEntity<Equipment> updateEquipment(@RequestBody String type, Equipment equipment) {
+        equipmentService.update(type, equipment);
+        return new ResponseEntity<>(equipmentService.getEquipmentByType(type), HttpStatus.OK);
+    }
+    @PutMapping({"/updateBusiness"})
+    public ResponseEntity<Business> updateBusiness(@RequestBody String type, Business business) {
+        businessService.update(type, business);
+        return new ResponseEntity<>(businessService.getBusinessByType(type), HttpStatus.OK);
+    }
+        @GetMapping({"/getEquipment"})
+    public ResponseEntity<Equipment> getEquipment(@RequestBody String type) {
+        return new ResponseEntity<>(equipmentService.getEquipmentByType(type), HttpStatus.OK);
+    }
+    @GetMapping({"/getBusiness"})
+    public ResponseEntity<Business> getBusiness(@RequestBody String type) {
+        return new ResponseEntity<>(businessService.getBusinessByType(type), HttpStatus.OK);
+    }
+    @DeleteMapping({"/deleteEquipment"})
+    public ResponseEntity<Equipment> deleteEquipment(@RequestBody String type) {
+        equipmentService.delete(type);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @DeleteMapping({"/deleteBusiness"})
+    public ResponseEntity<Business> deleteBusiness(@RequestBody String type) {
+        businessService.delete(type);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

@@ -19,6 +19,12 @@ import Statistics from "./routes/admin/statistics";
 import { Token } from "./types/auth";
 import { useAuth, UserContext } from "./contexts/useAuth";
 import { RequireAdmin } from "./components/RequireAdmin";
+import BusinessType from "./routes/admin/data/businessType";
+import Equipment from "./routes/admin/data/equipment";
+import LandPrice from "./routes/admin/data/land-price";
+import Objects from "./routes/admin/data/objects";
+import Patent from "./routes/admin/data/patent";
+import Taxes from "./routes/admin/data/taxes";
 
 const isDev = import.meta.env.DEV;
 
@@ -56,11 +62,22 @@ const router = createBrowserRouter(
           children: [
             {
               path: "data",
-              element: (
-                <RequireAdmin>
-                  <Data />
-                </RequireAdmin>
-              ),
+              children: [
+                {
+                  index: true,
+                  element: (
+                    <RequireAdmin>
+                      <Data />
+                    </RequireAdmin>
+                  ),
+                },
+                { path: "business-type", element: <BusinessType /> },
+                { path: "equipment", element: <Equipment /> },
+                { path: "land-price", element: <LandPrice /> },
+                { path: "patent", element: <Patent /> },
+                { path: "objects", element: <Objects /> },
+                { path: "taxes", element: <Taxes /> },
+              ],
             },
             {
               path: "users",
@@ -93,7 +110,7 @@ const router = createBrowserRouter(
  * @returns {any}
  */
 function App() {
-  const [user, setUser] = useState<Token | null>(null);
+  const [user, setUser] = useState<Token | undefined | null>();
   return (
     <React.StrictMode>
       <UserContext.Provider value={{ user, setUser }}>

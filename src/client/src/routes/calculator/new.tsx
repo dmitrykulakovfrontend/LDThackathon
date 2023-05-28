@@ -105,8 +105,12 @@ function NewCalculator() {
                         Не выбрано
                       </option>
                       {industryTypes.map((type) => (
-                        <option value={type} key={type}>
-                          {type}
+                        <option
+                          value={type}
+                          key={type}
+                          style={{ width: "10px!important" }}
+                        >
+                          {type.length > 40 ? type.slice(0, 40) + "..." : type}
                         </option>
                       ))}
                     </FormikField>

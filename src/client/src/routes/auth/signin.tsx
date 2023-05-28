@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FormikField from "../../components/Forms/FormikField";
 import FormikForm from "../../components/Forms/FormikForm";
 import { API_URL } from "@/constants";
@@ -12,13 +12,9 @@ interface Values {
 }
 
 const SignInSchema = Yup.object().shape({
-  email: Yup.string()
-    .min(2, "Минимум 2 символа")
-    .max(50, "Максимум 50 символов")
-    .required("Обязательное поле"),
+  email: Yup.string().required("Обязательное поле"),
   password: Yup.string()
-    .min(2, "Минимум 2 символа")
-    .max(50, "Максимум 50 символов")
+    .min(8, "Минимум 8 символов")
     .required("Обязательное поле"),
 });
 function SignIn() {
@@ -63,7 +59,7 @@ function SignIn() {
             <FormikField
               type="text"
               name="email"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="ivan.ivanov1999@gmail.com"
               touched={touched.email}
               errors={errors.email}
               title="Адрес электронной почты"
@@ -71,7 +67,7 @@ function SignIn() {
             <FormikField
               type="password"
               name="password"
-              placeholder="alexandra.moroz1703@gmail.com"
+              placeholder="Ваш пароль"
               touched={touched.password}
               errors={errors.password}
               title="Пароль"
@@ -82,6 +78,9 @@ function SignIn() {
             >
               Войти
             </button>
+            <Link to="/auth/signup" className="text-center text-blue-500">
+              Еще не регистрировались?
+            </Link>
           </FormikForm>
         )}
       </Formik>

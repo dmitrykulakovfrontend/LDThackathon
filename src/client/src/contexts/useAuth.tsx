@@ -2,12 +2,12 @@ import { createContext, useContext } from "react";
 import { Token } from "@/types/auth";
 
 type UserContextType = {
-  user: Token | null;
-  setUser: React.Dispatch<React.SetStateAction<Token | null>>;
+  user: Token | undefined | null;
+  setUser: React.Dispatch<React.SetStateAction<Token | undefined | null>>;
 };
 
 const iUserContextState = {
-  user: null,
+  user: undefined,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setUser: () => {},
 };

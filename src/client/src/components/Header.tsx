@@ -15,21 +15,22 @@ function Header() {
     //   window.location.reload();
     // }
     localStorage.removeItem("user");
-    setUser(null);
+    setUser(undefined);
   }
   const [mobileMenu, setMobileMenu] = useState(false);
-  const { decodedToken, isExpired, reEvaluateToken } = useJwt<Token>(
+  const { decodedToken, isExpired } = useJwt<Token>(
     localStorage.getItem("user") as string
   );
   const location = useLocation();
   const { user, setUser } = useAuth();
-  // console.log({ decodedToken, isExpired, reEvaluateToken });
   useEffect(() => {
     if (isExpired) {
       localStorage.removeItem("user");
       setUser(null);
     } else {
-      setUser(decodedToken);
+      if (decodedToken) {
+        setUser(decodedToken);
+      }
     }
   }, [decodedToken, isExpired, setUser]);
 
@@ -38,10 +39,10 @@ function Header() {
       name: "Калькулятор",
       to: "/calculator/new",
     },
-    user?.role.includes("ROLE_ADMIN") && {
-      name: "Статистика",
-      to: "/admin/statistics",
-    },
+    // user?.role.includes("ROLE_ADMIN") && {
+    //   name: "Статистика",
+    //   to: "/admin/statistics",
+    // },
     user?.role.includes("ROLE_ADMIN") && {
       name: "Пользователи",
       to: "/admin/users",
@@ -54,10 +55,10 @@ function Header() {
     //   name: "Объекты",
     //   to: "/objects",
     // },
-    {
-      name: "Услуги",
-      to: "/services",
-    },
+    // {
+    //   name: "Услуги",
+    //   to: "/services",
+    // },
     // {
     //   name: "Карта",
     //   to: "/map",
@@ -66,10 +67,10 @@ function Header() {
     //   name: "Документы",
     //   to: "/documents",
     // },
-    {
-      name: "Помощь",
-      to: "/help",
-    },
+    // {
+    //   name: "Помощь",
+    //   to: "/help",
+    // },
   ].filter(Boolean);
 
   useEffect(() => {

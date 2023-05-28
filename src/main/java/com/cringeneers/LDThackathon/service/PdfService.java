@@ -41,6 +41,12 @@ public class PdfService {
         BigInteger totalYear = BigInteger.valueOf (total.intValue() - totalOnce.intValue());
         Long square_area = investRequestDto.getSquare_area();
         Long square_buildings = investRequestDto.getSquare_buildings();
+        Long accountingPapers = investRequestDto.getAccounting_papers();
+        Long patentRegistration = investResponseDto.getPatentRegistration().longValue();
+        Long entityRegistration = investResponseDto.getEntityRegistration().longValue();
+        BigInteger accounting = investResponseDto.getAccounting().toBigInteger();
+        BigInteger equipment = investResponseDto.getEquipment().toBigInteger();
+        BigInteger ammortisation = investResponseDto.getAmortisation().toBigInteger();
 
         StringBuilder organisation_type = new StringBuilder();
         if (investRequestDto.getEntity().equalsIgnoreCase("ooo")) {
@@ -65,20 +71,34 @@ public class PdfService {
         } else {
             accountingType.append("ОСН");
         }
-        return insertNumbersInTemplate(land, square_area, square_buildings, district_price ,ndfl, medic, retire, String.valueOf(accountingType), totalOnce, totalYear, total, personal, landTaxes, propertyTaxes, building_rent, business_type, String.valueOf(organisation_type), employees_number, district);
+        return insertNumbersInTemplate(equipment, ammortisation, engineerYear, engineerOnce, patentRegistration, entityRegistration, accounting, accountingPapers, land, square_area, square_buildings, district_price ,ndfl, medic, retire, String.valueOf(accountingType), totalOnce, totalYear, total, personal, landTaxes, propertyTaxes, building_rent, business_type, String.valueOf(organisation_type), employees_number, district);
     }
-    public ByteArrayOutputStream insertNumbersInTemplate(BigInteger land, Long square_area, Long square_buildings, BigInteger district_price ,BigInteger ndfl, BigInteger medic, BigInteger retire, String accountingType, BigInteger totalOnce, BigInteger totalYear, BigInteger total, BigInteger personal, BigInteger landTax, BigInteger propertyTax, BigInteger building_rent, String business_type, String organisation_type, long employeesNumber, String district) {
+    public ByteArrayOutputStream insertNumbersInTemplate(BigInteger equipment, BigInteger ammortisation, BigInteger engineerYear, BigInteger engineerOnce, Long patentRegistration , Long entityRegistration, BigInteger accounting, Long accountingPapers,BigInteger land, Long square_area, Long square_buildings, BigInteger district_price ,BigInteger ndfl, BigInteger medic, BigInteger retire, String accountingType, BigInteger totalOnce, BigInteger totalYear, BigInteger total, BigInteger personal, BigInteger landTax, BigInteger propertyTax, BigInteger building_rent, String business_type, String organisation_type, long employeesNumber, String district) {
         InputStream inputStream = PdfService.class.getClassLoader().getResourceAsStream("static/template.pdf");
         InputStream fontStream = PdfService.class.getClassLoader().getResourceAsStream("static/Manrope.TTF");
         try (PDDocument document = PDDocument.load(inputStream)) {
             PDPage page = document.getPage(2);
             PDPage page2 = document.getPage(3);
             PDPage page3 = document.getPage(4);
+            PDPage page4 = document.getPage(5);
+            PDPage page5 = document.getPage(6);
             PDFont font = PDType0Font.load(document, fontStream);
+
+            int maxWidth = 0;
+            int currentFontSize = 0;
+            int currentYOffset = 0;
+            int currentXOffset = 0;
+            int maxWidth1 = 0;
+            int currentFontSize1 = 0;
+            int currentYOffset1 = 0;
+            int currentXOffset1 = 0;
+
 
             PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true);
             PDPageContentStream contentStream2 = new PDPageContentStream(document, page2, PDPageContentStream.AppendMode.APPEND, true, true);
             PDPageContentStream contentStream3 = new PDPageContentStream(document, page3, PDPageContentStream.AppendMode.APPEND, true, true);
+            PDPageContentStream contentStream4 = new PDPageContentStream(document, page4, PDPageContentStream.AppendMode.APPEND, true, true);
+            PDPageContentStream contentStream5 = new PDPageContentStream(document, page5, PDPageContentStream.AppendMode.APPEND, true, true);
 
 
             // Вставляем число 1
@@ -124,10 +144,56 @@ public class PdfService {
             contentStream.showText(String.valueOf(organisation_type));
             contentStream.endText();
 
+            String[] words = business_type.split(" ");
+            String[] words1 = business_type.split(" ");
+            StringBuilder line = new StringBuilder();
+
+            if(business_type.length() >= 50) {
+                maxWidth = 350;
+                currentFontSize = 13;
+                currentYOffset = 680;
+                currentXOffset = 220;
+
+            } else {
+                currentFontSize = 18;
+                currentYOffset = 685;
+                currentXOffset = 300;
+            }
+
+            if(business_type.length() >= 50) {
+                maxWidth1 = 270;
+                currentFontSize1 = 13;
+                currentYOffset1 = 637;
+                currentXOffset1 = 280;
+            } else {
+                currentFontSize1 = 18;
+                currentYOffset1 = 640;
+                currentXOffset1 = 300;
+            }
+
+            for (String word : words) {
+                String tempLine = line.toString() + word + " ";
+                float stringWidth = font.getStringWidth(tempLine) / 1000 * currentFontSize;
+
+                if (stringWidth <= maxWidth) {
+                    line.append(word).append(" ");
+                } else {
+                    contentStream.beginText();
+                    contentStream.setFont(font, currentFontSize);
+                    contentStream.newLineAtOffset(currentXOffset, currentYOffset);
+                    contentStream.showText(line.toString().trim());
+                    contentStream.endText();
+
+                    currentYOffset -= 15;
+                    line.setLength(0);
+                    line.append(word).append(" ");
+                }
+            }
+
             contentStream.beginText();
-            contentStream.setFont(font, 20);
-            contentStream.newLineAtOffset(250, 659); // Установите координаты для позиции вставки числа
-            contentStream.showText(String.valueOf(business_type));
+            contentStream.setFont(font, currentFontSize);
+            contentStream.newLineAtOffset(currentXOffset, currentYOffset);
+            contentStream.showText(line.toString().trim());
             contentStream.endText();
 
             contentStream2.beginText();
@@ -208,9 +274,99 @@ public class PdfService {
             contentStream3.showText(propertyTax + " рублей");
             contentStream3.endText();
 
+            contentStream4.beginText();
+            contentStream4.setFont(font, 20);
+            contentStream4.newLineAtOffset(300, 668); // Установите координаты для позиции вставки числа
+            contentStream4.showText(organisation_type);
+            contentStream4.endText();
+
+
+            StringBuilder line1 = new StringBuilder();
+
+            for (String word : words1) {
+                String tempLine1 = line1.toString() + word + " ";
+                float stringWidth = font.getStringWidth(tempLine1) / 1000 * currentFontSize1;
+
+                if (stringWidth <= maxWidth1) {
+                    line1.append(word).append(" ");
+                } else {
+                    contentStream4.beginText();
+                    contentStream4.setFont(font, currentFontSize1);
+                    contentStream4.newLineAtOffset(currentXOffset1, currentYOffset1);
+                    contentStream4.showText(line1.toString().trim());
+                    contentStream4.endText();
+
+                    currentYOffset1 -= 15;
+                    line1.setLength(0);
+                    line1.append(word).append(" ");
+                }
+            }
+
+            contentStream4.beginText();
+            contentStream4.setFont(font, currentFontSize1);
+            contentStream4.newLineAtOffset(currentXOffset1, currentYOffset1);
+            contentStream4.showText(line1.toString().trim());
+            contentStream4.endText();
+
+            contentStream4.beginText();
+            contentStream4.setFont(font, 20);
+            contentStream4.newLineAtOffset(300, 568); // Установите координаты для позиции вставки числа
+            contentStream4.showText(String.valueOf(accountingPapers));
+            contentStream4.endText();
+
+            contentStream4.beginText();
+            contentStream4.setFont(font, 20);
+            contentStream4.newLineAtOffset(300, 518); // Установите координаты для позиции вставки числа
+            contentStream4.showText(accountingType);
+            contentStream4.endText();
+
+            contentStream4.beginText();
+            contentStream4.setFont(font, 20);
+            contentStream4.newLineAtOffset(300, 287); // Установите координаты для позиции вставки числа
+            contentStream4.showText(String.valueOf(patentRegistration));
+            contentStream4.endText();
+
+            contentStream4.beginText();
+            contentStream4.setFont(font, 20);
+            contentStream4.newLineAtOffset(300, 230);
+            contentStream4.showText(String.valueOf(entityRegistration));
+            contentStream4.endText();
+
+            contentStream4.beginText();
+            contentStream4.setFont(font, 20);
+            contentStream4.newLineAtOffset(300, 140); // Установите координаты для позиции вставки числа
+            contentStream4.showText(String.valueOf(accounting));
+            contentStream4.endText();
+
+            contentStream5.beginText();
+            contentStream5.setFont(font, 20);
+            contentStream5.newLineAtOffset(300, 388); // Установите координаты для позиции вставки числа
+            contentStream5.showText(String.valueOf(engineerOnce));
+            contentStream5.endText();
+
+            contentStream5.beginText();
+            contentStream5.setFont(font, 20);
+            contentStream5.newLineAtOffset(300, 341); // Установите координаты для позиции вставки числа
+            contentStream5.showText(String.valueOf(equipment));
+            contentStream5.endText();
+
+            contentStream5.beginText();
+            contentStream5.setFont(font, 20);
+            contentStream5.newLineAtOffset(300, 228); // Установите координаты для позиции вставки числа
+            contentStream5.showText(String.valueOf(engineerYear));
+            contentStream5.endText();
+
+            contentStream5.beginText();
+            contentStream5.setFont(font, 20);
+            contentStream5.newLineAtOffset(300, 173); // Установите координаты для позиции вставки числа
+            contentStream5.showText(String.valueOf(ammortisation));
+            contentStream5.endText();
+
             contentStream.close();
             contentStream2.close();
             contentStream3.close();
+            contentStream4.close();
+            contentStream5.close();
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             document.save(outputStream);
@@ -221,4 +377,5 @@ public class PdfService {
             return null;
         }
     }
+
 }

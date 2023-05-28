@@ -5,7 +5,7 @@ export function RequireAdmin({ children }: { children: JSX.Element }) {
   const { user } = useAuth();
 
   if (user === undefined) {
-    return "Загрузка...";
+    return <span>"Загрузка..."</span>;
   }
 
   if (!user?.role.includes("ROLE_ADMIN")) {

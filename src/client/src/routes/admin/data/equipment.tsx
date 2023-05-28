@@ -80,7 +80,7 @@ function EquipmentDisplay({
 }: {
   equipment: Equipment;
   isCreating?: boolean;
-  setIsCreating: (value: boolean) => void;
+  setIsCreating?: (value: boolean) => void;
 }) {
   function handleDelete() {
     console.log("delete", equipment);
@@ -117,7 +117,7 @@ function EquipmentDisplay({
     } catch (e) {
       console.error(e);
     } finally {
-      setIsCreating(false);
+      if (setIsCreating) setIsCreating(false);
     }
   }
   const [isEditMode, setIsEditMode] = useState(false);

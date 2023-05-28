@@ -11,7 +11,7 @@ function Index() {
       <img src={indexImgSrc} alt="" className="flex-1" />
       <div className="absolute z-10 max-w-3xl text-white top-60 left-32 max-xl:top-40 max-xl:left-16 max-md:max-w-sm max-sm:mt-8 max-md:top-28 max-sm:left-3 max-sm:top-14">
         <h2 className="text-6xl font-bold max-md:text-3xl ">
-          С нами инвестировать всегда выгодно
+          Инвестиции в Москву - вклад в будущее России
         </h2>
         <div className="flex gap-5 mt-8 max-sm:mt-2 ">
           <Link

@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import Root from "./routes/root";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  useNavigate,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./routes/error";
 import Index from "./routes";
 import "./tailwind.css";
@@ -17,7 +13,7 @@ import Data from "./routes/admin/data";
 import Users from "./routes/admin/users";
 import Statistics from "./routes/admin/statistics";
 import { Token } from "./types/auth";
-import { useAuth, UserContext } from "./contexts/useAuth";
+import { UserContext } from "./contexts/useAuth";
 import { RequireAdmin } from "./components/RequireAdmin";
 import BusinessType from "./routes/admin/data/businessType";
 import Equipment from "./routes/admin/data/equipment";
@@ -25,7 +21,6 @@ import LandPrice from "./routes/admin/data/land-price";
 import Objects from "./routes/admin/data/objects";
 import Patent from "./routes/admin/data/patent";
 import Taxes from "./routes/admin/data/taxes";
-import AuthSignUp from "./routes/auth/authsignup";
 
 const isDev = import.meta.env.DEV;
 
@@ -48,7 +43,6 @@ const router = createBrowserRouter(
           path: "auth",
           children: [
             { path: "signup", element: <SignUp /> },
-            { path: "better-signup", element: <AuthSignUp /> },
             { path: "signin", element: <SignIn /> },
           ],
         },

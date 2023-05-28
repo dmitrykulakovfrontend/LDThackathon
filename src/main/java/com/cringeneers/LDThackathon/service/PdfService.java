@@ -149,7 +149,7 @@ public class PdfService {
             StringBuilder line = new StringBuilder();
 
             if(business_type.length() >= 50) {
-                maxWidth = 330;
+                maxWidth = 350;
                 currentFontSize = 13;
                 currentYOffset = 680;
                 currentXOffset = 220;

@@ -68,55 +68,63 @@ function Results() {
       </h2>
       <div className="flex items-center gap-32 max-lg:flex-col-reverse max-lg:gap-8 max-lg:items-start">
         <div>
-          <div className="flex items-center gap-6">
-            <img src={IndustryIconSrc} className="pb-4" />
-            <div className="flex pb-4 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
-              <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
+          <div className="flex items-center gap-6 max-sm:items-start">
+            <img src={IndustryIconSrc} className="pb-4 max-sm:pb-0" />
+            <div className="flex pb-4 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center max-sm:items-start">
+              <div className="uppercase shrink-0 font-semibold w-[200px]">
                 отрасль:{" "}
               </div>
-              <div className="h-fit max-sm:text-center">
+              <div className="h-fit max-sm:text-center max-sm:text-sm max-sm:mt-4">
                 {form.business_type}
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-6">
-            <img src={EntityIconSrc} className="pb-4" />
-            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
-              <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
+          <div className="flex items-center gap-6 max-sm:items-start">
+            <img src={EntityIconSrc} className="pb-4 max-sm:pb-0" />
+            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center max-sm:items-start">
+              <div className="uppercase shrink-0 font-semibold w-[200px] ">
                 Тип организации:
               </div>
-              <div className="h-fit max-sm:text-center">
+              <div className="h-fit max-sm:text-center max-sm:text-sm max-sm:mt-4">
                 {entityMap[form.entity]}
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-6">
-            <img src={EmployeesIconSrc} className="pb-4" />
-            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
-              <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
+          <div className="flex items-center gap-6 max-sm:items-start">
+            <img
+              src={EmployeesIconSrc}
+              className="pb-4 max-sm:pb-0 max-sm:pt-4"
+            />
+            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center max-sm:items-start">
+              <div className="uppercase shrink-0 font-semibold w-[200px] ">
                 Количество сотрудников:
               </div>
-              <div className="h-fit max-sm:text-center">
+              <div className="h-fit max-sm:text-center max-sm:text-sm max-sm:mt-4">
                 {form.n_employee} человек(а)
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-6">
-            <img src={LocationIconSrc} className="pb-4" />
-            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
-              <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
-                Район раположения производсва:
+          <div className="flex items-center gap-6 max-sm:items-start">
+            <img
+              src={LocationIconSrc}
+              className="pb-4 max-sm:pb-0 max-sm:pt-4"
+            />
+            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center max-sm:items-start">
+              <div className="uppercase shrink-0 font-semibold w-[200px] ">
+                Район расположения производсва:
               </div>
-              <div className="h-fit max-sm:text-center">{form.district}</div>
+              <div className="h-fit max-sm:text-center max-sm:text-sm max-sm:mt-4">
+                {form.district}
+              </div>
             </div>
           </div>
-          <div className="flex items-center gap-6">
-            <img src={TaxesIconSrc} className="pb-4" />
-            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center">
-              <div className="uppercase shrink-0 font-medium w-[200px]  max-sm:text-center">
+          <div className="flex items-center gap-6 max-sm:items-start">
+            <img src={TaxesIconSrc} className="pb-4 max-sm:pb-0 max-sm:pt-4" />
+            <div className="flex pb-4 pt-3 border-b-2 max-sm:flex-col border-ldt-red w-full max-w-[515px] items-center max-sm:items-start">
+              <div className="uppercase shrink-0 font-semibold w-[200px] ">
                 предполагаемая ставка налогообложения:
               </div>
-              <div className="h-fit max-sm:text-center">
+              <div className="h-fit max-sm:text-center max-sm:text-sm max-sm:mt-4">
                 {papersTypeMap[form.accounting_type]}
               </div>
             </div>
@@ -138,19 +146,27 @@ function Results() {
         итоговые значения возможных затрат
       </h2>
       <div className="flex max-sm:flex-col">
-        <div className="flex flex-col items-start justify-start gap-4 p-8 pl-0 border-r-2 max-sm:border-r-0 max-sm:border-b-2 border-ldt-red">
+        <div className="flex flex-col items-start justify-start gap-4 p-8 pl-0 border-r-2 max-sm:flex-row max-sm:border-r-0 max-sm:border-b-2 border-ldt-red">
           <img src={OneTimePayIconSrc} alt="" />
-          <span className="uppercase">единовременные затраты:</span>
-          <span className="text-xl font-semibold">
-            {formatNumber(oneTimePay)}
-          </span>
+          <div className="flex flex-col items-start justify-start gap-4">
+            <span className="font-semibold uppercase">
+              единовременные затраты:
+            </span>
+            <span className="text-xl font-semibold">
+              {formatNumber(oneTimePay)}
+            </span>
+          </div>
         </div>
-        <div className="flex flex-col items-start justify-start gap-4 p-8 max-sm:pl-0">
+        <div className="flex flex-col items-start justify-start gap-4 p-8 max-sm:pl-0 max-sm:flex-row">
           <img src={YearlyPayIconSrc} alt="" />
-          <span className="uppercase">постоянные затраты (за 1 год):</span>
-          <span className="text-xl font-semibold">
-            {formatNumber(yearlyPay)}
-          </span>
+          <div className="flex flex-col items-start justify-start gap-4">
+            <span className="font-semibold uppercase ">
+              постоянные затраты (за 1 год):
+            </span>
+            <span className="text-xl font-semibold">
+              {formatNumber(yearlyPay)}
+            </span>
+          </div>
         </div>
       </div>
       <h2 className="mt-12 text-2xl font-bold uppercase">

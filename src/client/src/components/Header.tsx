@@ -38,10 +38,10 @@ function Header() {
       name: "Калькулятор",
       to: "/calculator/new",
     },
-    user?.role.includes("ROLE_ADMIN") && {
-      name: "Статистика",
-      to: "/admin/statistics",
-    },
+    // user?.role.includes("ROLE_ADMIN") && {
+    //   name: "Статистика",
+    //   to: "/admin/statistics",
+    // },
     user?.role.includes("ROLE_ADMIN") && {
       name: "Пользователи",
       to: "/admin/users",
@@ -54,10 +54,10 @@ function Header() {
     //   name: "Объекты",
     //   to: "/objects",
     // },
-    {
-      name: "Услуги",
-      to: "/services",
-    },
+    // {
+    //   name: "Услуги",
+    //   to: "/services",
+    // },
     // {
     //   name: "Карта",
     //   to: "/map",
@@ -66,10 +66,10 @@ function Header() {
     //   name: "Документы",
     //   to: "/documents",
     // },
-    {
-      name: "Помощь",
-      to: "/help",
-    },
+    // {
+    //   name: "Помощь",
+    //   to: "/help",
+    // },
   ].filter(Boolean);
 
   useEffect(() => {

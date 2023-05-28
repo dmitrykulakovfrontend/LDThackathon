@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FormikField from "../../components/Forms/FormikField";
 import FormikForm from "../../components/Forms/FormikForm";
 import { API_URL } from "@/constants";
@@ -82,6 +82,9 @@ function SignIn() {
             >
               Войти
             </button>
+            <Link to="/signup" className="text-center text-blue-500">
+              Еще не регистрировались?
+            </Link>
           </FormikForm>
         )}
       </Formik>

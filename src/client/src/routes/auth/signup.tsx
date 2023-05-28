@@ -93,7 +93,7 @@ function AuthSignUp() {
           Уже есть аккаунт
         </Link>
       </div>
-      <div className="flex justify-between w-full my-8">
+      <div className="flex justify-between w-full my-8 max-md:flex-col">
         {Object.entries(steps).map(([stepPage, text]) => (
           <div
             key={stepPage}
@@ -127,7 +127,7 @@ function AuthSignUp() {
           <FormikForm className="w-full">
             <PageRender page={page} errors={errors} touched={touched} />
 
-            <div className="flex items-center justify-between w-full my-8">
+            <div className="flex items-center justify-between w-full gap-4 my-8 max-sm:flex-col">
               <button
                 type="button"
                 onClick={() => setPage(page - 1)}

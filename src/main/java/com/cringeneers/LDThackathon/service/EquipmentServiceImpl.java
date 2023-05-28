@@ -3,6 +3,7 @@ package com.cringeneers.LDThackathon.service;
 import com.cringeneers.LDThackathon.entity.Equipment;
 import com.cringeneers.LDThackathon.repository.EquipmentRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class EquipmentServiceImpl implements EquipmentService {
+    @Autowired
     private EquipmentRepository equipmentRepository;
 
     @Override
@@ -30,8 +32,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public void update(String type, Equipment equipment) {
         Equipment equipmentFromDb = equipmentRepository.findByType(type);
-        equipmentFromDb.setCost(equipment.getCost());
         equipmentFromDb.setType(equipment.getType());
+        equipmentFromDb.setCost(equipment.getCost());
         equipmentRepository.save(equipmentFromDb);
     }
 

@@ -16,13 +16,13 @@ function Index() {
         <div className="flex gap-5 mt-8 max-sm:mt-2 ">
           <Link
             to={"calculator/new"}
-            className="flex items-center justify-center px-8 py-3 text-white border-[3px] border-blue-500 bg-blue-500 h-fit rounded-xl max-sm:py-2 max-sm:px-4 "
+            className="flex items-center justify-center px-8 py-3 text-white border-[3px] border-blue-500 bg-blue-500 h-fit rounded-xl max-sm:py-2 max-sm:px-4 transition-all hover:bg-blue-700 hover:scale-110 hover:border-blue-700 active:scale-95"
           >
             Калькулятор
           </Link>
           <Link
             to={"auth/signup"}
-            className="px-8 flex items-center justify-center py-3 h-fit text-white border-[3px] border-white rounded-xl max-sm:py-2 max-sm:px-4 "
+            className="px-8 flex items-center justify-center py-3 h-fit text-white border-[3px] border-white rounded-xl max-sm:py-2 max-sm:px-4 transition-all hover:scale-110  active:scale-95"
           >
             Регистрация
           </Link>

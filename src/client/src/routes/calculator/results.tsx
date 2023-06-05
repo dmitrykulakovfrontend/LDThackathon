@@ -186,7 +186,7 @@ function Results() {
           onClick={handlePrint}
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
-          className="relative px-12 py-2 mt-4 ml-auto text-blue-500 transition-all border-2 border-blue-500 hover:bg-blue-500 hover:text-white max-sm:mx-auto rounded-xl"
+          className={`relative px-12 py-2 mt-4 ml-auto text-blue-500 transition-all border-2 border-blue-500 hover:bg-blue-500 hover:text-white max-sm:mx-auto rounded-xl hover:scale-110 active:scale-95`}
         >
           {isHover && !user && (
             <div className="absolute flex bg-white items-center justify-center w-[300px] p-5 text-black border-2 bottom-16 left-28 h-fit rounded-xl text-left border-ldt-red max-lg:right-60 max-lg:left-auto max-sm:right-[50%] max-sm:left-[50%] max-sm:translate-x-[-50%]">

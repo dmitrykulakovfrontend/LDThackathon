@@ -35,10 +35,12 @@ function FormikField({
   return (
     <>
       <label
-        className={`flex flex-col  max-w-md gap-2 h-fit ${labelClassname}`}
+        className={`flex flex-col  max-w-md gap-2 justify-between ${labelClassname}`}
       >
-        <span className="font-semibold">{title}</span>
-        {isError && <div className="text-ldt-red">{errors}</div>}
+        <div className="flex flex-col justify-between gap-1">
+          <span className="font-semibold w-fit">{title}</span>
+          {isError && <div className="text-ldt-red w-fit">{errors}</div>}
+        </div>
         <div className="relative w-full">
           {isSelect ? (
             <>
@@ -46,7 +48,7 @@ function FormikField({
                 as="select"
                 onClick={handleDropdownToggle}
                 {...props}
-                className={`px-6 py-3 w-full appearance-none border rounded-xl ${borderColor} ${className}`}
+                className={`px-6 py-3 w-full appearance-none  outline-blue-500 transition-all hover:border-blue-500 border rounded-xl ${borderColor} ${className}`}
               >
                 {children}
               </Field>
@@ -57,7 +59,7 @@ function FormikField({
           ) : (
             <Field
               {...props}
-              className={` px-6 py-3 border w-full rounded-xl ${borderColor} ${className}`}
+              className={` px-6 py-3 border w-full rounded-xl outline-blue-500 transition-all hover:border-blue-500 ${borderColor} ${className}`}
             />
           )}
         </div>

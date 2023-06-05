@@ -10,6 +10,12 @@
   font-size: 16px;
   cursor: pointer;
   border-radius: 16px;
+  transition: all cubic-bezier(0.4, 0, 0.2, 1) 150ms;
+}
+
+.radio-toolbar label:hover {
+  background-color: #2f80ed;
+  color: white;
 }
 
 .radio-toolbar input[type="radio"]:checked + label {
@@ -29,9 +35,14 @@
   background-color: white;
   transition: 0.2s ease-in-out;
 }
+.switch input:hover:before {
+  left: 1.25rem;
+}
+.switch input:hover {
+  background-color: #7f9cf5;
+}
 
 .switch input:checked {
-  @apply: bg-indigo-400;
   background-color: #7f9cf5;
 }
 

@@ -78,11 +78,14 @@ function SignIn() {
             />
             <button
               type="submit"
-              className="px-8 py-2 mx-auto tracking-wide text-white rounded-xl w-fit bg-ldt-red"
+              className="px-8 py-2 mx-auto tracking-wide text-white transition-all rounded-xl w-fit bg-ldt-red hover:bg-red-700 hover:scale-110 active:scale-95"
             >
               Войти
             </button>
-            <Link to="/auth/signup" className="text-center text-blue-500">
+            <Link
+              to="/auth/signup"
+              className="text-center text-blue-500 underline underline-offset-2"
+            >
               Еще не регистрировались?
             </Link>
           </FormikForm>

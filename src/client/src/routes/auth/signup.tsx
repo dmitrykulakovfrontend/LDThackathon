@@ -95,8 +95,11 @@ function AuthSignUp() {
     <div className="flex flex-col items-center justify-center">
       <div className="flex items-center justify-between w-full">
         <h1 className="text-3xl font-bold max-sm:text-xl">Регистрация</h1>
-        <Link to="/auth/signin" className="text-blue-500">
-          Уже есть аккаунт
+        <Link
+          to="/auth/signin"
+          className="text-blue-500 underline underline-offset-2"
+        >
+          Уже есть аккаунт?
         </Link>
       </div>
       <div className="flex justify-between w-full my-8 max-md:flex-col">
@@ -143,7 +146,9 @@ function AuthSignUp() {
                 type="button"
                 onClick={() => setPage(page - 1)}
                 disabled={page === 1}
-                className="px-8 py-2 bg-white border-2 rounded-md text-ldt-red border-ldt-red"
+                className={`px-8 py-2 bg-white border-2 rounded-md transition-all text-ldt-red border-ldt-red hover:border-red-700 hover:text-red-700 hover:scale-110 active:scale-95 ${
+                  page === 1 ? " opacity-25 hover:cursor-not-allowed" : ""
+                } `}
               >
                 Назад
               </button>
@@ -151,7 +156,7 @@ function AuthSignUp() {
                 type={page === 3 ? "submit" : "button"}
                 onClick={page === 3 ? undefined : () => setPage(page + 1)}
                 disabled={page === 4}
-                className="px-8 py-2 text-white border-2 rounded-md bg-ldt-red border-ldt-red"
+                className="px-8 py-2 text-white transition-all border-2 rounded-md bg-ldt-red border-ldt-red hover:border-red-700 hover:bg-red-700 hover:scale-110 active:scale-95 "
               >
                 {page === 3 ? "Зарегистрироваться" : "Далее"}
               </button>

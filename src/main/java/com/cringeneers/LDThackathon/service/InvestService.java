@@ -3,12 +3,18 @@ package com.cringeneers.LDThackathon.service;
 import com.cringeneers.LDThackathon.dto.EquipmentDto;
 import com.cringeneers.LDThackathon.dto.InvestRequestDto;
 import com.cringeneers.LDThackathon.dto.InvestResponseDto;
+import com.cringeneers.LDThackathon.entity.InvestResult;
 import com.cringeneers.LDThackathon.repository.DistrictRepository;
+import com.cringeneers.LDThackathon.repository.InvestResultRepository;
 import com.cringeneers.LDThackathon.repository.RegionRepository;
+import com.cringeneers.LDThackathon.repository.UserRepository;
+import com.cringeneers.LDThackathon.security.JwtUtilities;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 @Service
@@ -36,7 +42,7 @@ public class InvestService {
     private final RegionRepository regionRepository;
     private final BusinessService businessService;
     private final EquipmentService equipmentService;
-    private final PdfService pdfService;
+    private final InvestResultRepository investResultRepository;
 
 
     public InvestResponseDto calculate(InvestRequestDto investRequestDto) {
@@ -72,8 +78,15 @@ public class InvestService {
         investResponseDto.setEngineerYear(BigDecimal.valueOf(50000 + ((M1 + M2) * 365 * investRequestDto.getN_employee()) + calculateElectricityYear(investRequestDto.getEquipments()) + ((investRequestDto.getSquare_buildings() * HEIGHT * (18 - MEAN_TEMPERATURE) * 220 * 24 / 1000000))));
         investResponseDto.setTotal(BigDecimal.valueOf(investResponseDto.getEngineerYear().doubleValue() + investResponseDto.getEngineerOnce().doubleValue() + investResponseDto.getBuilding().doubleValue() + investResponseDto.getLand().doubleValue() + investResponseDto.getEntityRegistration() + investResponseDto.getSalaries().doubleValue() + investResponseDto.getNdfl().doubleValue() + investResponseDto.getMedic().doubleValue() + investResponseDto.getRetire().doubleValue() + investResponseDto.getLandTax().doubleValue() + investResponseDto.getPropertyTax().doubleValue() + investResponseDto.getEquipment().doubleValue() + investResponseDto.getAmortisation().doubleValue() + investResponseDto.getPatentRegistration().doubleValue() + investResponseDto.getAccounting().doubleValue()));
 
-
-        pdfService.makePDF(investRequestDto, investResponseDto);
+        InvestResult investResult = getInvestResult(investRequestDto, investResponseDto);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!email.equals("anonymousUser"))
+            try {
+            investResult.setEmail(email);
+            investResultRepository.save(investResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return investResponseDto;
     }
     private Double calculateEquipment(ArrayList<EquipmentDto> equipments) {
@@ -104,6 +117,54 @@ public class InvestService {
             cost += equipment.getAmount() * ELECTRICITY_CONST2 * 24 * 365;
         }
         return cost;
+    }
+    private InvestResult getInvestResult(InvestRequestDto investRequestDto, InvestResponseDto investResponseDto) {
+        InvestResult investResult = new InvestResult();
+        investResult.setMedic(investResponseDto.getMedic().toBigInteger());
+        investResult.setRetire(investResponseDto.getRetire().toBigInteger());
+        investResult.setTotal(investResponseDto.getTotal().toBigInteger());
+        investResult.setPersonal(investResponseDto.getSalaries().toBigInteger());
+        investResult.setLandTaxes(BigInteger.valueOf(investResponseDto.getLandTax().intValue()));
+        investResult.setPropertyTaxes(BigInteger.valueOf(investResponseDto.getPropertyTax().intValue()));
+        investResult.setBuilding_rent(investResponseDto.getBuilding().toBigInteger());
+        investResult.setLand(investResponseDto.getLand().toBigInteger());
+        investResult.setEngineerOnce(investResponseDto.getEngineerOnce().toBigInteger());
+        investResult.setEngineerYear(investResponseDto.getEngineerYear().toBigInteger());
+        investResult.setNdfl(investResponseDto.getNdfl().toBigInteger());
+        investResult.setBusiness_type(investRequestDto.getBusiness_type());
+        investResult.setDistrict_price(BigInteger.valueOf(investResponseDto.getLand().intValue() / investRequestDto.getSquare_area().intValue()));
+        investResult.setTotalOnce(BigInteger.valueOf((investResult.getBuilding_rent().intValue() + investResponseDto.getLand().intValue() + investResponseDto.getPatentRegistration().intValue() + investResult.getEngineerOnce().intValue() + investResponseDto.getEntityRegistration().intValue() + investResponseDto.getEquipment().intValue())));
+        investResult.setTotalYear(BigInteger.valueOf (investResult.getTotal().intValue() - investResult.getTotalOnce().intValue()));
+        investResult.setSquare_area(investRequestDto.getSquare_area());
+        investResult.setSquare_buildings(investRequestDto.getSquare_buildings());
+        investResult.setAccountingPapers(investRequestDto.getAccounting_papers());
+        investResult.setPatentRegistration(investResponseDto.getPatentRegistration().longValue());
+        investResult.setEntityRegistration(investResponseDto.getEntityRegistration().longValue());
+        investResult.setAccounting(investResponseDto.getAccounting().toBigInteger());
+        investResult.setEquipment(investResponseDto.getEquipment().toBigInteger());
+        investResult.setAmmortisation(investResponseDto.getAmortisation().toBigInteger());
+
+        if (investRequestDto.getEntity().equalsIgnoreCase("ooo")) {
+            investResult.setOrganisationType("OOO");
+        } else if (investRequestDto.getEntity().equalsIgnoreCase("zao")) {
+            investResult.setOrganisationType("ЗАО");
+        } else if (investRequestDto.getEntity().equalsIgnoreCase("oao")) {
+            investResult.setOrganisationType("ОАО");
+        } else if (investRequestDto.getEntity().equalsIgnoreCase("pao")) {
+            investResult.setOrganisationType("ПАО");
+        } else if (investRequestDto.getEntity().equalsIgnoreCase("ip")) {
+            investResult.setOrganisationType("ИП");
+        }
+        investResult.setEmployees_number(investRequestDto.getN_employee());
+        investResult.setDistrict(investRequestDto.getDistrict());
+        if (investRequestDto.getAccounting_type().equalsIgnoreCase("6%")) {
+            investResult.setAccountingType("УСН 6%");
+        } else if (investRequestDto.getAccounting_type().equalsIgnoreCase("15%")) {
+            investResult.setAccountingType("УСН 15%");
+        } else {
+            investResult.setAccountingType("ОСН");
+        }
+        return investResult;
     }
 
 }

@@ -7,9 +7,9 @@ import com.cringeneers.LDThackathon.entity.InvestResult;
 import com.cringeneers.LDThackathon.repository.DistrictRepository;
 import com.cringeneers.LDThackathon.repository.InvestResultRepository;
 import com.cringeneers.LDThackathon.repository.RegionRepository;
-import com.cringeneers.LDThackathon.repository.UserRepository;
-import com.cringeneers.LDThackathon.security.JwtUtilities;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +43,7 @@ public class InvestService {
     private final BusinessService businessService;
     private final EquipmentService equipmentService;
     private final InvestResultRepository investResultRepository;
+    private final AuthenticationManager authenticationManager;
 
 
     public InvestResponseDto calculate(InvestRequestDto investRequestDto) {
@@ -79,7 +80,8 @@ public class InvestService {
         investResponseDto.setTotal(BigDecimal.valueOf(investResponseDto.getEngineerYear().doubleValue() + investResponseDto.getEngineerOnce().doubleValue() + investResponseDto.getBuilding().doubleValue() + investResponseDto.getLand().doubleValue() + investResponseDto.getEntityRegistration() + investResponseDto.getSalaries().doubleValue() + investResponseDto.getNdfl().doubleValue() + investResponseDto.getMedic().doubleValue() + investResponseDto.getRetire().doubleValue() + investResponseDto.getLandTax().doubleValue() + investResponseDto.getPropertyTax().doubleValue() + investResponseDto.getEquipment().doubleValue() + investResponseDto.getAmortisation().doubleValue() + investResponseDto.getPatentRegistration().doubleValue() + investResponseDto.getAccounting().doubleValue()));
 
         InvestResult investResult = getInvestResult(investRequestDto, investResponseDto);
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
         if (!email.equals("anonymousUser"))
             try {
             investResult.setEmail(email);

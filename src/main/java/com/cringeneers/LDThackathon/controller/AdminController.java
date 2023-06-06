@@ -5,6 +5,9 @@ import com.cringeneers.LDThackathon.entity.Equipment;
 import com.cringeneers.LDThackathon.entity.User;
 import com.cringeneers.LDThackathon.repository.BusinessRepository;
 import com.cringeneers.LDThackathon.repository.EquipmentRepository;
+import com.cringeneers.LDThackathon.repository.RoleRepository;
+import com.cringeneers.LDThackathon.repository.UserRepository;
+import com.cringeneers.LDThackathon.security.JwtUtilities;
 import com.cringeneers.LDThackathon.service.BusinessService;
 import com.cringeneers.LDThackathon.service.EquipmentService;
 import com.cringeneers.LDThackathon.service.UserService;
@@ -12,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +23,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.DELETE, RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS}, allowCredentials = "false", allowedHeaders = { "*" }, exposedHeaders = { "*" })
 @RestController
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
@@ -28,6 +33,7 @@ public class AdminController {
     private UserService userService;
     private EquipmentRepository equipmentRepository;
     private BusinessRepository businessRepository;
+
 
     @Autowired
     public AdminController(EquipmentService equipmentService, BusinessService businessService, UserService userService, EquipmentRepository equipmentRepository, BusinessRepository businessRepository) {
@@ -51,6 +57,7 @@ public class AdminController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PostMapping("/business")
     public ResponseEntity<Business> createBusiness(@RequestBody Business business) {
         Business newBusiness = new Business();

@@ -90,7 +90,7 @@ export type FormValues = typeof initialValues;
 function NewCalculator() {
   const navigate = useNavigate();
   const [token] = useState(JSON.parse(localStorage.getItem("user") as string));
-  const [previousData, setPreviousData] = useState<FormValues | null>(
+  const [previousData] = useState<FormValues | null>(
     JSON.parse(localStorage.getItem("previousData") as string)
   );
   async function handleSubmit(form: FormValues) {

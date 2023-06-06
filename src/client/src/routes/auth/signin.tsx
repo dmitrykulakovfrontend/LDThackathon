@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import FormikField from "../../components/Forms/FormikField";
 import FormikForm from "../../components/Forms/FormikForm";
 import { API_URL } from "@/constants";
-import { useCookies } from "react-cookie";
 
 interface Values {
   email: string;

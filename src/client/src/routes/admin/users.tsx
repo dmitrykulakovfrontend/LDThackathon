@@ -1,7 +1,4 @@
-import { useAuth } from "@/contexts/useAuth";
 import React, { useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
-import useEffect from "react";
 import { API_URL } from "@/constants";
 import { Token, User } from "@/types/auth";
 import { useJwt } from "react-jwt";

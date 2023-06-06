@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink, useLocation, useNavigation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import LogoIcon from "@/assets/small-logo.svg";
 import MenuIcon from "@/assets/icon-menu.svg";
 import User from "@/assets/user.svg";

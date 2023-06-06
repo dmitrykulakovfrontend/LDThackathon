@@ -106,7 +106,7 @@ const router = createBrowserRouter(
  *
  * @returns {any}
  */
-function App() {
+export function App() {
   const [user, setUser] = useState<Token | undefined | null>();
   return (
     <React.StrictMode>

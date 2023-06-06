@@ -76,7 +76,7 @@ function EquipmentPage() {
           )}
           {equipments?.map((equipment, i) => (
             <EquipmentDisplay
-              key={i}
+              key={equipment.id}
               equipment={equipment}
               fetchData={fetchData}
               token={token}
@@ -122,19 +122,34 @@ function EquipmentDisplay({
     setIsEditMode(true);
     console.log("editing...");
   }
+  function cancelCreating() {
+    if (setIsCreating) setIsCreating(false);
+  }
+  function cancelEditing() {
+    setIsEditMode(false);
+  }
   function handleChange(key: string, value: string) {
     setNewEquipment({
       ...newEquipment,
       [key]: value,
     });
   }
-  function handleSave() {
+  async function handleSave() {
     setIsEditMode(false);
     console.log("save");
-    fetch(`${API_URL}/admin/updateEquipment`, {
+    const res = await fetch(`${API_URL}/admin/equipment/${newEquipment.id}`, {
       method: "PUT",
-      body: JSON.stringify({ type: equipment.type, cost: newEquipment.cost }),
-    }).then((res) => console.log(res));
+      body: JSON.stringify({
+        type: newEquipment.type,
+        cost: newEquipment.cost,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    await fetchData();
+    console.log(res);
   }
   async function handleCreate() {
     try {
@@ -142,14 +157,14 @@ function EquipmentDisplay({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           cost: newEquipment.cost,
           type: newEquipment.type,
         }),
       });
-      console.log("created");
+      console.log(res);
       await fetchData();
     } catch (e) {
       console.error(e);
@@ -164,7 +179,7 @@ function EquipmentDisplay({
       <tr className="border-2 border-ldt-gray">
         {Object.entries(equipment).map(([key, value], i) => (
           <td key={i} className="p-3 border-2 border-ldt-gray">
-            {key === "id" && isCreating ? (
+            {key === "id" && (isCreating || isEditMode) ? (
               value
             ) : isEditMode || isCreating ? (
               <input
@@ -179,31 +194,37 @@ function EquipmentDisplay({
           </td>
         ))}
         <td className="flex items-center gap-2 p-3">
-          {isCreating ? (
-            <span className="hover:cursor-pointer" onClick={handleCreate}>
-              Добавить
-            </span>
-          ) : (
-            <div
-              className="hover:cursor-pointer hover:text-ldt-red"
-              onClick={handleDelete}
-            >
-              <DeleteIcon />
+          {isEditMode || isCreating ? (
+            <div className="flex items-center gap-2">
+              <span
+                className="text-blue-500 hover:cursor-pointer"
+                onClick={isCreating ? handleCreate : handleSave}
+              >
+                {isCreating ? "Создать" : "Обновить"}
+              </span>
+              <span
+                className="hover:cursor-pointer text-ldt-red"
+                onClick={isCreating ? cancelCreating : cancelEditing}
+              >
+                Отменить
+              </span>
             </div>
+          ) : (
+            <>
+              <div
+                className="hover:cursor-pointer hover:text-yellow-500"
+                onClick={handleEdit}
+              >
+                <EditIcon />
+              </div>
+              <div
+                className="hover:cursor-pointer hover:text-ldt-red"
+                onClick={handleDelete}
+              >
+                <DeleteIcon />
+              </div>
+            </>
           )}
-          {/* {isEditMode ? (
-            <span className="hover:cursor-pointer" onClick={handleSave}>
-              Сохранить
-            </span>
-          ) : isCreating ? (
-            <span className="hover:cursor-pointer" onClick={handleCreate}>
-              Добавить
-            </span>
-          ) : (
-            <div className="hover:cursor-pointer" onClick={handleEdit}>
-              <EditIcon />
-            </div>
-          )} */}
         </td>
       </tr>
     </>

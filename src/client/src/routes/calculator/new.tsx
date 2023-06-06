@@ -105,7 +105,7 @@ function NewCalculator() {
         onSubmit={handleSubmit}
         validationSchema={FormSchema}
       >
-        {({ errors, values, touched, setFieldValue }) => (
+        {({ errors, values, touched, setFieldValue, validateForm }) => (
           <FormikForm className="flex gap-5 max-xl:flex-col-reverse">
             <div>
               <div className="flex flex-1 gap-5 mt-12 max-xl:flex-col">
@@ -261,41 +261,47 @@ function NewCalculator() {
                                     title="Срок использования"
                                   />
                                 </div>
-                              </div>
-                              <div className="flex flex-col items-start justify-center gap-2">
-                                <button
-                                  type="button"
-                                  className="flex items-center text-ldt-red"
-                                  onClick={() => arrayHelpers.remove(index)} // remove a object from the list
-                                >
-                                  <span className="text-3xl w-[18px]"> - </span>{" "}
-                                  <span className="text-lg underline underline-offset-2">
-                                    Удалить
-                                  </span>
-                                </button>
+                                <div className="flex items-start justify-between gap-2">
+                                  {index === values.equipments.length - 1 ? (
+                                    <button
+                                      className="flex items-center gap-1 text-blue-500 transition-all hover:scale-110 "
+                                      type="button"
+                                      onClick={() =>
+                                        arrayHelpers.push({
+                                          type: "",
+                                          time: "",
+                                          amount: "",
+                                        })
+                                      } // insert an empty object at a position
+                                    >
+                                      <span className="text-3xl  w-[18px]">
+                                        +
+                                      </span>
+                                      <span className="text-lg underline underline-offset-2">
+                                        Добавить
+                                      </span>
+                                    </button>
+                                  ) : (
+                                    ""
+                                  )}
+                                  <button
+                                    type="button"
+                                    className="flex items-center gap-1 ml-auto transition-all text-ldt-red hover:scale-110"
+                                    onClick={() => arrayHelpers.remove(index)} // remove a object from the list
+                                  >
+                                    <span className="text-3xl w-[18px]">-</span>
+                                    <span className="text-lg underline underline-offset-2">
+                                      Удалить
+                                    </span>
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           ))}
-                          <button
-                            className="flex items-center text-ldt-gray"
-                            type="button"
-                            onClick={() =>
-                              arrayHelpers.push({
-                                type: "",
-                                time: "",
-                                price: "",
-                              })
-                            } // insert an empty object at a position
-                          >
-                            <span className="text-3xl  w-[18px]"> + </span>{" "}
-                            <span className="text-lg underline underline-offset-2">
-                              Добавить
-                            </span>
-                          </button>
                         </>
                       ) : (
                         <button
-                          className="flex items-center text-ldt-gray"
+                          className="flex items-center gap-1 text-blue-500"
                           type="button"
                           onClick={() =>
                             arrayHelpers.push({
@@ -305,7 +311,7 @@ function NewCalculator() {
                             })
                           } // insert an empty object at a position
                         >
-                          <span className="text-3xl  w-[18px]"> + </span>{" "}
+                          <span className="text-3xl  w-[18px]">+</span>
                           <span className="text-lg underline underline-offset-2">
                             Добавить
                           </span>
@@ -439,14 +445,21 @@ function NewCalculator() {
                 </ul>
                 <button
                   type="submit"
-                  className="px-4 py-2 mt-5 text-white bg-blue-500 w-fit rounded-xl"
+                  disabled={Object.entries(errors).length >= 1}
+                  className={`px-4 py-2 mt-5 text-white  w-fit rounded-xl ${
+                    Object.entries(errors).length
+                      ? "bg-red-500 opacity-50 cursor-not-allowed"
+                      : Object.entries(touched).length === 0
+                      ? "bg-blue-500 hover:bg-blue-600 hover:scale-110 active:scale-95"
+                      : "bg-green-500 hover:bg-green-600 hover:scale-110 active:scale-95"
+                  }`}
                 >
                   Расчитать
                 </button>
               </div>
             </div>
             <div className="flex flex-col gap-3 mt-12 max-xl:max-w-lg">
-              Территория расположения производства{" "}
+              Территория расположения производства
               {values.district ? `(${values.district})` : ""}
               {isMapActive ? (
                 <div className="relative z-10 w-full">
@@ -484,7 +497,11 @@ function NewCalculator() {
                   className="relative w-full cursor-pointer"
                   onClick={() => setIsMapActive(true)}
                 >
-                  <img src={fakeMapSrc} className="w-full" alt="" />
+                  <img
+                    src={fakeMapSrc}
+                    className="w-full transition-all filter hover:brightness-125 hover:scale-105"
+                    alt=""
+                  />
                   <span className="absolute z-10 text-center text-white translate-x-1/2 -translate-y-1/2 top-1/2 right-1/2">
                     Кликните на карту, чтобы выбрать местоположение
                   </span>

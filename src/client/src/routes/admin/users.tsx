@@ -119,9 +119,9 @@ function UserDisplay({
             {hover && mouse.x && mouse.y ? (
               <div
                 className="absolute p-6 bg-white border-2 border-ldt-gray rounded-xl"
-                style={{ left: mouse.x, top: mouse.y }}
+                style={{ left: mouse.x + 1, top: mouse.y + 1 }}
               >
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-4">
                   <span>{detailedUser.name}</span>
                   <span>{detailedUser.email}</span>
                 </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import EditIcon from "@/assets/edit.svg";
 import DeleteIcon from "@/assets/trashcan.svg";
 import { API_URL } from "@/constants";
+import { Link } from "react-router-dom";
 
 const headers = [
   "№",
@@ -30,12 +31,18 @@ function BusinessType() {
   return (
     <div className="mt-5 overflow-x-auto">
       <div className="flex items-center justify-between">
+        <Link
+          to="../"
+          className={`px-8 py-2 bg-white border-2 rounded-md transition-all text-ldt-red border-ldt-red hover:border-red-700 hover:text-red-700 hover:scale-105 ml-1 active:scale-95 `}
+        >
+          Назад
+        </Link>
         <h1 className="my-8 text-3xl font-bold">
           Обезличенные данные по отраслям
         </h1>
         <button
           onClick={() => setIsCreating(true)}
-          className="px-12 py-2 text-blue-500 border-2 border-blue-500 h-fit rounded-xl"
+          className="px-12 py-2 mr-1 text-blue-500 transition-all border-2 border-blue-500 h-fit rounded-xl hover:scale-105 active:scale-95"
         >
           Добавить
         </button>
@@ -159,7 +166,9 @@ function BusinessDisplay({
       <tr className="border-2 border-ldt-gray">
         {Object.entries(business).map(([key, value], i) => (
           <td key={i} className="p-3 border-2 border-ldt-gray">
-            {isEditMode || isCreating ? (
+            {key === "id" && isCreating ? (
+              value
+            ) : isEditMode || isCreating ? (
               <input
                 value={String(newBusiness[key])}
                 onChange={(e) => handleChange(key, e.target.value)}
@@ -172,15 +181,17 @@ function BusinessDisplay({
           </td>
         ))}
         <td className="flex items-center gap-2 p-3">
-          <div className="hover:cursor-pointer" onClick={handleDelete}>
-            <DeleteIcon />
-          </div>
           {isCreating ? (
-            <span className="hover:cursor-pointer" onClick={handleCreate}>
+            <span className="hover:cursor-pointer " onClick={handleCreate}>
               Добавить
             </span>
           ) : (
-            ""
+            <div
+              className="transition-all hover:cursor-pointer hover:text-ldt-red"
+              onClick={handleDelete}
+            >
+              <DeleteIcon />
+            </div>
           )}
           {/* {isEditMode ? (
             <span className="hover:cursor-pointer" onClick={handleSave}>

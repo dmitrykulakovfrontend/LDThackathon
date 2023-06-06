@@ -86,6 +86,8 @@ function Header() {
         <div className="max-w-[1400px] min-h-[72px] max-md:mt-2 items-center p-5 mx-auto gap-5 flex justify-between  py-3">
           <button
             className="hidden max-md:block"
+            aria-label="Меню"
+            type="button"
             onClick={() => setMobileMenu(!mobileMenu)}
           >
             <MenuIcon />

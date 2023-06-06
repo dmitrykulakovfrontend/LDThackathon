@@ -72,16 +72,19 @@ public class AdminController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("permitAll()")
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+    @PreAuthorize("permitAll()")
     @GetMapping("/equipments")
     public ResponseEntity<List<Equipment>> getAllEquipments() {
         List<Equipment> equipments = equipmentService.getAllEquipments();
         return new ResponseEntity<>(equipments, HttpStatus.OK);
     }
+    @PreAuthorize("permitAll()")
     @GetMapping("/businesses")
     public ResponseEntity<List<Business>> getAllBusinesses() {
         List<Business> businesses = businessService.getAllBusinesess();

@@ -13,6 +13,9 @@ const headers = ["№", "Наименование", "Цена", "Действи�
 function EquipmentPage() {
   const [equipments, setEquipments] = useState<Equipment[]>();
   const [isCreating, setIsCreating] = useState(false);
+  const [token] = useState<string>(
+    JSON.parse(localStorage.getItem("user") as string)
+  );
 
   async function fetchData() {
     const response = await fetch(`${API_URL}/admin/equipments`);
@@ -63,6 +66,7 @@ function EquipmentPage() {
                 cost: -1,
               }}
               isCreating
+              token={token}
               setIsCreating={setIsCreating}
             />
           ) : (
@@ -73,6 +77,7 @@ function EquipmentPage() {
               key={i}
               equipment={equipment}
               fetchData={fetchData}
+              token={token}
             />
           ))}
         </tbody>
@@ -92,17 +97,21 @@ function EquipmentDisplay({
   isCreating,
   setIsCreating,
   fetchData,
+  token,
 }: {
   equipment: Equipment;
   isCreating?: boolean;
   setIsCreating?: (value: boolean) => void;
   fetchData: () => Promise<void>;
+  token: string;
 }) {
   async function handleDelete() {
-    console.log("delete", equipment);
-    await fetch(`${API_URL}/admin/deleteEquipment`, {
+    console.log("delete", equipment.type);
+    await fetch(`${API_URL}/admin/equipment/${equipment.id}`, {
       method: "DELETE",
-      body: equipment.type,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     await fetchData();
   }
@@ -131,6 +140,7 @@ function EquipmentDisplay({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           cost: newEquipment.cost,

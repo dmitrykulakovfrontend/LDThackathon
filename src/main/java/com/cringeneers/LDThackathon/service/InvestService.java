@@ -46,7 +46,7 @@ public class InvestService {
     private final AuthenticationManager authenticationManager;
 
 
-    public InvestResponseDto calculate(InvestRequestDto investRequestDto) {
+    public InvestResponseDto calculate(InvestRequestDto investRequestDto, String email) {
         double account_base = 0;
         InvestResponseDto investResponseDto = new InvestResponseDto();
         investResponseDto.setBuilding(new BigDecimal(investRequestDto.getSquare_buildings() * SQUARE_PRICE));
@@ -80,8 +80,6 @@ public class InvestService {
         investResponseDto.setTotal(BigDecimal.valueOf(investResponseDto.getEngineerYear().doubleValue() + investResponseDto.getEngineerOnce().doubleValue() + investResponseDto.getBuilding().doubleValue() + investResponseDto.getLand().doubleValue() + investResponseDto.getEntityRegistration() + investResponseDto.getSalaries().doubleValue() + investResponseDto.getNdfl().doubleValue() + investResponseDto.getMedic().doubleValue() + investResponseDto.getRetire().doubleValue() + investResponseDto.getLandTax().doubleValue() + investResponseDto.getPropertyTax().doubleValue() + investResponseDto.getEquipment().doubleValue() + investResponseDto.getAmortisation().doubleValue() + investResponseDto.getPatentRegistration().doubleValue() + investResponseDto.getAccounting().doubleValue()));
 
         InvestResult investResult = getInvestResult(investRequestDto, investResponseDto);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
         if (!email.equals("anonymousUser"))
             try {
             investResult.setEmail(email);

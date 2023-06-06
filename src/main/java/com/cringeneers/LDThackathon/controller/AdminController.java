@@ -40,9 +40,13 @@ public class AdminController {
 
 
     @PostMapping("/equipment")
-    public ResponseEntity<String> addEquipment(@RequestBody Equipment equipment) {
-        equipmentService.createEquipment(equipment);
-        return new ResponseEntity<>(HttpStatus.OK);
+  public ResponseEntity<Equipment> createEquipment(@RequestBody Equipment equipment) {
+    try {
+      Equipment _equipment = equipmentRepository
+          .save(new Equipment(equipment.getType(), equipment.getCost()));
+      return new ResponseEntity<>(_equipment, HttpStatus.CREATED);
+    } catch (Exception e) {
+      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @PostMapping("/business")
     public ResponseEntity<String> addBusiness(@RequestBody Business business) {

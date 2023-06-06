@@ -35,12 +35,6 @@
   background-color: white;
   transition: 0.2s ease-in-out;
 }
-.switch input:hover:before {
-  left: 1.25rem;
-}
-.switch input:hover {
-  background-color: #7f9cf5;
-}
 
 .switch input:checked {
   background-color: #7f9cf5;

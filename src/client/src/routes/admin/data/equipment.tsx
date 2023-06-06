@@ -28,14 +28,16 @@ function EquipmentPage() {
   console.log(equipments);
   return (
     <div className="mt-5 overflow-x-auto">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4 max-md:flex-col max-md:mb-4">
         <Link
           to="../"
-          className={`px-8 py-2 bg-white border-2 rounded-md transition-all text-ldt-red border-ldt-red hover:border-red-700 hover:text-red-700 hover:scale-105 ml-1 active:scale-95 `}
+          className={`px-12 py-2 bg-white border-2 rounded-xl transition-all text-ldt-red border-ldt-red hover:border-red-700 hover:text-red-700 hover:scale-105 ml-1 active:scale-95 `}
         >
           Назад
         </Link>
-        <h1 className="my-8 text-3xl font-bold">Средняя цена оборудования</h1>
+        <h1 className="my-8 text-3xl font-bold text-center max-md:my-0">
+          Средняя цена оборудования
+        </h1>
         <button
           onClick={() => setIsCreating(true)}
           className="px-12 py-2 mr-1 text-blue-500 transition-all border-2 border-blue-500 h-fit rounded-xl hover:scale-105 active:scale-95"
@@ -140,7 +142,7 @@ function EquipmentDisplay({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           cost: newEquipment.cost,

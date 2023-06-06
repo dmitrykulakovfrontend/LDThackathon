@@ -408,6 +408,7 @@ function NewCalculator() {
                       type="radio"
                       name="entity"
                       value="ooo"
+                      onClick={() => setFieldValue("isPatent", false)}
                       id="entity2"
                     />
                     <label htmlFor="entity2">ООО</label>
@@ -415,6 +416,7 @@ function NewCalculator() {
                       type="radio"
                       name="entity"
                       value="zao"
+                      onClick={() => setFieldValue("isPatent", false)}
                       id="entity3"
                     />
                     <label htmlFor="entity3">ЗАО</label>
@@ -422,6 +424,7 @@ function NewCalculator() {
                       type="radio"
                       name="entity"
                       value="pao"
+                      onClick={() => setFieldValue("isPatent", false)}
                       id="entity4"
                     />
                     <label htmlFor="entity4">ПАО</label>
@@ -429,6 +432,7 @@ function NewCalculator() {
                       type="radio"
                       name="entity"
                       value="oao"
+                      onClick={() => setFieldValue("isPatent", false)}
                       id="entity5"
                     />
                     <label htmlFor="entity5">ОАО</label>
@@ -494,20 +498,22 @@ function NewCalculator() {
                       {isHover ? values.accounting_papers : ""}
                     </span>
                   </div>
-                  <div className="flex flex-col gap-2 mb-8 switch">
-                    <label className="flex flex-col items-start w-fit">
-                      <span className="mt-5 ">Оформление патента</span>
-                      <input
-                        className="relative w-10 h-5 transition-all duration-200 ease-in-out bg-gray-400 rounded-full shadow-inner outline-none appearance-none cursor-pointer mt-7 "
-                        type="checkbox"
-                        onChange={(e) => {
-                          setFieldValue("isPatent", e.target.checked);
-                        }}
-                        checked={values.isPatent}
-                        name="isPatent"
-                      />
-                    </label>
-                  </div>
+                  {values.entity === "ip" && (
+                    <div className="flex flex-col gap-2 mb-8 switch">
+                      <label className="flex flex-col items-start w-fit">
+                        <span className="mt-5 ">Оформление патента</span>
+                        <input
+                          className="relative w-10 h-5 transition-all duration-200 ease-in-out bg-gray-400 rounded-full shadow-inner outline-none appearance-none cursor-pointer mt-7 "
+                          type="checkbox"
+                          onChange={(e) => {
+                            setFieldValue("isPatent", e.target.checked);
+                          }}
+                          checked={values.isPatent}
+                          name="isPatent"
+                        />
+                      </label>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col">

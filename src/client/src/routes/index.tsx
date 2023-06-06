@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import indexImgSrc from "@/assets/index.webp";
+import { useAuth } from "@/contexts/useAuth";
 
 /**
- * Главная странина, ничего сложного, картинка и 2 кнопки
+ * Главная странина, ничего сложного, картинка и 2 кнопки, если пользователь уже зарегистрирован то показывается кнопка личного кабинета
  */
 function Index() {
+  const { user } = useAuth();
   return (
     <div className={`flex flex-col flex-1 items-center justify-center gap-4`}>
       <img src={indexImgSrc} alt="" className="flex-1" />
@@ -19,12 +21,21 @@ function Index() {
           >
             Калькулятор
           </Link>
-          <Link
-            to={"auth/signup"}
-            className="px-8 flex items-center justify-center py-3 h-fit text-white border-[3px] border-white rounded-xl max-sm:py-2 max-sm:px-4 transition-all hover:scale-110  active:scale-95"
-          >
-            Регистрация
-          </Link>
+          {user ? (
+            <Link
+              to={"account/info"}
+              className="px-8 flex items-center justify-center py-3 h-fit text-white border-[3px] border-white rounded-xl max-sm:py-2 max-sm:px-4 transition-all hover:scale-110  active:scale-95"
+            >
+              Личный кабинет
+            </Link>
+          ) : (
+            <Link
+              to={"auth/signup"}
+              className="px-8 flex items-center justify-center py-3 h-fit text-white border-[3px] border-white rounded-xl max-sm:py-2 max-sm:px-4 transition-all hover:scale-110  active:scale-95"
+            >
+              Регистрация
+            </Link>
+          )}
         </div>
       </div>
     </div>

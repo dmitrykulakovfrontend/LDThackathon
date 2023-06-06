@@ -29,13 +29,32 @@ function Results() {
     form: FormValues;
     results: Results;
   } = location.state;
+  const [token, setToken] = useState(
+    JSON.parse(localStorage.getItem("user") as string)
+  );
   console.log({
     results,
     form,
   });
   async function handlePrint() {
     if (user) {
-      window.location.href = `${API_URL}/invest/download`;
+      const res = await fetch(`${API_URL}/invest/download`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const blob = await res.blob();
+      const downloadLink = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = downloadLink;
+      // the filename you want
+      a.download = "review.pdf";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(downloadLink);
+      // window.location.href = downloadLink;
     } else {
       toast.error(
         "Регистрация обязательна для получения более подробных результатов",

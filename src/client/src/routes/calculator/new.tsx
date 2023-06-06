@@ -16,6 +16,7 @@ import { API_URL } from "@/constants";
 import { FormValues, initialValues } from "@/types/form";
 import { Business } from "../admin/data/businessType";
 import { Equipment } from "../admin/data/equipment";
+import { useAuth } from "@/contexts/useAuth";
 
 /**
  * Схема для валидации пользовательских полей
@@ -59,6 +60,10 @@ type FormChoices = {
  */
 function NewCalculator() {
   const navigate = useNavigate();
+  const [token, setToken] = useState(
+    JSON.parse(localStorage.getItem("user") as string)
+  );
+  console.log(token);
   async function handleSubmit(form: FormValues) {
     try {
       const res = await fetch(`${API_URL}/invest/calculate`, {
@@ -66,9 +71,11 @@ function NewCalculator() {
         body: JSON.stringify(form),
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
       const results = await res.json();
+      console.log(results);
       navigate("../results", { state: { results, form } });
     } catch (e) {
       navigate("../results", { state: { results: {}, form } });
@@ -105,7 +112,7 @@ function NewCalculator() {
         onSubmit={handleSubmit}
         validationSchema={FormSchema}
       >
-        {({ errors, values, touched, setFieldValue, validateForm }) => (
+        {({ errors, values, touched, setFieldValue }) => (
           <FormikForm className="flex gap-5 max-xl:flex-col-reverse">
             <div>
               <div className="flex flex-1 gap-5 mt-12 max-xl:flex-col">
@@ -406,9 +413,9 @@ function NewCalculator() {
                       max="1000"
                       onChange={(e) => {
                         setFieldValue("accounting_papers", +e.target.value);
-                        setAccountingPapers(+e.target.value);
+                        // setAccountingPapers(+e.target.value);
                       }}
-                      value={accountingPapers}
+                      value={values.accounting_papers}
                       className="transparent h-1.5 w-full cursor-pointer appearance-none rounded-lg border-transparent bg-neutral-200"
                       id="customRange1"
                     />
@@ -417,7 +424,7 @@ function NewCalculator() {
                       <span>1000</span>
                     </div>
                     <span className="absolute left-0 w-full h-full text-center top-6 text-neutral-700">
-                      {isHover ? accountingPapers : ""}
+                      {isHover ? values.accounting_papers : ""}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2 mb-8 switch">

@@ -21,6 +21,7 @@ import LandPrice from "./routes/admin/data/land-price";
 import Objects from "./routes/admin/data/objects";
 import Patent from "./routes/admin/data/patent";
 import Taxes from "./routes/admin/data/taxes";
+import Modal from "react-modal";
 
 const isDev = import.meta.env.DEV;
 
@@ -117,4 +118,5 @@ function App() {
 }
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ReactDOM.createRoot(document.getElementById("root")!).render(<App />);
+Modal.setAppElement("#root");
 

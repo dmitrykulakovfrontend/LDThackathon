@@ -25,25 +25,6 @@ export enum PapersEnum {
   OCH = "OCH",
 }
 
-export const initialValues = {
-  business_type: "",
-  n_employee: "",
-  square_area: "",
-  square_buildings: "",
-  equipments: [
-    {
-      time: "",
-      amount: "",
-      type: "",
-    },
-  ],
-  entity: EntityEnum.ip,
-  accounting_type: PapersEnum["6%"],
-  accounting_papers: 1,
-  isPatent: false,
-  district: "",
-};
-
 export type Results = {
   total: number;
   building: number;
@@ -62,5 +43,3 @@ export type Results = {
   engineerOnce: number;
   engineerYear: number;
 };
-
-export type FormValues = typeof initialValues;

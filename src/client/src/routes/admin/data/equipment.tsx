@@ -10,7 +10,7 @@ const headers = ["№", "Наименование", "Цена", "Действи�
  * Страница отображения всего оборудования для администратора
  * @returns {any}
  */
-function Equipment() {
+function EquipmentPage() {
   const [equipments, setEquipments] = useState<Equipment[]>();
   const [isCreating, setIsCreating] = useState(false);
 
@@ -198,4 +198,4 @@ function EquipmentDisplay({
   );
 }
 
-export default Equipment;
+export default EquipmentPage;

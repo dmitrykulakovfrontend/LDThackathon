@@ -13,8 +13,9 @@ import {
   TileLayer,
 } from "react-leaflet";
 import { API_URL } from "@/constants";
-import { FormValues, initialValues } from "@/types/form";
+import { EntityEnum, PapersEnum } from "@/types/form";
 import { Business } from "../admin/data/businessType";
+import Modal, { Styles } from "react-modal";
 import { Equipment } from "../admin/data/equipment";
 
 /**
@@ -53,16 +54,45 @@ type FormChoices = {
   industryTypes: Business[];
   equipmentTypes: Equipment[];
 };
+const modalStyles: Styles = {
+  content: {
+    borderRadius: "14px",
+    borderColor: "#D71616",
+    borderWidth: "2px",
+    maxWidth: "335px",
+    maxHeight: "fit-content",
+    margin: "auto",
+  },
+};
+let initialValues = {
+  business_type: "",
+  n_employee: "",
+  square_area: "",
+  square_buildings: "",
+  equipments: [
+    {
+      time: "",
+      amount: "",
+      type: "",
+    },
+  ],
+  entity: EntityEnum.ip,
+  accounting_type: PapersEnum["6%"],
+  accounting_papers: 1,
+  isPatent: false,
+  district: "",
+};
+export type FormValues = typeof initialValues;
 /**
  * Одна из главных страниц сайта, форма для расчета, загружает lazy-loading geojson для отображения карты, и вся валидация происходит при помощи Formik и Yup. После введения правильных полей отправляет запрос на сервер для получения расчета и ссылки для скачивания
  * @returns {any}
  */
 function NewCalculator() {
   const navigate = useNavigate();
-  const [token, setToken] = useState(
-    JSON.parse(localStorage.getItem("user") as string)
+  const [token] = useState(JSON.parse(localStorage.getItem("user") as string));
+  const [previousData, setPreviousData] = useState<FormValues | null>(
+    JSON.parse(localStorage.getItem("previousData") as string)
   );
-  console.log(token);
   async function handleSubmit(form: FormValues) {
     try {
       const res = await fetch(`${API_URL}/invest/calculate`, {
@@ -73,6 +103,7 @@ function NewCalculator() {
           Authorization: `Bearer ${token}`,
         },
       });
+      localStorage.setItem("previousData", JSON.stringify(form));
       const results = await res.json();
       console.log(results);
       navigate("../results", { state: { results, form } });
@@ -80,11 +111,19 @@ function NewCalculator() {
       navigate("../results", { state: { results: {}, form } });
     }
   }
-  const [isPatent, setIsPatent] = useState(false);
   const [data, setData] = useState<null | GeoJsonObject>(null);
   const [isMapActive, setIsMapActive] = useState(false);
   const [isHover, setHover] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [formChoices, setFormChoices] = useState<FormChoices>();
+  function usePreviousData() {
+    setModalIsOpen(false);
+    if (previousData) initialValues = previousData;
+  }
+  function dontUsePreviousData() {
+    setModalIsOpen(false);
+    localStorage.removeItem("previousData");
+  }
   async function fetchFormChoices() {
     const [industryTypesRes, equipmentTypesRes] = await Promise.all([
       fetch(`${API_URL}/admin/businesses`),
@@ -101,14 +140,44 @@ function NewCalculator() {
       setData(data as GeoJsonObject);
     });
     fetchFormChoices();
-  }, []);
+    if (previousData) {
+      setModalIsOpen(true);
+    }
+  }, [previousData]);
   return (
     <>
       <h1 className="mt-24 text-2xl font-bold">Расчет инвестиций</h1>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel="Example Modal"
+        style={modalStyles}
+      >
+        <h2>
+          У вас остались несохраненные данные формы с прошлого раза, вернуть?
+        </h2>
+        <div className="flex justify-between gap-4 mt-4">
+          <button
+            type="button"
+            onClick={usePreviousData}
+            className={`px-8 py-2 transition-all text-white  w-fit rounded-md border border-green-500 bg-green-500 hover:bg-green-600 hover:scale-110 active:scale-95`}
+          >
+            Да
+          </button>
+          <button
+            type="button"
+            onClick={dontUsePreviousData}
+            className={`px-8 py-2 bg-white border-2 rounded-md transition-all text-ldt-red border-ldt-red hover:border-red-700 hover:text-red-700 hover:scale-110 active:scale-95 `}
+          >
+            Нет
+          </button>
+        </div>
+      </Modal>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={FormSchema}
+        enableReinitialize
       >
         {({ errors, values, touched, setFieldValue }) => (
           <FormikForm className="flex gap-5 max-xl:flex-col-reverse">
@@ -450,7 +519,7 @@ function NewCalculator() {
                 <button
                   type="submit"
                   disabled={Object.entries(errors).length >= 1}
-                  className={`px-4 py-2 mt-5 text-white  w-fit rounded-xl ${
+                  className={`px-4 py-2 mt-5 transition-all text-white  w-fit rounded-xl ${
                     Object.entries(errors).length
                       ? "bg-red-500 opacity-50 cursor-not-allowed"
                       : Object.entries(touched).length === 0

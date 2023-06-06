@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import IndustryIconSrc from "@/assets/industry.png";
 import EntityIconSrc from "@/assets/entity.png";
 import EmployeesIconSrc from "@/assets/employees.png";
@@ -7,11 +7,12 @@ import LocationIconSrc from "@/assets/location.png";
 import TaxesIconSrc from "@/assets/taxes.png";
 import OneTimePayIconSrc from "@/assets/one-time-pay.png";
 import YearlyPayIconSrc from "@/assets/yearly-pay.png";
-import { FormValues, entityMap, Results } from "@/types/form";
-import { papersTypeMap } from "../../types/form";
+import { entityMap, papersTypeMap } from "@/types/form";
+import type { Results } from "@/types/form";
+import type { FormValues } from "./new";
 import { API_URL } from "@/constants";
 import { ToastContainer, toast } from "react-toastify";
-import { useAuth } from "../../contexts/useAuth";
+import { useAuth } from "@/contexts/useAuth";
 
 /**
  * Страница результатов расчетов, сюда пользователь попадает после успешной отправки формы к серверу и получению результатов от него
@@ -29,9 +30,7 @@ function Results() {
     form: FormValues;
     results: Results;
   } = location.state;
-  const [token, setToken] = useState(
-    JSON.parse(localStorage.getItem("user") as string)
-  );
+  const [token] = useState(JSON.parse(localStorage.getItem("user") as string));
   console.log({
     results,
     form,

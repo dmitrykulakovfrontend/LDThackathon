@@ -38,20 +38,32 @@ public class AdminController {
         this.businessRepository = businessRepository;
     }
 
-
     @PostMapping("/equipment")
-  public ResponseEntity<Equipment> createEquipment(@RequestBody Equipment equipment) {
-    try {
-      Equipment _equipment = equipmentRepository
-          .save(new Equipment(equipment.getType(), equipment.getCost()));
-      return new ResponseEntity<>(_equipment, HttpStatus.CREATED);
-    } catch (Exception e) {
-      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<Equipment> createEquipment(@RequestBody Equipment equipment) {
+        Equipment newEquipment = new Equipment();
+        newEquipment.setCost(equipment.getCost());
+        newEquipment.setType(equipment.getType());
+        try {
+            Equipment _equipment = equipmentRepository
+                    .save(newEquipment);
+            return new ResponseEntity<>(_equipment, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @PostMapping("/business")
-    public ResponseEntity<String> addBusiness(@RequestBody Business business) {
-        businessService.createBusiness(business);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Business> createBusiness(@RequestBody Business business) {
+        Business newBusiness = new Business();
+        newBusiness.setCost(business.getCost());
+        newBusiness.setType(business.getType());
+        newBusiness.setMinimalSalary(business.getMinimalSalary());
+        try {
+            Business _business = businessRepository
+                    .save(newBusiness);
+            return new ResponseEntity<>(_business, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(){

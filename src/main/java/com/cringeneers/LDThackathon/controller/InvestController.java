@@ -2,12 +2,11 @@ package com.cringeneers.LDThackathon.controller;
 
 import com.cringeneers.LDThackathon.dto.InvestRequestDto;
 import com.cringeneers.LDThackathon.dto.InvestResponseDto;
-import com.cringeneers.LDThackathon.repository.RoleRepository;
-import com.cringeneers.LDThackathon.repository.UserRepository;
+import com.cringeneers.LDThackathon.repository.InvestResultRepository;
 import com.cringeneers.LDThackathon.service.InvestService;
 import com.cringeneers.LDThackathon.service.PdfService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
@@ -18,32 +17,26 @@ import java.io.IOException;
 @RequestMapping("/api/invest")
 public class InvestController {
 
-    private InvestRequestDto investRequestDto;
-    private InvestResponseDto investResponseDto;
-    @Autowired
-    private UserRepository userRepository;
+    private final InvestService investService;
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final PdfService pdfService;
+    final
+    InvestResultRepository investResultRepository;
 
-    @Autowired
-    private InvestService investService;
-
-    @Autowired
-    private PdfService pdfService;
+    public InvestController(InvestService investService, PdfService pdfService, InvestResultRepository investResultRepository) {
+        this.investService = investService;
+        this.pdfService = pdfService;
+        this.investResultRepository = investResultRepository;
+    }
 
     @PostMapping("/calculate")
     public InvestResponseDto calculateInvestigations(@RequestBody InvestRequestDto investRequestDto) {
-        this.investRequestDto = investRequestDto;
-        this.investResponseDto = investService.calculate(investRequestDto);
         return investService.calculate(investRequestDto);
     }
 
     @RequestMapping(path = "/download", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> download() throws IOException {
-        ByteArrayOutputStream pdfData = pdfService.makePDF(investRequestDto, investResponseDto);
-
-
+        ByteArrayOutputStream pdfData = pdfService.makePDF(investResultRepository.findInvestResultByEmail(SecurityContextHolder.getContext().getAuthentication().getName()));
         if (pdfData != null) {
             try {
                 // Устанавливаем заголовки ответа для скачивания файла

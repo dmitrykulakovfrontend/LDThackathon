@@ -2,12 +2,12 @@ package com.cringeneers.LDThackathon.service;
 
 import com.cringeneers.LDThackathon.dto.InvestRequestDto;
 import com.cringeneers.LDThackathon.dto.InvestResponseDto;
+import com.cringeneers.LDThackathon.entity.InvestResult;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -17,60 +17,39 @@ import java.math.BigInteger;
 
 @Service
 public class PdfService {
-    private final ResourceLoader resourceLoader;
 
-    public PdfService(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
+    public PdfService() {
     }
 
-    public ByteArrayOutputStream makePDF(InvestRequestDto investRequestDto, InvestResponseDto investResponseDto) {
-        BigInteger medic = investResponseDto.getMedic().toBigInteger();
-        BigInteger retire = investResponseDto.getRetire().toBigInteger();
-        BigInteger total = investResponseDto.getTotal().toBigInteger();
-        BigInteger personal = investResponseDto.getSalaries().toBigInteger();
-        BigInteger landTaxes = BigInteger.valueOf(investResponseDto.getLandTax().intValue());
-        BigInteger propertyTaxes = BigInteger.valueOf(investResponseDto.getPropertyTax().intValue());
-        BigInteger building_rent = investResponseDto.getBuilding().toBigInteger();
-        BigInteger land = investResponseDto.getLand().toBigInteger();
-        BigInteger engineerOnce = investResponseDto.getEngineerOnce().toBigInteger();
-        BigInteger engineerYear = investResponseDto.getEngineerYear().toBigInteger();
-        BigInteger ndfl = investResponseDto.getNdfl().toBigInteger();
-        String business_type = investRequestDto.getBusiness_type();
-        BigInteger district_price = BigInteger.valueOf(investResponseDto.getLand().intValue() / investRequestDto.getSquare_area().intValue());
-        BigInteger totalOnce = BigInteger.valueOf((building_rent.intValue() + investResponseDto.getLand().intValue() + investResponseDto.getPatentRegistration().intValue() + engineerOnce.intValue() + investResponseDto.getEntityRegistration().intValue() + investResponseDto.getEquipment().intValue()));
-        BigInteger totalYear = BigInteger.valueOf (total.intValue() - totalOnce.intValue());
-        Long square_area = investRequestDto.getSquare_area();
-        Long square_buildings = investRequestDto.getSquare_buildings();
-        Long accountingPapers = investRequestDto.getAccounting_papers();
-        Long patentRegistration = investResponseDto.getPatentRegistration().longValue();
-        Long entityRegistration = investResponseDto.getEntityRegistration().longValue();
-        BigInteger accounting = investResponseDto.getAccounting().toBigInteger();
-        BigInteger equipment = investResponseDto.getEquipment().toBigInteger();
-        BigInteger ammortisation = investResponseDto.getAmortisation().toBigInteger();
+    public ByteArrayOutputStream makePDF(InvestResult investResult) {
+        BigInteger medic = investResult.getMedic();
+        BigInteger retire = investResult.getRetire();
+        BigInteger total = investResult.getTotal();
+        BigInteger personal = investResult.getPersonal();
+        BigInteger landTaxes = investResult.getLandTaxes();
+        BigInteger propertyTaxes = investResult.getPropertyTaxes();
+        BigInteger building_rent = investResult.getBuilding_rent();
+        BigInteger land = investResult.getLand();
+        BigInteger engineerOnce = investResult.getEngineerOnce();
+        BigInteger engineerYear = investResult.getEngineerYear();
+        BigInteger ndfl = investResult.getNdfl();
+        String business_type = investResult.getBusiness_type();
+        BigInteger district_price = investResult.getDistrict_price();
+        BigInteger totalOnce = investResult.getTotalOnce();
+        BigInteger totalYear = investResult.getTotalYear();
+        Long square_area = investResult.getSquare_area();
+        Long square_buildings = investResult.getSquare_buildings();
+        Long accountingPapers = investResult.getAccountingPapers();
+        Long patentRegistration = investResult.getPatentRegistration();
+        Long entityRegistration = investResult.getEntityRegistration();
+        BigInteger accounting = investResult.getAccounting();
+        BigInteger equipment = investResult.getEquipment();
+        BigInteger ammortisation = investResult.getAmmortisation();
 
-        StringBuilder organisation_type = new StringBuilder();
-        if (investRequestDto.getEntity().equalsIgnoreCase("ooo")) {
-              organisation_type.append("OOO");
-        } else if (investRequestDto.getEntity().equalsIgnoreCase("zao")) {
-            organisation_type.append("ЗАО");
-        } else if (investRequestDto.getEntity().equalsIgnoreCase("oao")) {
-            organisation_type.append("ОАО");
-        } else if (investRequestDto.getEntity().equalsIgnoreCase("pao")) {
-            organisation_type.append("ПАО");
-        } else if (investRequestDto.getEntity().equalsIgnoreCase("ip")) {
-            organisation_type.append("ИП");
-        }
-        long employees_number = investRequestDto.getN_employee();
-        String district = investRequestDto.getDistrict();
-        String accounting_type = investRequestDto.getAccounting_type();
-        StringBuilder accountingType = new StringBuilder();
-        if (investRequestDto.getAccounting_type().equalsIgnoreCase("6%")) {
-            accountingType.append("УСН 6%");
-        } else if (investRequestDto.getAccounting_type().equalsIgnoreCase("15%")) {
-            accountingType.append("УСН 15%");
-        } else {
-            accountingType.append("ОСН");
-        }
+        String organisation_type = investResult.getOrganisationType();
+        Long employees_number = investResult.getEmployees_number();
+        String district = investResult.getDistrict();
+        String accountingType = investResult.getAccountingType();
         return insertNumbersInTemplate(equipment, ammortisation, engineerYear, engineerOnce, patentRegistration, entityRegistration, accounting, accountingPapers, land, square_area, square_buildings, district_price ,ndfl, medic, retire, String.valueOf(accountingType), totalOnce, totalYear, total, personal, landTaxes, propertyTaxes, building_rent, business_type, String.valueOf(organisation_type), employees_number, district);
     }
     public ByteArrayOutputStream insertNumbersInTemplate(BigInteger equipment, BigInteger ammortisation, BigInteger engineerYear, BigInteger engineerOnce, Long patentRegistration , Long entityRegistration, BigInteger accounting, Long accountingPapers,BigInteger land, Long square_area, Long square_buildings, BigInteger district_price ,BigInteger ndfl, BigInteger medic, BigInteger retire, String accountingType, BigInteger totalOnce, BigInteger totalYear, BigInteger total, BigInteger personal, BigInteger landTax, BigInteger propertyTax, BigInteger building_rent, String business_type, String organisation_type, long employeesNumber, String district) {

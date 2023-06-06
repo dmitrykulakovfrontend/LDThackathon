@@ -4,9 +4,12 @@ import com.cringeneers.LDThackathon.entity.Equipment;
 import com.cringeneers.LDThackathon.repository.EquipmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -15,8 +18,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     private EquipmentRepository equipmentRepository;
 
     @Override
-    public Equipment createEquipment(Equipment equipment) {
-        return equipmentRepository.save(equipment);
+    public void createEquipment(Equipment equipment) {
+        equipmentRepository.save(equipment);
     }
 
     @Override
@@ -25,16 +28,13 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public List<Equipment> getAllEquipments() {
-        return equipmentRepository.findAll();
+    public Optional<Equipment> getEquipment(Long id) {
+        return equipmentRepository.findById(id);
     }
 
     @Override
-    public void update(String type, Equipment equipment) {
-        Equipment equipmentFromDb = equipmentRepository.findByType(type);
-        equipmentFromDb.setType(equipment.getType());
-        equipmentFromDb.setCost(equipment.getCost());
-        equipmentRepository.save(equipmentFromDb);
+    public List<Equipment> getAllEquipments() {
+        return equipmentRepository.findAll();
     }
 
     @Override

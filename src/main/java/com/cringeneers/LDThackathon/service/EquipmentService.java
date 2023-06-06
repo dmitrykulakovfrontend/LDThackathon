@@ -3,12 +3,13 @@ package com.cringeneers.LDThackathon.service;
 import com.cringeneers.LDThackathon.entity.Equipment;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EquipmentService {
-    Equipment createEquipment(Equipment equipment);
+    void createEquipment(Equipment equipment);
     Equipment getEquipmentByType(String type);
+    Optional<Equipment> getEquipment(Long id);
     List<Equipment> getAllEquipments();
-    void update(String type, Equipment equipment);
 
     void delete(String type);
 }

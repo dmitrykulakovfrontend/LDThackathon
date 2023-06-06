@@ -3,6 +3,8 @@ package com.cringeneers.LDThackathon.controller;
 import com.cringeneers.LDThackathon.entity.Business;
 import com.cringeneers.LDThackathon.entity.Equipment;
 import com.cringeneers.LDThackathon.entity.User;
+import com.cringeneers.LDThackathon.repository.BusinessRepository;
+import com.cringeneers.LDThackathon.repository.EquipmentRepository;
 import com.cringeneers.LDThackathon.service.BusinessService;
 import com.cringeneers.LDThackathon.service.EquipmentService;
 import com.cringeneers.LDThackathon.service.UserService;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.DELETE, RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS}, allowCredentials = "false", allowedHeaders = { "*" }, exposedHeaders = { "*" })
 @RestController
@@ -23,12 +26,16 @@ public class AdminController {
     private EquipmentService equipmentService;
     private BusinessService businessService;
     private UserService userService;
+    private EquipmentRepository equipmentRepository;
+    private BusinessRepository businessRepository;
 
     @Autowired
-    public AdminController(EquipmentService equipmentService, BusinessService businessService, UserService userService) {
+    public AdminController(EquipmentService equipmentService, BusinessService businessService, UserService userService, EquipmentRepository equipmentRepository, BusinessRepository businessRepository) {
         this.equipmentService = equipmentService;
         this.businessService = businessService;
         this.userService = userService;
+        this.equipmentRepository = equipmentRepository;
+        this.businessRepository = businessRepository;
     }
 
 
@@ -57,32 +64,55 @@ public class AdminController {
         List<Business> businesses = businessService.getAllBusinesess();
         return new ResponseEntity<>(businesses, HttpStatus.OK);
     }
-    @PutMapping({"/updateEquipment"})
-    public ResponseEntity<Equipment> updateEquipment(@RequestBody String type, Equipment equipment) {
-        equipmentService.update(type, equipment);
-        return new ResponseEntity<>(equipmentService.getEquipmentByType(type), HttpStatus.OK);
+    @PutMapping({"/equipment/{id}"})
+    public ResponseEntity<Equipment> updateEquipment(@PathVariable("id") long id, @RequestBody Equipment equipment) {
+        Optional<Equipment> equipmentData = equipmentService.getEquipment(id);
+        if (equipmentData.isPresent()) {
+            Equipment _equipment = equipmentData.get();
+            _equipment.setType(equipment.getType());
+            _equipment.setCost(equipment.getCost());
+            return new ResponseEntity<>(equipmentRepository.save(_equipment), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-    @PutMapping({"/updateBusiness"})
-    public ResponseEntity<Business> updateBusiness(@RequestBody String type, Business business) {
-        businessService.update(type, business);
-        return new ResponseEntity<>(businessService.getBusinessByType(type), HttpStatus.OK);
+    @PutMapping({"/business/{id}"})
+    public ResponseEntity<Business> updateBusiness(@PathVariable("id") long id, @RequestBody Business business) {
+        Optional<Business> businessData = businessRepository.findById(id);
+        if (businessData.isPresent()) {
+            Business _business = businessData.get();
+            _business.setType(business.getType());
+            _business.setCost(business.getCost());
+            _business.setMinimalSalary(business.getMinimalSalary());
+            return new ResponseEntity<>(businessRepository.save(_business), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-        @GetMapping({"/getEquipment"})
-    public ResponseEntity<Equipment> getEquipment(@RequestBody String type) {
-        return new ResponseEntity<>(equipmentService.getEquipmentByType(type), HttpStatus.OK);
+        @GetMapping({"/equipment/{id}"})
+    public ResponseEntity<Optional<Equipment>> getEquipment(@PathVariable("id") long id) {
+        return new ResponseEntity<>(equipmentService.getEquipment(id), HttpStatus.OK);
     }
-    @GetMapping({"/getBusiness"})
+    @GetMapping({"/business/{id}"})
     public ResponseEntity<Business> getBusiness(@RequestBody String type) {
         return new ResponseEntity<>(businessService.getBusinessByType(type), HttpStatus.OK);
     }
-    @DeleteMapping({"/deleteEquipment"})
-    public ResponseEntity<Equipment> deleteEquipment(@RequestBody String type) {
-        equipmentService.delete(type);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @DeleteMapping({"/equipment/{id}"})
+    public ResponseEntity<HttpStatus> deleteEquipment(@PathVariable Long id) {
+        try {
+            equipmentRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-    @DeleteMapping({"/deleteBusiness"})
-    public ResponseEntity<Business> deleteBusiness(@RequestBody String type) {
-        businessService.delete(type);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @DeleteMapping({"/business/{id}"})
+    public ResponseEntity<HttpStatus> deleteBusiness(@PathVariable Long id) {
+        try {
+            businessRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

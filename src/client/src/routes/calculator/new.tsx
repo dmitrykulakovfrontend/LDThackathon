@@ -16,7 +16,6 @@ import { API_URL } from "@/constants";
 import { FormValues, initialValues } from "@/types/form";
 import { Business } from "../admin/data/businessType";
 import { Equipment } from "../admin/data/equipment";
-import { useAuth } from "@/contexts/useAuth";
 
 /**
  * Схема для валидации пользовательских полей
@@ -81,7 +80,6 @@ function NewCalculator() {
       navigate("../results", { state: { results: {}, form } });
     }
   }
-  const [accountingPapers, setAccountingPapers] = useState(1);
   const [isPatent, setIsPatent] = useState(false);
   const [data, setData] = useState<null | GeoJsonObject>(null);
   const [isMapActive, setIsMapActive] = useState(false);
@@ -433,11 +431,10 @@ function NewCalculator() {
                       <input
                         className="relative w-10 h-5 transition-all duration-200 ease-in-out bg-gray-400 rounded-full shadow-inner outline-none appearance-none cursor-pointer mt-7 "
                         type="checkbox"
-                        onChange={() => {
-                          setFieldValue("isPatent", !isPatent);
-                          setIsPatent(!isPatent);
+                        onChange={(e) => {
+                          setFieldValue("isPatent", e.target.checked);
                         }}
-                        checked={isPatent}
+                        checked={values.isPatent}
                         name="isPatent"
                       />
                     </label>
@@ -509,7 +506,7 @@ function NewCalculator() {
                     className="w-full transition-all filter hover:brightness-125 hover:scale-105"
                     alt=""
                   />
-                  <span className="absolute z-10 text-center text-white translate-x-1/2 -translate-y-1/2 top-1/2 right-1/2">
+                  <span className="absolute z-10 text-center text-white translate-x-1/2 -translate-y-1/2 pointer-events-none top-1/2 right-1/2">
                     Кликните на карту, чтобы выбрать местоположение
                   </span>
                 </div>

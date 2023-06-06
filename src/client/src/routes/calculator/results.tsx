@@ -54,7 +54,6 @@ function Results() {
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(downloadLink);
-      // window.location.href = downloadLink;
     } else {
       toast.error(
         "Регистрация обязательна для получения более подробных результатов",

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
@@ -83,6 +85,7 @@ public class InvestService {
         if (!email.equals("anonymousUser"))
             try {
             investResult.setEmail(email);
+            investResult.setDateTime(LocalDateTime.now());
             investResultRepository.save(investResult);
         } catch (Exception e) {
             e.printStackTrace();

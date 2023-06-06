@@ -6,9 +6,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Table(name = "invest_result")
 public class InvestResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,4 +44,6 @@ public class InvestResult {
     Long employees_number;
     String district;
     String accountingType;
+    @Column(name = "dateTime")
+    LocalDateTime dateTime;
 }

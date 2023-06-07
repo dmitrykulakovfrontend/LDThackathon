@@ -208,6 +208,7 @@ function NewCalculator() {
                               <option
                                 value={type}
                                 key={type}
+                                title={type}
                                 style={{ width: "10px!important" }}
                               >
                                 {type.length > 40
@@ -292,8 +293,14 @@ function NewCalculator() {
                                       {formChoices.equipmentTypes
                                         .map((item) => item.type)
                                         .map((type) => (
-                                          <option value={type} key={type}>
-                                            {type}
+                                          <option
+                                            value={type}
+                                            key={type}
+                                            title={type}
+                                          >
+                                            {type.length > 40
+                                              ? type.slice(0, 40) + "..."
+                                              : type}
                                           </option>
                                         ))}
                                     </>

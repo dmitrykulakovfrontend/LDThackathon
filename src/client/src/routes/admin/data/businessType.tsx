@@ -19,6 +19,9 @@ const headers = [
 function BusinessType() {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [isCreating, setIsCreating] = useState(false);
+  const [token] = useState<string>(
+    JSON.parse(localStorage.getItem("user") as string)
+  );
   async function fetchData() {
     const response = await fetch(`${API_URL}/admin/businesses`);
     const data = await response.json();
@@ -64,11 +67,13 @@ function BusinessType() {
           {isCreating ? (
             <BusinessDisplay
               business={{
-                id: 0,
+                id:
+                  (businesses && businesses[businesses.length - 1].id + 1) || 0,
                 type: "",
                 minimalSalary: 0,
                 cost: 0,
               }}
+              token={token}
               fetchData={fetchData}
               isCreating
               setIsCreating={setIsCreating}
@@ -76,11 +81,12 @@ function BusinessType() {
           ) : (
             ""
           )}
-          {businesses?.map((business, i) => (
+          {businesses?.map((business) => (
             <BusinessDisplay
-              key={i}
+              key={business.id}
               business={business}
               fetchData={fetchData}
+              token={token}
             />
           ))}
         </tbody>
@@ -101,17 +107,21 @@ function BusinessDisplay({
   isCreating,
   setIsCreating,
   fetchData,
+  token,
 }: {
   business: Business;
   isCreating?: boolean;
   setIsCreating?: (value: boolean) => void;
   fetchData: () => Promise<void>;
+  token: string;
 }) {
   async function handleDelete() {
     console.log("delete", business);
-    await fetch(`${API_URL}/admin/deleteBusiness`, {
+    await fetch(`${API_URL}/admin/business/${business.id}`, {
       method: "DELETE",
-      body: business.type,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     await fetchData();
   }
@@ -126,13 +136,29 @@ function BusinessDisplay({
       [key]: value,
     });
   }
-  function handleSave() {
+  function cancelCreating() {
+    if (setIsCreating) setIsCreating(false);
+  }
+  function cancelEditing() {
+    setIsEditMode(false);
+  }
+  async function handleSave() {
     setIsEditMode(false);
     console.log("save");
-    fetch(`${API_URL}/admin/updateBusiness`, {
+    const res = await fetch(`${API_URL}/admin/business/${business.id}`, {
       method: "PUT",
-      body: JSON.stringify({ type: business.type, cost: newBusiness.cost }),
-    }).then((res) => console.log(res));
+      body: JSON.stringify({
+        type: newBusiness.type,
+        cost: newBusiness.cost,
+        minimalSalary: newBusiness.minimalSalary,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res);
+    await fetchData();
   }
   async function handleCreate() {
     try {
@@ -140,6 +166,7 @@ function BusinessDisplay({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           cost: newBusiness.cost,
@@ -147,11 +174,7 @@ function BusinessDisplay({
           minimalSalary: newBusiness.minimalSalary,
         }),
       });
-      console.log("created", {
-        cost: newBusiness.cost,
-        type: newBusiness.type,
-        minimalSalary: newBusiness.minimalSalary,
-      });
+      console.log(res);
       await fetchData();
     } catch (e) {
       console.error(e);
@@ -166,7 +189,7 @@ function BusinessDisplay({
       <tr className="border-2 border-ldt-gray">
         {Object.entries(business).map(([key, value], i) => (
           <td key={i} className="p-3 border-2 border-ldt-gray">
-            {key === "id" && isCreating ? (
+            {key === "id" && (isCreating || isEditMode) ? (
               value
             ) : isEditMode || isCreating ? (
               <input
@@ -181,31 +204,37 @@ function BusinessDisplay({
           </td>
         ))}
         <td className="flex items-center gap-2 p-3">
-          {isCreating ? (
-            <span className="hover:cursor-pointer " onClick={handleCreate}>
-              Добавить
-            </span>
-          ) : (
-            <div
-              className="transition-all hover:cursor-pointer hover:text-ldt-red"
-              onClick={handleDelete}
-            >
-              <DeleteIcon />
+          {isEditMode || isCreating ? (
+            <div className="flex items-center gap-2">
+              <span
+                className="text-blue-500 hover:cursor-pointer"
+                onClick={isCreating ? handleCreate : handleSave}
+              >
+                {isCreating ? "Создать" : "Обновить"}
+              </span>
+              <span
+                className="hover:cursor-pointer text-ldt-red"
+                onClick={isCreating ? cancelCreating : cancelEditing}
+              >
+                Отменить
+              </span>
             </div>
+          ) : (
+            <>
+              <div
+                className="hover:cursor-pointer hover:text-yellow-500"
+                onClick={handleEdit}
+              >
+                <EditIcon />
+              </div>
+              <div
+                className="hover:cursor-pointer hover:text-ldt-red"
+                onClick={handleDelete}
+              >
+                <DeleteIcon />
+              </div>
+            </>
           )}
-          {/* {isEditMode ? (
-            <span className="hover:cursor-pointer" onClick={handleSave}>
-              Сохранить
-            </span>
-          ) : isCreating ? (
-            <span className="hover:cursor-pointer" onClick={handleCreate}>
-              Добавить
-            </span>
-          ) : (
-            <div className="hover:cursor-pointer" onClick={handleEdit}>
-              <EditIcon />
-            </div>
-          )} */}
         </td>
       </tr>
     </>

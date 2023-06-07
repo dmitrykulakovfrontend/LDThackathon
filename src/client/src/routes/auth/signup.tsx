@@ -136,11 +136,6 @@ function AuthSignUp() {
           <FormikForm className="w-full">
             <PageRender page={page} errors={errors} touched={touched} />
 
-            <ul className="text-ldt-red">
-              {Object.entries(errors).map(([key, value]) => (
-                <li key={key}>{typeof value === "string" ? value : ""}</li>
-              ))}
-            </ul>
             <div className="flex items-center justify-between w-full gap-4 my-8 max-sm:flex-col">
               <button
                 type="button"
@@ -185,159 +180,188 @@ function PageRender({
   switch (page) {
     case 1:
       return (
-        <div className="flex flex-wrap gap-16">
-          <FormikField
-            type="text"
-            name="secondName"
-            placeholder="Иванов"
-            touched={touched.secondName}
-            errors={errors.secondName}
-            title="Фамилия"
-            labelClassname="w-full max-w-lg"
-          />
-          <FormikField
-            type="text"
-            name="firstName"
-            placeholder="Иван"
-            touched={touched.firstName}
-            errors={errors.firstName}
-            title="Имя"
-            labelClassname="w-full max-w-lg"
-          />
-          <FormikField
-            type="text"
-            name="fatherName"
-            placeholder="Иванович"
-            touched={touched.fatherName}
-            errors={errors.fatherName}
-            title="Отчество"
-            labelClassname="w-full max-w-lg"
-          />
-          <FormikField
-            type="email"
-            name="email"
-            placeholder="ivan.ivanov1999@gmail.com"
-            touched={touched.email}
-            errors={errors.email}
-            labelClassname="w-full max-w-lg"
-            title="Почта"
-          />
-          <FormikField
-            type="phone"
-            name="phone"
-            placeholder="+7 (-----) -----  ---  --"
-            touched={touched.phone}
-            errors={errors.phone}
-            labelClassname="w-full max-w-lg"
-            title="Телефон"
-          />
-          <FormikField
-            type="text"
-            name="inn"
-            placeholder="345217689035"
-            touched={touched.inn}
-            errors={errors.inn}
-            labelClassname="w-full max-w-lg"
-            title="ИНН"
-          />
-        </div>
+        <>
+          <div className="flex flex-wrap gap-16">
+            <FormikField
+              type="text"
+              name="secondName"
+              placeholder="Иванов"
+              touched={touched.secondName}
+              errors={errors.secondName}
+              title="Фамилия"
+              labelClassname="w-full max-w-lg"
+            />
+            <FormikField
+              type="text"
+              name="firstName"
+              placeholder="Иван"
+              touched={touched.firstName}
+              errors={errors.firstName}
+              title="Имя"
+              labelClassname="w-full max-w-lg"
+            />
+            <FormikField
+              type="text"
+              name="fatherName"
+              placeholder="Иванович"
+              touched={touched.fatherName}
+              errors={errors.fatherName}
+              title="Отчество"
+              labelClassname="w-full max-w-lg"
+            />
+            <FormikField
+              type="email"
+              name="email"
+              placeholder="ivan.ivanov1999@gmail.com"
+              touched={touched.email}
+              errors={errors.email}
+              labelClassname="w-full max-w-lg"
+              title="Почта"
+            />
+            <FormikField
+              type="phone"
+              name="phone"
+              placeholder="+7 (-----) -----  ---  --"
+              touched={touched.phone}
+              errors={errors.phone}
+              labelClassname="w-full max-w-lg"
+              title="Телефон"
+            />
+            <FormikField
+              type="text"
+              name="inn"
+              placeholder="345217689035"
+              touched={touched.inn}
+              errors={errors.inn}
+              labelClassname="w-full max-w-lg"
+              title="ИНН"
+            />
+          </div>
+          <ul className="mt-8 text-ldt-red">
+            {Object.entries(errors)
+              .filter(([key]) => ["inn", "email", "firstName"].includes(key))
+              .map(([key, value]) => (
+                <li key={key}>{typeof value === "string" ? value : ""}</li>
+              ))}
+          </ul>
+        </>
       );
     case 2:
       return (
-        <div className="flex flex-wrap gap-16">
-          <FormikField
-            type="text"
-            name="organisation"
-            placeholder="ООО 'Рога и копыта'"
-            touched={touched.organisation}
-            errors={errors.organisation}
-            labelClassname="w-full max-w-lg"
-            title="Организация"
-          />
-          <FormikField
-            type="url"
-            name="website"
-            placeholder="mos.ru"
-            touched={touched.website}
-            errors={errors.website}
-            labelClassname="w-full max-w-lg"
-            title="Вебсайт"
-          />
-          <FormikField
-            type="text"
-            name="country"
-            placeholder="Россия"
-            touched={touched.country}
-            errors={errors.country}
-            labelClassname="w-full max-w-lg"
-            title="Страна"
-          />
-          <FormikField
-            type="text"
-            name="city"
-            placeholder="Москва"
-            touched={touched.city}
-            errors={errors.city}
-            labelClassname="w-full max-w-lg"
-            title="Город"
-          />
-          <FormikField
-            isSelect
-            type="text"
-            name="business_type"
-            placeholder="Пищевая промышленность"
-            touched={touched.business_type}
-            errors={errors.business_type}
-            labelClassname="w-full max-w-lg"
-            title="Тип бизнеса"
-          >
-            <option disabled value="">
-              Не выбрано
-            </option>
-            {industryTypes.map((type) => (
-              <option
-                value={type}
-                key={type}
-                style={{ width: "10px!important" }}
-              >
-                {type.length > 40 ? type.slice(0, 40) + "..." : type}
+        <>
+          <div className="flex flex-wrap gap-16">
+            <FormikField
+              type="text"
+              name="organisation"
+              placeholder="ООО 'Рога и копыта'"
+              touched={touched.organisation}
+              errors={errors.organisation}
+              labelClassname="w-full max-w-lg"
+              title="Организация"
+            />
+            <FormikField
+              type="url"
+              name="website"
+              placeholder="mos.ru"
+              touched={touched.website}
+              errors={errors.website}
+              labelClassname="w-full max-w-lg"
+              title="Вебсайт"
+            />
+            <FormikField
+              type="text"
+              name="country"
+              placeholder="Россия"
+              touched={touched.country}
+              errors={errors.country}
+              labelClassname="w-full max-w-lg"
+              title="Страна"
+            />
+            <FormikField
+              type="text"
+              name="city"
+              placeholder="Москва"
+              touched={touched.city}
+              errors={errors.city}
+              labelClassname="w-full max-w-lg"
+              title="Город"
+            />
+            <FormikField
+              isSelect
+              type="text"
+              name="business_type"
+              placeholder="Пищевая промышленность"
+              touched={touched.business_type}
+              errors={errors.business_type}
+              labelClassname="w-full max-w-lg"
+              title="Тип бизнеса"
+            >
+              <option disabled value="">
+                Не выбрано
               </option>
-            ))}
-          </FormikField>
-          <FormikField
-            type="text"
-            name="job"
-            placeholder="Менеджер"
-            touched={touched.job}
-            errors={errors.job}
-            labelClassname="w-full max-w-lg"
-            title="Должность"
-          />
-        </div>
+              {industryTypes.map((type) => (
+                <option
+                  value={type}
+                  key={type}
+                  style={{ width: "10px!important" }}
+                >
+                  {type.length > 40 ? type.slice(0, 40) + "..." : type}
+                </option>
+              ))}
+            </FormikField>
+            <FormikField
+              type="text"
+              name="job"
+              placeholder="Менеджер"
+              touched={touched.job}
+              errors={errors.job}
+              labelClassname="w-full max-w-lg"
+              title="Должность"
+            />
+          </div>
+          <ul className="mt-8 text-ldt-red">
+            {Object.entries(errors)
+              .filter(([key]) =>
+                ["business_type", "organisation"].includes(key)
+              )
+              .map(([key, value]) => (
+                <li key={key}>{typeof value === "string" ? value : ""}</li>
+              ))}
+          </ul>
+        </>
       );
     case 3:
       return (
-        <div className="flex flex-col gap-4">
-          <FormikField
-            type="password"
-            name="password"
-            placeholder=""
-            touched={touched.password}
-            errors={errors.password}
-            title="Придумайте пароль"
-          />
-          <FormikField
-            type="password"
-            name="passwordConfirmation"
-            placeholder=""
-            touched={touched.passwordConfirmation}
-            errors={errors.passwordConfirmation}
-            title="Повторите пароль"
-          />
-        </div>
+        <>
+          <div className="flex flex-col gap-4">
+            <FormikField
+              type="password"
+              name="password"
+              placeholder=""
+              touched={touched.password}
+              errors={errors.password}
+              title="Придумайте пароль"
+            />
+            <FormikField
+              type="password"
+              name="passwordConfirmation"
+              placeholder=""
+              touched={touched.passwordConfirmation}
+              errors={errors.passwordConfirmation}
+              title="Повторите пароль"
+            />
+          </div>
+          <ul className="mt-8 text-ldt-red">
+            {Object.entries(errors)
+              .filter(([key]) =>
+                ["passwordConfirmation", "password"].includes(key)
+              )
+              .map(([key, value]) => (
+                <li key={key}>{typeof value === "string" ? value : ""}</li>
+              ))}
+          </ul>
+        </>
       );
-    case 4:
-      return <div>4</div>;
     default:
       return <div>404</div>;
   }

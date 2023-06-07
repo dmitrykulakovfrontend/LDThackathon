@@ -55,42 +55,35 @@ const router = createBrowserRouter(
           ],
         },
         {
-          path: "admin",
+          element: <RequireAdmin />,
           children: [
             {
-              path: "data",
+              path: "admin",
               children: [
                 {
-                  index: true,
-                  element: (
-                    <RequireAdmin>
-                      <Data />
-                    </RequireAdmin>
-                  ),
+                  path: "data",
+                  children: [
+                    {
+                      index: true,
+                      element: <Data />,
+                    },
+                    { path: "business-type", element: <BusinessType /> },
+                    { path: "equipment", element: <Equipment /> },
+                    { path: "land-price", element: <LandPrice /> },
+                    { path: "patent", element: <Patent /> },
+                    { path: "objects", element: <Objects /> },
+                    { path: "taxes", element: <Taxes /> },
+                  ],
                 },
-                { path: "business-type", element: <BusinessType /> },
-                { path: "equipment", element: <Equipment /> },
-                { path: "land-price", element: <LandPrice /> },
-                { path: "patent", element: <Patent /> },
-                { path: "objects", element: <Objects /> },
-                { path: "taxes", element: <Taxes /> },
+                {
+                  path: "users",
+                  element: <Users />,
+                },
+                {
+                  path: "statistics",
+                  element: <Statistics />,
+                },
               ],
-            },
-            {
-              path: "users",
-              element: (
-                <RequireAdmin>
-                  <Users />
-                </RequireAdmin>
-              ),
-            },
-            {
-              path: "statistics",
-              element: (
-                <RequireAdmin>
-                  <Statistics />
-                </RequireAdmin>
-              ),
             },
           ],
         },

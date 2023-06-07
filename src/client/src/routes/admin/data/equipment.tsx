@@ -63,9 +63,10 @@ function EquipmentPage() {
             <EquipmentDisplay
               fetchData={fetchData}
               equipment={{
-                id: -1,
+                id:
+                  (equipments && equipments[equipments.length - 1].id + 1) || 0,
                 type: "",
-                cost: -1,
+                cost: 0,
               }}
               isCreating
               token={token}

@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 @Service
@@ -85,7 +87,7 @@ public class InvestService {
         if (!email.equals("anonymousUser"))
             try {
             investResult.setEmail(email);
-            investResult.setDateTime(LocalDateTime.now());
+            investResult.setDateTime(ZonedDateTime.now(ZoneId.of("Europe/Moscow")).toLocalDateTime());
             investResultRepository.save(investResult);
         } catch (Exception e) {
             e.printStackTrace();

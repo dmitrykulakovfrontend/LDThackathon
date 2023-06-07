@@ -84,7 +84,6 @@ public class InvestService {
         investResponseDto.setTotal(BigDecimal.valueOf(investResponseDto.getEngineerYear().doubleValue() + investResponseDto.getEngineerOnce().doubleValue() + investResponseDto.getBuilding().doubleValue() + investResponseDto.getLand().doubleValue() + investResponseDto.getEntityRegistration() + investResponseDto.getSalaries().doubleValue() + investResponseDto.getNdfl().doubleValue() + investResponseDto.getMedic().doubleValue() + investResponseDto.getRetire().doubleValue() + investResponseDto.getLandTax().doubleValue() + investResponseDto.getPropertyTax().doubleValue() + investResponseDto.getEquipment().doubleValue() + investResponseDto.getAmortisation().doubleValue() + investResponseDto.getPatentRegistration().doubleValue() + investResponseDto.getAccounting().doubleValue()));
 
         InvestResult investResult = getInvestResult(investRequestDto, investResponseDto);
-        if (!email.equals("anonymousUser"))
             try {
             investResult.setEmail(email);
             investResult.setDateTime(ZonedDateTime.now(ZoneId.of("Europe/Moscow")).toLocalDateTime());

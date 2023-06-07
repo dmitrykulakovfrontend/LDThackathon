@@ -38,6 +38,10 @@ public class InvestController {
         String email = jwtUtilities.extractUsername(token);
         return investService.calculate(investRequestDto, email);
     }
+    @PostMapping("/calculateAnonymous")
+    public InvestResponseDto calculateAnonymousInvestigations(@RequestBody InvestRequestDto investRequestDto) {
+        return investService.calculate(investRequestDto, "anonymousUser");
+    }
 
     @RequestMapping(path = "/download", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> download(@RequestHeader("Authorization") String authorizationHeader) throws IOException {

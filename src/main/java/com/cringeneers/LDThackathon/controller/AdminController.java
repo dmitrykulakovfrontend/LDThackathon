@@ -115,7 +115,7 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-        @GetMapping({"/equipment/{id}"})
+    @GetMapping({"/equipment/{id}"})
     public ResponseEntity<Optional<Equipment>> getEquipment(@PathVariable("id") long id) {
         return new ResponseEntity<>(equipmentService.getEquipment(id), HttpStatus.OK);
     }

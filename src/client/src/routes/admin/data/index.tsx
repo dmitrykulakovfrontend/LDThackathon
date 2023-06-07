@@ -48,7 +48,7 @@ function Card({
   href,
 }: {
   title: string;
-  Icon: string;
+  Icon: React.FC<React.SVGProps<SVGElement>>;
   href: string;
 }) {
   const [hover, setHover] = useState(false);
@@ -57,19 +57,19 @@ function Card({
       to={href}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="flex flex-col justify-between w-full max-w-sm gap-3 p-8 transition-all border cursor-pointer text-ldt-red hover:bg-ldt-red rounded-xl"
+      className="flex flex-col justify-between w-full max-w-sm gap-3 p-8 transition-all border cursor-pointer group text-ldt-red hover:bg-ldt-red rounded-xl"
     >
       <p
         className={`${
           hover ? "text-white" : "text-black"
-        } transition-all text-xl font-semibold `}
+        } transition-all text-xl font-semibold group-hover:text-white `}
       >
         {title}
       </p>
       <div
         className={`${
           hover ? "text-white" : "text-ldt-red"
-        } transition-all self-end`}
+        } transition-all self-end group-hover:text-white`}
       >
         <Icon />
       </div>

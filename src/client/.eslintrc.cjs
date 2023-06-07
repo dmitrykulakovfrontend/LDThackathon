@@ -1,4 +1,4 @@
-module.exports = {
+export const config = {
   env: { browser: true, es2020: true },
   extends: [
     "eslint:recommended",

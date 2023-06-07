@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import FormikField from "../../components/Forms/FormikField";
 import FormikForm from "../../components/Forms/FormikForm";
 import { API_URL } from "@/constants";
-import { useState } from "react";
-import industryTypes from "@/industry.json";
+import { useEffect, useState } from "react";
+import { Business } from "../admin/data/businessType";
 
 type Values = typeof initialValues;
 const SignUpSchema = Yup.object().shape({
@@ -177,6 +177,14 @@ function PageRender({
   touched: FormikTouched<Values>;
   errors: FormikErrors<Values>;
 }) {
+  const [businesses, setBusinesses] = useState<Business[]>([]);
+  useEffect(() => {
+    fetch(`${API_URL}/admin/businesses`)
+      .then((res) => res.json())
+      .then((data) => {
+        setBusinesses(data);
+      });
+  }, []);
   switch (page) {
     case 1:
       return (
@@ -296,18 +304,22 @@ function PageRender({
               labelClassname="w-full max-w-lg"
               title="Тип бизнеса"
             >
-              <option disabled value="">
-                Не выбрано
-              </option>
-              {industryTypes.map((type) => (
-                <option
-                  value={type}
-                  key={type}
-                  style={{ width: "10px!important" }}
-                >
-                  {type.length > 40 ? type.slice(0, 40) + "..." : type}
+              {!businesses ? (
+                <option disabled value="">
+                  Загрузка...
                 </option>
-              ))}
+              ) : (
+                <>
+                  <option disabled value="">
+                    Не выбрано
+                  </option>
+                  {businesses.map(({ type }) => (
+                    <option value={type} key={type} title={type}>
+                      {type.length > 40 ? type.slice(0, 40) + "..." : type}
+                    </option>
+                  ))}
+                </>
+              )}
             </FormikField>
             <FormikField
               type="text"

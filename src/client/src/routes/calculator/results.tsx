@@ -169,7 +169,7 @@ function Results() {
       </h2>
       <div className="flex max-sm:flex-col">
         <div className="flex flex-col items-start justify-start gap-4 p-8 pl-0 border-r-2 max-sm:flex-row max-sm:border-r-0 max-sm:border-b-2 border-ldt-red">
-          <img src={OneTimePayIconSrc} alt="" />
+          <img src={OneTimePayIconSrc} alt="" className="h-9" />
           <div className="flex flex-col items-start justify-start gap-4">
             <span className="font-semibold uppercase">
               единовременные затраты:
@@ -180,7 +180,7 @@ function Results() {
           </div>
         </div>
         <div className="flex flex-col items-start justify-start gap-4 p-8 max-sm:pl-0 max-sm:flex-row">
-          <img src={YearlyPayIconSrc} alt="" />
+          <img src={YearlyPayIconSrc} alt="" className="h-9" />
           <div className="flex flex-col items-start justify-start gap-4">
             <span className="font-semibold uppercase ">
               постоянные затраты (за 1 год):
@@ -207,7 +207,7 @@ function Results() {
         >
           {isHover && !user && (
             <div className="absolute flex bg-white items-center justify-center w-[300px] p-5 text-black border-2 bottom-16 left-28 h-fit rounded-xl text-left border-ldt-red max-lg:right-60 max-lg:left-auto max-sm:right-[50%] max-sm:left-[50%] max-sm:translate-x-[-50%]">
-              Данная возможность существует только у зарегестрированных
+              Данная возможность существует только у зарегистрированных
               пользователей. Авторизуйтесь или пройдите регистрацию, это займет
               пару минут.
             </div>

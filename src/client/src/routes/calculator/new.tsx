@@ -84,7 +84,7 @@ let initialValues = {
 };
 export type FormValues = typeof initialValues;
 /**
- * Одна из главных страниц сайта, форма для расчета, загружает lazy-loading geojson для отображения карты, и вся валидация происходит при помощи Formik и Yup. После введения правильных полей отправляет запрос на сервер для получения расчета и ссылки для скачивания
+ * Одна из главных страниц сайта, форма для расчета, загружает lazy-loading geojson для отображения карты, и вся валидация происходит при помощи Formik и Yup. После введения правильных полей отправляет запрос на сервер для получения результатов расчета и переводит на страницу с результатами
  * @returns {any}
  */
 function NewCalculator() {
@@ -111,7 +111,7 @@ function NewCalculator() {
       navigate("../results", { state: { results: {}, form } });
     }
   }
-  const [data, setData] = useState<null | GeoJsonObject>(null);
+  const [geojson, setGeojson] = useState<GeoJsonObject>();
   const [isMapActive, setIsMapActive] = useState(false);
   const [isHover, setHover] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -137,7 +137,7 @@ function NewCalculator() {
   }
   useEffect(() => {
     import("@/moscowGeo.json").then((data) => {
-      setData(data as GeoJsonObject);
+      setGeojson(data as GeoJsonObject);
     });
     fetchFormChoices();
     if (previousData) {
@@ -550,33 +550,35 @@ function NewCalculator() {
               {isMapActive ? (
                 <div className="relative z-10 w-full">
                   <img src={fakeMapSrc} className="opacity-0" alt="" />
-                  <MapContainer
-                    zoom={10}
-                    center={[55.751244, 37.618423]}
-                    attributionControl={false}
-                    // className="h-[370px] w-[535px]  max-sm:w-[290px] max-sm:h-[300px] max-md:w-[380px] rounded-xl"
-                    className="absolute top-0 left-0 w-full h-full rounded-xl"
-                  >
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                    <GeoJsonLayer
-                      data={data as GeoJsonObject}
-                      onEachFeature={(feat, layer) => {
-                        layer.on({
-                          mouseover: () => {
-                            layer
-                              .bindTooltip(feat.properties.name)
-                              .openTooltip();
-                          },
-                          mouseout: () => {
-                            layer.unbindTooltip();
-                          },
-                          click: () => {
-                            setFieldValue("district", feat.properties.name);
-                          },
-                        });
-                      }}
-                    />
-                  </MapContainer>
+                  {geojson && (
+                    <MapContainer
+                      zoom={10}
+                      center={[55.751244, 37.618423]}
+                      attributionControl={false}
+                      // className="h-[370px] w-[535px]  max-sm:w-[290px] max-sm:h-[300px] max-md:w-[380px] rounded-xl"
+                      className="absolute top-0 left-0 w-full h-full rounded-xl"
+                    >
+                      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                      <GeoJsonLayer
+                        data={geojson}
+                        onEachFeature={(feat, layer) => {
+                          layer.on({
+                            mouseover: () => {
+                              layer
+                                .bindTooltip(feat.properties.name)
+                                .openTooltip();
+                            },
+                            mouseout: () => {
+                              layer.unbindTooltip();
+                            },
+                            click: () => {
+                              setFieldValue("district", feat.properties.name);
+                            },
+                          });
+                        }}
+                      />
+                    </MapContainer>
+                  )}
                 </div>
               ) : (
                 <div

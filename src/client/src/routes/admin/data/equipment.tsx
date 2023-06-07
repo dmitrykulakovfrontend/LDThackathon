@@ -27,7 +27,7 @@ function EquipmentPage() {
   }, []);
   console.log(equipments);
   return (
-    <div className="mt-5 overflow-x-auto">
+    <div className="relative z-10 mt-5 overflow-x-auto">
       <div className="flex items-center justify-between gap-4 max-md:flex-col max-md:mb-4">
         <Link
           to="../"
@@ -75,7 +75,7 @@ function EquipmentPage() {
           ) : (
             ""
           )}
-          {equipments?.map((equipment, i) => (
+          {equipments?.map((equipment) => (
             <EquipmentDisplay
               key={equipment.id}
               equipment={equipment}

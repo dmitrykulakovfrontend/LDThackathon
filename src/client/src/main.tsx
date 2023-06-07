@@ -22,6 +22,7 @@ import Objects from "./routes/admin/data/objects";
 import Patent from "./routes/admin/data/patent";
 import Taxes from "./routes/admin/data/taxes";
 import Modal from "react-modal";
+import IndustriesPage from "./routes/industries";
 
 const isDev = import.meta.env.DEV;
 
@@ -46,6 +47,10 @@ const router = createBrowserRouter(
             { path: "signup", element: <SignUp /> },
             { path: "signin", element: <SignIn /> },
           ],
+        },
+        {
+          path: "industries",
+          element: <IndustriesPage />,
         },
         {
           path: "calculator",

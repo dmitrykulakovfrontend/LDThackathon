@@ -55,10 +55,10 @@ function Header() {
       name: "Данные",
       to: "/admin/data",
     },
-    // {
-    //   name: "Объекты",
-    //   to: "/objects",
-    // },
+    {
+      name: "Отрасли",
+      to: "/industries",
+    },
     // {
     //   name: "Услуги",
     //   to: "/services",

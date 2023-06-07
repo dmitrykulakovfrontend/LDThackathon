@@ -17,6 +17,7 @@ import { EntityEnum, PapersEnum } from "@/types/form";
 import { Business } from "../admin/data/businessType";
 import Modal, { Styles } from "react-modal";
 import { Equipment } from "../admin/data/equipment";
+import { useAuth } from "@/contexts/useAuth";
 
 /**
  * Схема для валидации пользовательских полей
@@ -90,19 +91,23 @@ export type FormValues = typeof initialValues;
 function NewCalculator() {
   const navigate = useNavigate();
   const [token] = useState(JSON.parse(localStorage.getItem("user") as string));
+  const { user } = useAuth();
   const [previousData] = useState<FormValues | null>(
     JSON.parse(localStorage.getItem("previousData") as string)
   );
   async function handleSubmit(form: FormValues) {
     try {
-      const res = await fetch(`${API_URL}/invest/calculate`, {
-        method: "POST",
-        body: JSON.stringify(form),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `${API_URL}/invest/${user ? "calculate" : "calculateAnonymous"}`,
+        {
+          method: "POST",
+          body: JSON.stringify(form),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       localStorage.setItem("previousData", JSON.stringify(form));
       const results = await res.json();
       console.log(results);

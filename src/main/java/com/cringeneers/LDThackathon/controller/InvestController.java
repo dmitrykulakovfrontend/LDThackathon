@@ -23,7 +23,7 @@ public class InvestController {
     private final PdfService pdfService;
     final
     InvestResultRepository investResultRepository;
-    private JwtUtilities jwtUtilities;
+    private final JwtUtilities jwtUtilities;
 
     public InvestController(InvestService investService, PdfService pdfService, InvestResultRepository investResultRepository, JwtUtilities jwtUtilities) {
         this.investService = investService;

@@ -23,6 +23,8 @@ import Patent from "./routes/admin/data/patent";
 import Taxes from "./routes/admin/data/taxes";
 import Modal from "react-modal";
 import IndustriesPage from "./routes/industries";
+import AccountPage from "./routes/account";
+import { Background, BackgroundContext } from "./contexts/useBackground";
 
 const isDev = import.meta.env.DEV;
 
@@ -47,6 +49,10 @@ const router = createBrowserRouter(
             { path: "signup", element: <SignUp /> },
             { path: "signin", element: <SignIn /> },
           ],
+        },
+        {
+          path: "account",
+          children: [{ index: true, element: <AccountPage /> }],
         },
         {
           path: "industries",
@@ -106,10 +112,13 @@ const router = createBrowserRouter(
  */
 export function App() {
   const [user, setUser] = useState<Token | undefined | null>();
+  const [background, setBackground] = useState<Background>();
   return (
     <React.StrictMode>
       <UserContext.Provider value={{ user, setUser }}>
-        <RouterProvider router={router} />
+        <BackgroundContext.Provider value={{ background, setBackground }}>
+          <RouterProvider router={router} />
+        </BackgroundContext.Provider>
       </UserContext.Provider>
     </React.StrictMode>
   );

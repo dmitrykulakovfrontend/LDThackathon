@@ -4,6 +4,7 @@ import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Index from ".";
+import { useBackground } from "@/contexts/useBackground";
 
 /**
  * Корневой элемент который отображает всю разметку страницы включая header, footer и остальные компоненты
@@ -12,8 +13,12 @@ import Index from ".";
  */
 function Root({ children }: { children?: React.ReactNode }) {
   const location = useLocation();
+  const { background } = useBackground();
   return (
-    <div className="relative flex flex-col min-h-screen font-medium bg-white font-manrope">
+    <div
+      className="relative flex flex-col min-h-screen font-medium bg-white font-manrope"
+      style={{ backgroundColor: background?.color }}
+    >
       <Header />
       {location.pathname === "/" ? (
         <Index />

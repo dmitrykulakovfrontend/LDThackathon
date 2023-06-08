@@ -1,8 +1,9 @@
 import { useAuth } from "@/contexts/useAuth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BusinessTypeDataIcon from "@/assets/business-type-data.svg";
 import EquipmentPriceIcon from "@/assets/equipment-price.svg";
+import { useBackground } from "@/contexts/useBackground";
 // import TaxesDataIcon from "@/assets/taxes-data.svg";
 // import LandPriceDataIcon from "@/assets/land-price-data.svg";
 // import PatentDataIcon from "@/assets/patent-data.svg";
@@ -11,6 +12,10 @@ import EquipmentPriceIcon from "@/assets/equipment-price.svg";
 function DataIndex() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { setBackground } = useBackground();
+  useEffect(() => {
+    setBackground({ color: "#E6E6E6" });
+  });
 
   if (!user?.role.includes("ROLE_ADMIN")) {
     navigate("/auth/signin");
@@ -57,7 +62,7 @@ function Card({
       to={href}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="flex flex-col justify-between w-full max-w-sm gap-3 p-8 transition-all border cursor-pointer group text-ldt-red hover:bg-ldt-red rounded-xl"
+      className="flex flex-col justify-between w-full max-w-sm gap-3 p-8 transition-all bg-white border cursor-pointer group text-ldt-red hover:bg-ldt-red rounded-xl"
     >
       <p
         className={`${

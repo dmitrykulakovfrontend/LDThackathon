@@ -102,11 +102,7 @@ function Header() {
             Инвестиционный помощник города Москвы
           </Link>
           <Link
-            to={
-              user?.role.includes("ROLE_ADMIN")
-                ? "/admin/users"
-                : "/auth/signin"
-            }
+            to={user ? "/account" : "/auth/signin"}
             className="flex items-center gap-2 font-medium max-md:text-sm"
           >
             <User />
@@ -118,7 +114,7 @@ function Header() {
         </div>
       </div>
       <header
-        className={`z-50 mx-auto w-full border-b border-ldt-gray max-md:fixed max-md:top-20 max-md:bg-white max-md:h-screen max-md:w-full ${
+        className={`z-50  bg-white mx-auto w-full border-b border-ldt-gray max-md:fixed max-md:top-20 max-md:bg-white max-md:h-screen max-md:w-full ${
           mobileMenu ? "max-md:block" : "max-md:hidden"
         }`}
       >

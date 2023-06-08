@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
 
 @Service
 public class PdfService {
@@ -20,29 +19,29 @@ public class PdfService {
     }
 
     public ByteArrayOutputStream makePDF(InvestResult investResult) {
-        BigInteger medic = investResult.getMedic();
-        BigInteger retire = investResult.getRetire();
-        BigInteger total = investResult.getTotal();
-        BigInteger personal = investResult.getPersonal();
-        BigInteger landTaxes = investResult.getLandTaxes();
-        BigInteger propertyTaxes = investResult.getPropertyTaxes();
-        BigInteger building_rent = investResult.getBuilding_rent();
-        BigInteger land = investResult.getLand();
-        BigInteger engineerOnce = investResult.getEngineerOnce();
-        BigInteger engineerYear = investResult.getEngineerYear();
-        BigInteger ndfl = investResult.getNdfl();
+        Long medic = investResult.getMedic().longValue();
+        Long retire = investResult.getRetire().longValue();
+        Long total = investResult.getTotal().longValue();
+        Long personal = investResult.getPersonal().longValue();
+        Long landTaxes = investResult.getLandTaxes().longValue();
+        Long propertyTaxes = investResult.getPropertyTaxes().longValue();
+        Long building_rent = investResult.getBuilding_rent().longValue();
+        Long land = investResult.getLand().longValue();
+        Long engineerOnce = investResult.getEngineerOnce().longValue();
+        Long engineerYear = investResult.getEngineerYear().longValue();
+        Long ndfl = investResult.getNdfl().longValue();
         String business_type = investResult.getBusiness_type();
-        BigInteger district_price = investResult.getDistrict_price();
-        BigInteger totalOnce = investResult.getTotalOnce();
-        BigInteger totalYear = investResult.getTotalYear();
+        Long district_price = investResult.getDistrict_price().longValue();
+        Long totalOnce = investResult.getTotalOnce().longValue();
+        Long totalYear = investResult.getTotalYear().longValue();
         Long square_area = investResult.getSquare_area();
         Long square_buildings = investResult.getSquare_buildings();
         Long accountingPapers = investResult.getAccountingPapers();
         Long patentRegistration = investResult.getPatentRegistration();
         Long entityRegistration = investResult.getEntityRegistration();
-        BigInteger accounting = investResult.getAccounting();
-        BigInteger equipment = investResult.getEquipment();
-        BigInteger ammortisation = investResult.getAmmortisation();
+        Long accounting = investResult.getAccounting().longValue();
+        Long equipment = investResult.getEquipment().longValue();
+        Long ammortisation = investResult.getAmmortisation().longValue();
 
         String organisation_type = investResult.getOrganisationType();
         Long employees_number = investResult.getEmployees_number();
@@ -50,7 +49,7 @@ public class PdfService {
         String accountingType = investResult.getAccountingType();
         return insertNumbersInTemplate(equipment, ammortisation, engineerYear, engineerOnce, patentRegistration, entityRegistration, accounting, accountingPapers, land, square_area, square_buildings, district_price ,ndfl, medic, retire, String.valueOf(accountingType), totalOnce, totalYear, total, personal, landTaxes, propertyTaxes, building_rent, business_type, String.valueOf(organisation_type), employees_number, district);
     }
-    public ByteArrayOutputStream insertNumbersInTemplate(BigInteger equipment, BigInteger ammortisation, BigInteger engineerYear, BigInteger engineerOnce, Long patentRegistration , Long entityRegistration, BigInteger accounting, Long accountingPapers,BigInteger land, Long square_area, Long square_buildings, BigInteger district_price ,BigInteger ndfl, BigInteger medic, BigInteger retire, String accountingType, BigInteger totalOnce, BigInteger totalYear, BigInteger total, BigInteger personal, BigInteger landTax, BigInteger propertyTax, BigInteger building_rent, String business_type, String organisation_type, long employeesNumber, String district) {
+    public ByteArrayOutputStream insertNumbersInTemplate(Long equipment, Long ammortisation, Long engineerYear, Long engineerOnce, Long patentRegistration , Long entityRegistration, Long accounting, Long accountingPapers, Long land, Long square_area, Long square_buildings, Long district_price , Long ndfl, Long medic, Long retire, String accountingType, Long totalOnce, Long totalYear, Long total, Long personal, Long landTax, Long propertyTax, Long building_rent, String business_type, String organisation_type, long employeesNumber, String district) {
         InputStream inputStream = PdfService.class.getClassLoader().getResourceAsStream("static/template.pdf");
         InputStream fontStream = PdfService.class.getClassLoader().getResourceAsStream("static/Manrope.TTF");
         try (PDDocument document = PDDocument.load(inputStream)) {
@@ -80,7 +79,7 @@ public class PdfService {
             contentStream.beginText();
             contentStream.setFont(font, 25);
             contentStream.newLineAtOffset(230, 173);
-            contentStream.showText(total + " рублей");
+            contentStream.showText(formatCurrency(total));
             contentStream.endText();
 
             contentStream.beginText();
@@ -92,13 +91,13 @@ public class PdfService {
             contentStream.beginText();
             contentStream.setFont(font, 15);
             contentStream.newLineAtOffset(80, 248);
-            contentStream.showText(totalOnce + " рублей");
+            contentStream.showText(formatCurrency(totalOnce));
             contentStream.endText();
 
             contentStream.beginText();
             contentStream.setFont(font, 15);
             contentStream.newLineAtOffset(330, 245);
-            contentStream.showText(totalYear + " рублей");
+            contentStream.showText(formatCurrency(totalYear));
             contentStream.endText();
 
             contentStream.beginText();
@@ -138,19 +137,19 @@ public class PdfService {
             contentStream2.beginText();
             contentStream2.setFont(font, 15);
             contentStream2.newLineAtOffset(300, 145);
-            contentStream2.showText(medic + " рублей");
+            contentStream2.showText(formatCurrency(medic));
             contentStream2.endText();
 
             contentStream2.beginText();
             contentStream2.setFont(font, 15);
             contentStream2.newLineAtOffset(300, 250);
-            contentStream2.showText(ndfl + " рублей");
+            contentStream2.showText(formatCurrency(ndfl));
             contentStream2.endText();
 
             contentStream2.beginText();
             contentStream2.setFont(font, 15);
             contentStream2.newLineAtOffset(300, 195);
-            contentStream2.showText(retire + " рублей");
+            contentStream2.showText(formatCurrency(retire));
             contentStream2.endText();
 
             contentStream2.beginText();
@@ -162,7 +161,7 @@ public class PdfService {
             contentStream2.beginText();
             contentStream2.setFont(font, 15);
             contentStream2.newLineAtOffset(300, 300);
-            contentStream2.showText(personal + " рублей");
+            contentStream2.showText(formatCurrency(personal));
             contentStream2.endText();
 
             contentStream3.beginText();
@@ -174,7 +173,7 @@ public class PdfService {
             contentStream3.beginText();
             contentStream3.setFont(font, 15);
             contentStream3.newLineAtOffset(300, 623);
-            contentStream3.showText(district_price + " рублей");
+            contentStream3.showText(formatCurrency(district_price));
             contentStream3.endText();
 
             contentStream3.beginText();
@@ -192,25 +191,25 @@ public class PdfService {
             contentStream3.beginText();
             contentStream3.setFont(font, 15);
             contentStream3.newLineAtOffset(300, 340);
-            contentStream3.showText(land + " рублей");
+            contentStream3.showText(formatCurrency(land));
             contentStream3.endText();
 
             contentStream3.beginText();
             contentStream3.setFont(font, 15);
             contentStream3.newLineAtOffset(300, 290);
-            contentStream3.showText(building_rent + " рублей");
+            contentStream3.showText(formatCurrency(building_rent));
             contentStream3.endText();
 
             contentStream3.beginText();
             contentStream3.setFont(font, 15);
             contentStream3.newLineAtOffset(300, 195);
-            contentStream3.showText(landTax + " рублей");
+            contentStream3.showText(formatCurrency(landTax));
             contentStream3.endText();
 
             contentStream3.beginText();
             contentStream3.setFont(font, 15);
             contentStream3.newLineAtOffset(300, 145);
-            contentStream3.showText(propertyTax + " рублей");
+            contentStream3.showText(formatCurrency(propertyTax));
             contentStream3.endText();
 
             contentStream4.beginText();
@@ -250,43 +249,43 @@ public class PdfService {
             contentStream4.beginText();
             contentStream4.setFont(font, 15);
             contentStream4.newLineAtOffset(300, 287);
-            contentStream4.showText(patentRegistration + " рублей");
+            contentStream4.showText(formatCurrency(patentRegistration));
             contentStream4.endText();
 
             contentStream4.beginText();
             contentStream4.setFont(font, 15);
             contentStream4.newLineAtOffset(300, 230);
-            contentStream4.showText(entityRegistration + " рублей");
+            contentStream4.showText(formatCurrency(entityRegistration));
             contentStream4.endText();
 
             contentStream4.beginText();
             contentStream4.setFont(font, 15);
             contentStream4.newLineAtOffset(300, 140);
-            contentStream4.showText(accounting + " рублей");
+            contentStream4.showText(formatCurrency(accounting));
             contentStream4.endText();
 
             contentStream5.beginText();
             contentStream5.setFont(font, 15);
             contentStream5.newLineAtOffset(300, 388);
-            contentStream5.showText(engineerOnce + " рублей");
+            contentStream5.showText(formatCurrency(engineerOnce));
             contentStream5.endText();
 
             contentStream5.beginText();
             contentStream5.setFont(font, 15);
             contentStream5.newLineAtOffset(300, 341);
-            contentStream5.showText(equipment + " рублей");
+            contentStream5.showText(formatCurrency(equipment));
             contentStream5.endText();
 
             contentStream5.beginText();
             contentStream5.setFont(font, 15);
             contentStream5.newLineAtOffset(300, 228);
-            contentStream5.showText(engineerYear + " рублей");
+            contentStream5.showText(formatCurrency(engineerYear));
             contentStream5.endText();
 
             contentStream5.beginText();
             contentStream5.setFont(font, 15);
             contentStream5.newLineAtOffset(300, 173);
-            contentStream5.showText(ammortisation + " рублей");
+            contentStream5.showText(formatCurrency(ammortisation));
             contentStream5.endText();
 
             contentStream.close();
@@ -302,6 +301,17 @@ public class PdfService {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+    private String formatCurrency(Long amount) {
+        if (amount >= 1_000_000) {
+            double millions = amount.doubleValue() / 1_000_000;
+            return String.format("%.1f млн. рублей", millions);
+        } else if (amount >= 1_000) {
+            double thousands = amount.doubleValue() / 1_000;
+            return String.format("%.1f тыс. рублей", thousands);
+        } else {
+            return String.format("%.0f рублей", amount.doubleValue());
         }
     }
 

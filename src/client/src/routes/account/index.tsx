@@ -27,6 +27,9 @@ function AccountPage() {
       .then((res) => res.json())
       .then((data) => setUser(data))
       .catch((err) => console.log(err));
+    return () => {
+      setBackground({ color: undefined, icon: undefined });
+    };
   }, []);
   console.log(user);
   return (
@@ -35,14 +38,7 @@ function AccountPage() {
       <div className="flex gap-8 max-md:flex-col">
         <div className="w-full font-medium text-lg flex flex-col gap-4 max-w-md pb-14 pt-7 border-t-[32px] border-t-ldt-red bg-white px-14 rounded-3xl max-sm:pb-7 max-sm:pt-4 max-sm:px-7">
           <div className="flex items-start justify-between gap-2">
-            <p className="text-xl font-bold">
-              {user?.name.split(" ").map((name) => (
-                <>
-                  {name}
-                  <br />
-                </>
-              ))}
-            </p>
+            <p className="text-xl font-bold">{user?.name}</p>
             <button className="text-blue-500 cursor-pointer">Изменить</button>
           </div>
           <div>

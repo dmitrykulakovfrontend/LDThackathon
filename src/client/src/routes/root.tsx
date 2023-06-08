@@ -13,13 +13,7 @@ import { useBackground } from "@/contexts/useBackground";
  */
 function Root({ children }: { children?: React.ReactNode }) {
   const location = useLocation();
-  const { background, setBackground } = useBackground();
-  useEffect(() => {
-    setBackground({
-      icon: undefined,
-      color: "white",
-    });
-  }, [window.location.pathname]);
+  const { background } = useBackground();
 
   return (
     <div

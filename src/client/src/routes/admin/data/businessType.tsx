@@ -33,6 +33,9 @@ function BusinessType() {
   useEffect(() => {
     setBackground({ icon: BusinessTypeDataIcon });
     fetchData();
+    return () => {
+      setBackground({ color: undefined, icon: undefined });
+    };
   }, []);
   console.log(businesses);
   return (

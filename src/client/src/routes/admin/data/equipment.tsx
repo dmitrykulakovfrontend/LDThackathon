@@ -28,6 +28,9 @@ function EquipmentPage() {
   useEffect(() => {
     setBackground({ icon: EquipmentPriceIcon });
     fetchData();
+    return () => {
+      setBackground({ color: undefined, icon: undefined });
+    };
   }, []);
   console.log(equipments);
   return (

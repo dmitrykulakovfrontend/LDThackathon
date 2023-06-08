@@ -15,6 +15,9 @@ function DataIndex() {
   const { setBackground } = useBackground();
   useEffect(() => {
     setBackground({ color: "#E6E6E6" });
+    return () => {
+      setBackground({ color: undefined, icon: undefined });
+    };
   });
 
   if (!user?.role.includes("ROLE_ADMIN")) {

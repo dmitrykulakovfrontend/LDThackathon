@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -79,6 +80,11 @@ public class UserServiceImpl implements UserService{
     }
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public Optional<User> getUser(String email) {
+        return userRepository.findByEmail(email);
     }
 
 }

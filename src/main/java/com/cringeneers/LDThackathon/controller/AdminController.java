@@ -1,12 +1,11 @@
 package com.cringeneers.LDThackathon.controller;
 
+import com.cringeneers.LDThackathon.dto.InvestResponseDto;
 import com.cringeneers.LDThackathon.entity.Business;
 import com.cringeneers.LDThackathon.entity.Equipment;
 import com.cringeneers.LDThackathon.entity.User;
 import com.cringeneers.LDThackathon.repository.BusinessRepository;
 import com.cringeneers.LDThackathon.repository.EquipmentRepository;
-import com.cringeneers.LDThackathon.repository.RoleRepository;
-import com.cringeneers.LDThackathon.repository.UserRepository;
 import com.cringeneers.LDThackathon.security.JwtUtilities;
 import com.cringeneers.LDThackathon.service.BusinessService;
 import com.cringeneers.LDThackathon.service.EquipmentService;
@@ -33,15 +32,17 @@ public class AdminController {
     private UserService userService;
     private EquipmentRepository equipmentRepository;
     private BusinessRepository businessRepository;
+    private final JwtUtilities jwtUtilities;
 
 
     @Autowired
-    public AdminController(EquipmentService equipmentService, BusinessService businessService, UserService userService, EquipmentRepository equipmentRepository, BusinessRepository businessRepository) {
+    public AdminController(EquipmentService equipmentService, BusinessService businessService, UserService userService, EquipmentRepository equipmentRepository, BusinessRepository businessRepository, JwtUtilities jwtUtilities) {
         this.equipmentService = equipmentService;
         this.businessService = businessService;
         this.userService = userService;
         this.equipmentRepository = equipmentRepository;
         this.businessRepository = businessRepository;
+        this.jwtUtilities = jwtUtilities;
     }
 
     @PostMapping("/equipment")
@@ -71,6 +72,17 @@ public class AdminController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @PreAuthorize("permitAll()")
+    @GetMapping("/user")
+    public ResponseEntity<User> getUser(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+        String email = jwtUtilities.extractUsername(token);
+        if (userService.getUser(email).isPresent()) {
+            User user = userService.getUser(email).get();
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @PreAuthorize("permitAll()")
     @GetMapping("/users")

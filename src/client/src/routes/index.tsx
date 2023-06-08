@@ -23,7 +23,7 @@ function Index() {
           </Link>
           {user ? (
             <Link
-              to={"account/info"}
+              to={"account"}
               className="px-8 flex items-center justify-center py-3 h-fit text-white border-[3px] border-white rounded-xl max-sm:py-2 max-sm:px-4 transition-all hover:scale-110  active:scale-95"
             >
               Личный кабинет

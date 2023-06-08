@@ -15,9 +15,7 @@ import {
   Legend,
   Label,
 } from "recharts";
-/**
- * Главная странина, ничего сложного, картинка и 2 кнопки, если пользователь уже зарегистрирован то показывается кнопка личного кабинета
- */ const data = [
+const data = [
   {
     year: "2021",
     income: 400000,
@@ -27,6 +25,9 @@ import {
     income: 250000,
   },
 ];
+/**
+ * Страница со статистикой отраслей
+ */
 function IndustriesPage() {
   const [geojson, setGeojson] = useState<GeoJsonObject>();
   useEffect(() => {

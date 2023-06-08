@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { API_URL } from "@/constants";
-import { Token, User } from "@/types/auth";
+import { Token } from "@/types/auth";
+import { User } from "@/types/user";
 import { useJwt } from "react-jwt";
 type shortUser = Pick<
   User,

@@ -13,6 +13,7 @@ import type { FormValues } from "./new";
 import { API_URL } from "@/constants";
 import { ToastContainer, toast } from "react-toastify";
 import { useAuth } from "@/contexts/useAuth";
+import { formatNumber } from "@/utils/formatting";
 
 /**
  * Страница результатов расчетов, сюда пользователь попадает после успешной отправки формы к серверу и получению результатов от него
@@ -224,25 +225,5 @@ function Results() {
       </span>
     </div>
   );
-}
-/**
- * Простая функция для форматирования больших чисел в строки типа "123.23 млн. ₽"
- * @param {any} num  число для форматирования
- * @returns {any} отформатированная строка
- */
-function formatNumber(num: number) {
-  const suffixes = ["", "тыс.", "млн.", "млрд.", "трлн.", "квадр."];
-  const tier = (Math.log10(Math.abs(num)) / 3) | 0;
-
-  if (tier === 0) return num;
-
-  const suffix = suffixes[tier];
-  const scale = Math.pow(10, tier * 3);
-
-  const scaledNumber = num / scale;
-
-  const roundedNumber = Math.round(scaledNumber * 100) / 100;
-
-  return `${roundedNumber} ${suffix} ₽`;
 }
 export default Results;

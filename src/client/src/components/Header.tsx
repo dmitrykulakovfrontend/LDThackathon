@@ -56,8 +56,8 @@ function Header() {
       to: "/admin/data",
     },
     {
-      name: "Отрасли",
-      to: "/industries",
+      name: "Статистика",
+      to: "/statistics",
     },
     // {
     //   name: "Услуги",

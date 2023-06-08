@@ -3,6 +3,8 @@ import EditIcon from "@/assets/edit.svg";
 import DeleteIcon from "@/assets/trashcan.svg";
 import { API_URL } from "@/constants";
 import { Link } from "react-router-dom";
+import { useBackground } from "@/contexts/useBackground";
+import EquipmentPriceIcon from "@/assets/equipment-price.svg";
 
 const headers = ["№", "Наименование", "Цена", "Действия"];
 
@@ -16,6 +18,7 @@ function EquipmentPage() {
   const [token] = useState<string>(
     JSON.parse(localStorage.getItem("user") as string)
   );
+  const { setBackground } = useBackground();
 
   async function fetchData() {
     const response = await fetch(`${API_URL}/admin/equipments`);
@@ -23,11 +26,12 @@ function EquipmentPage() {
     setEquipments(data);
   }
   useEffect(() => {
+    setBackground({ icon: EquipmentPriceIcon });
     fetchData();
   }, []);
   console.log(equipments);
   return (
-    <div className="relative z-10 mt-5 overflow-x-auto">
+    <div className="relative z-10 mt-5 overflow-x-auto bg-white">
       <div className="flex items-center justify-between gap-4 max-md:flex-col max-md:mb-4">
         <Link
           to="../"

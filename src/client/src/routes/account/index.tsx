@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { API_URL } from "@/constants";
 import { User } from "@/types/user";
 import CalculatorIcon from "@/assets/calculator.svg";
+import UserIcon from "@/assets/user.svg";
 
 /**
  * Страница информации о пользователе
@@ -17,7 +18,7 @@ function AccountPage() {
   const [user, setUser] = useState<User>();
   const { setBackground } = useBackground();
   useEffect(() => {
-    setBackground({ color: "#E6E6E6" });
+    setBackground({ color: "#E6E6E6", icon: UserIcon });
     fetch(`${API_URL}/admin/user`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -29,7 +30,7 @@ function AccountPage() {
   }, []);
   console.log(user);
   return (
-    <div className={`flex flex-col gap-8 `}>
+    <div className={`flex flex-col gap-8 z-10 relative `}>
       <h1 className="text-3xl font-bold max-md:my-0">Профиль</h1>
       <div className="flex gap-8 max-md:flex-col">
         <div className="w-full font-medium text-lg flex flex-col gap-4 max-w-md pb-14 pt-7 border-t-[32px] border-t-ldt-red bg-white px-14 rounded-3xl max-sm:pb-7 max-sm:pt-4 max-sm:px-7">

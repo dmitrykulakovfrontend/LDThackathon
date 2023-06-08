@@ -105,7 +105,7 @@ function Header() {
             to={user ? "/account" : "/auth/signin"}
             className="flex items-center gap-2 font-medium max-md:text-sm"
           >
-            <User />
+            <User className="text-white" />
             <div className="flex flex-col items-center max-md:hidden">
               <span>{!isExpired ? user?.sub : "Личный кабинет"}</span>
               <span>{user?.role.includes("ROLE_ADMIN") ? "(Админ)" : ""}</span>

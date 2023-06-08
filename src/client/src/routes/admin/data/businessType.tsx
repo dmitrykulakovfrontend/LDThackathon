@@ -3,6 +3,8 @@ import EditIcon from "@/assets/edit.svg";
 import DeleteIcon from "@/assets/trashcan.svg";
 import { API_URL } from "@/constants";
 import { Link } from "react-router-dom";
+import { useBackground } from "@/contexts/useBackground";
+import BusinessTypeDataIcon from "@/assets/business-type-data.svg";
 
 const headers = [
   "№",
@@ -22,17 +24,19 @@ function BusinessType() {
   const [token] = useState<string>(
     JSON.parse(localStorage.getItem("user") as string)
   );
+  const { setBackground } = useBackground();
   async function fetchData() {
     const response = await fetch(`${API_URL}/admin/businesses`);
     const data = await response.json();
     setBusinesses(data);
   }
   useEffect(() => {
+    setBackground({ icon: BusinessTypeDataIcon });
     fetchData();
   }, []);
   console.log(businesses);
   return (
-    <div className="mt-5 overflow-x-auto">
+    <div className="relative z-20 mt-5 overflow-x-auto bg-white ">
       <div className="flex items-center justify-between gap-4 max-md:flex-col max-md:mb-4">
         <Link
           to="../"

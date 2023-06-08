@@ -1,6 +1,6 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Index from ".";
@@ -13,12 +13,24 @@ import { useBackground } from "@/contexts/useBackground";
  */
 function Root({ children }: { children?: React.ReactNode }) {
   const location = useLocation();
-  const { background } = useBackground();
+  const { background, setBackground } = useBackground();
+  useEffect(() => {
+    setBackground({
+      icon: undefined,
+      color: "white",
+    });
+  }, [window.location.pathname]);
+
   return (
     <div
-      className="relative flex flex-col min-h-screen font-medium bg-white font-manrope"
+      className="relative flex flex-col min-h-screen font-medium font-manrope"
       style={{ backgroundColor: background?.color }}
     >
+      {background?.icon ? (
+        <background.icon className="absolute right-0 z-10 w-1/2 -translate-y-1/2 max-md:hidden h-1/2 top-1/2 opacity-10 text-ldt-red" />
+      ) : (
+        ""
+      )}
       <Header />
       {location.pathname === "/" ? (
         <Index />

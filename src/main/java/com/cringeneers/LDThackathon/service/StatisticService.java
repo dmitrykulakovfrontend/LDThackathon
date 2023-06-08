@@ -1,5 +1,6 @@
 package com.cringeneers.LDThackathon.service;
 
+import com.cringeneers.LDThackathon.dto.IncomesDto;
 import com.cringeneers.LDThackathon.dto.StatisticDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Service
 public class StatisticService {
@@ -22,9 +24,15 @@ public class StatisticService {
         statisticDto.setIncome22(BigDecimal.valueOf(calculateAverageVat22ByIndustry(industry) * 5));
         statisticDto.setAmountInSez(BigDecimal.valueOf(countForSEZ(industry)));
         statisticDto.setAmountInMsc(BigDecimal.valueOf(countForMSC(industry)));
-        ArrayList<BigDecimal> incomes = new ArrayList<>();
-        incomes.add(BigDecimal.valueOf(calculateAverageVat21ByIndustry(industry)));
-        incomes.add(statisticDto.getIncome22());
+        ArrayList<IncomesDto> incomes = new ArrayList<>();
+        IncomesDto income21 = new IncomesDto();
+        IncomesDto income22 = new IncomesDto();
+        income21.setYear("2021");
+        income21.setIncome(BigDecimal.valueOf(calculateAverageVat21ByIndustry(industry)));
+        income22.setYear("2022");
+        income22.setIncome(statisticDto.getIncome22());
+        incomes.add(income21);
+        incomes.add(income22);
         statisticDto.setIncomes(incomes);
         return statisticDto;
     }

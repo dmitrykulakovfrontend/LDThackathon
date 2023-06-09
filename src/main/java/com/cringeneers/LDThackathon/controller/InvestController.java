@@ -37,13 +37,13 @@ public class InvestController {
     }
 
     @PostMapping("/calculate")
-    public InvestResponseDto calculateInvestigations(@RequestBody InvestRequestDto investRequestDto, @RequestHeader("Authorization") String authorizationHeader) {
+    public InvestResponseDto calculateInvestigations(@RequestBody InvestRequestDto investRequestDto, @RequestHeader("Authorization") String authorizationHeader) throws IOException {
         String token = authorizationHeader.substring(7);
         String email = jwtUtilities.extractUsername(token);
         return investService.calculate(investRequestDto, email);
     }
     @PostMapping("/calculateAnonymous")
-    public InvestResponseDto calculateAnonymousInvestigations(@RequestBody InvestRequestDto investRequestDto) {
+    public InvestResponseDto calculateAnonymousInvestigations(@RequestBody InvestRequestDto investRequestDto) throws IOException {
         return investService.calculate(investRequestDto, "anonymousUser");
     }
 

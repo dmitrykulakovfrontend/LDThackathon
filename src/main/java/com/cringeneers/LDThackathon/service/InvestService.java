@@ -3,6 +3,7 @@ package com.cringeneers.LDThackathon.service;
 import com.cringeneers.LDThackathon.dto.EquipmentDto;
 import com.cringeneers.LDThackathon.dto.InvestRequestDto;
 import com.cringeneers.LDThackathon.dto.InvestResponseDto;
+import com.cringeneers.LDThackathon.dto.MLPostDto;
 import com.cringeneers.LDThackathon.entity.InvestResult;
 import com.cringeneers.LDThackathon.repository.DistrictRepository;
 import com.cringeneers.LDThackathon.repository.InvestResultRepository;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -46,21 +48,15 @@ public class InvestService {
     private final RegionRepository regionRepository;
     private final BusinessService businessService;
     private final EquipmentService equipmentService;
+    private final MLPostService mlPostService;
     private final InvestResultRepository investResultRepository;
     private final AuthenticationManager authenticationManager;
 
 
-    public InvestResponseDto calculate(InvestRequestDto investRequestDto, String email) {
+    public InvestResponseDto calculate(InvestRequestDto investRequestDto, String email) throws IOException {
         double account_base = 0;
         InvestResponseDto investResponseDto = new InvestResponseDto();
-        investResponseDto.setBuilding(new BigDecimal(investRequestDto.getSquare_buildings() * SQUARE_PRICE));
         investResponseDto.setLand(BigDecimal.valueOf(investRequestDto.getSquare_area() * districtRepository.findByName(regionRepository.findByName(investRequestDto.district).getDistrict()).getCost()));
-        investResponseDto.setEntityRegistration(investRequestDto.getEntity().equalsIgnoreCase("ip") ? 4000.0 : 800.0  );
-        investResponseDto.setSalaries(BigDecimal.valueOf(1000 * investRequestDto.getN_employee() * businessService.getBusinessByType(investRequestDto.getBusiness_type()).getMinimalSalary()));
-        investResponseDto.setNdfl(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * NDFL)));
-        investResponseDto.setMedic(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * MEDIC)));
-        investResponseDto.setRetire(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * RETIRE)));
-
         if (investRequestDto.district.equals("район Текстильщики") || districtRepository.findByName(regionRepository.findByName(investRequestDto.district).getDistrict()).getName().equals("ЗелАО")) {
             investResponseDto.setLandTax(BigDecimal.valueOf(0));
             investResponseDto.setPropertyTax(BigDecimal.valueOf(0));
@@ -68,6 +64,25 @@ public class InvestService {
             investResponseDto.setLandTax(BigDecimal.valueOf(investResponseDto.getLand().doubleValue() * 0.015));
             investResponseDto.setPropertyTax((BigDecimal.valueOf(investResponseDto.getLand().doubleValue() * 0.022)));
         }
+        BigDecimal salaries;
+        MLPostDto mlPostDto = new MLPostDto();
+        mlPostDto.setIndustry(investRequestDto.getBusiness_type());
+        mlPostDto.setStaff(Double.valueOf(investRequestDto.n_employee));
+        mlPostDto.setProperty_tax(investResponseDto.getPropertyTax().doubleValue());
+        mlPostDto.setLand_tax(investResponseDto.getLandTax().doubleValue());
+        mlPostDto.setIs_oez(investResponseDto.getLandTax().doubleValue() == 0 ? 1 : 0);
+        try {
+            salaries = (BigDecimal.valueOf(1000 *mlPostService.getSalary(mlPostDto) * investRequestDto.getN_employee()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            salaries = (BigDecimal.valueOf(1000 * investRequestDto.getN_employee() * businessService.getBusinessByType(investRequestDto.getBusiness_type()).getMinimalSalary()));
+        }
+        investResponseDto.setSalaries(salaries);
+        investResponseDto.setBuilding(new BigDecimal(investRequestDto.getSquare_buildings() * SQUARE_PRICE));
+        investResponseDto.setEntityRegistration(investRequestDto.getEntity().equalsIgnoreCase("ip") ? 4000.0 : 800.0  );
+        investResponseDto.setNdfl(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * NDFL)));
+        investResponseDto.setMedic(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * MEDIC)));
+        investResponseDto.setRetire(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * RETIRE)));
         investResponseDto.setEquipment(BigDecimal.valueOf(calculateEquipment(investRequestDto.getEquipments())));
         investResponseDto.setAmortisation(BigDecimal.valueOf(calculateAmortisation(investRequestDto.getEquipments())));
         investResponseDto.setPatentRegistration(BigDecimal.valueOf(investRequestDto.isPatent ? 1000 * businessService.getBusinessByType(investRequestDto.getBusiness_type()).getCost() : 0));

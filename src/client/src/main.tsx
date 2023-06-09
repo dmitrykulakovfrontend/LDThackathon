@@ -22,7 +22,7 @@ import Objects from "./routes/admin/data/objects";
 import Patent from "./routes/admin/data/patent";
 import Taxes from "./routes/admin/data/taxes";
 import Modal from "react-modal";
-import IndustriesPage from "./routes/industries";
+import StatisticsPage from "./routes/statistics";
 import AccountPage from "./routes/account";
 import { Background, BackgroundContext } from "./contexts/useBackground";
 
@@ -55,8 +55,8 @@ const router = createBrowserRouter(
           children: [{ index: true, element: <AccountPage /> }],
         },
         {
-          path: "industries",
-          element: <IndustriesPage />,
+          path: "statistics",
+          element: <StatisticsPage />,
         },
         {
           path: "calculator",

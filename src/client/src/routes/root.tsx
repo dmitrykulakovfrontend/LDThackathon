@@ -30,7 +30,7 @@ function Root({ children }: { children?: React.ReactNode }) {
         style={{
           backgroundImage: background?.image ? `url(${background.image})` : "",
         }}
-        className=" object-fill bg-center  flex-1  flex-grow-[4] max-xl:object-cover max-xl:bg-right-top"
+        className=" bg-cover bg-no-repeat bg-center  flex-1  flex-grow-[3] max-xl:bg-cover max-xl:bg-right-top"
       >
         <div className={` max-w-[1400px] p-5 w-full mx-auto`}>
           <div className="max-md:mt-[72px]">

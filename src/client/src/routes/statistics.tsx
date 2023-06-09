@@ -124,7 +124,7 @@ function StatisticsPage() {
               onChange={(e) => setSelectedIndustry(e.target.value)}
               className="w-full px-6 py-3 transition-all border appearance-none outline-blue-500 hover:border-blue-500 rounded-xl"
             >
-              <option disabled value="">
+              <option disabled selected value={undefined}>
                 Не выбрано
               </option>
               {industries.map((industry) => (
@@ -411,7 +411,7 @@ type CardProps = {
 
 function Card({ value, label, src }: CardProps) {
   return (
-    <div className="w-full max-w-[340px] p-8 pb-6 bg-white divide-y-2 divide-ldt-red rounded-xl">
+    <div className="w-full max-w-[340px]  max-sm:max-w-none p-8 pb-6 bg-white divide-y-2 divide-ldt-red rounded-xl">
       <div className="flex items-center gap-6 pb-8">
         <img src={src} alt="" />
         <p className="text-3xl font-bold text-ldt-red">{value}</p>

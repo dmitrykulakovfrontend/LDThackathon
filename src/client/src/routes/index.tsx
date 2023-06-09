@@ -1,17 +1,26 @@
 import { Link } from "react-router-dom";
 import indexImgSrc from "@/assets/index.webp";
 import { useAuth } from "@/contexts/useAuth";
+import { useBackground } from "@/contexts/useBackground";
+import { useEffect } from "react";
 
 /**
  * Главная странина, ничего сложного, картинка и 2 кнопки, если пользователь уже зарегистрирован то показывается кнопка личного кабинета
  */
 function Index() {
+  const { setBackground } = useBackground();
+  useEffect(() => {
+    setBackground({ image: indexImgSrc });
+
+    return () => {
+      setBackground({ color: undefined, icon: undefined, image: undefined });
+    };
+  }, []);
   const { user } = useAuth();
   return (
     <div className={`flex flex-col flex-1 items-center justify-center gap-4`}>
-      <img src={indexImgSrc} alt="" className="flex-1" />
-      <div className="absolute z-10 max-w-3xl text-white top-60 left-32 max-xl:top-40 max-xl:left-16 max-md:max-w-sm max-sm:mt-8 max-md:top-28 max-sm:left-3 max-sm:top-14">
-        <h2 className="text-6xl font-bold max-md:text-3xl ">
+      <div className="">
+        <h2 className="text-6xl text-white font-bold max-md:text-3xl ">
           Инвестиции в Москву - вклад в будущее России
         </h2>
         <div className="flex gap-5 mt-8 max-sm:mt-2 ">

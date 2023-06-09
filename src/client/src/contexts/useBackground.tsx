@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 export type Background = {
   color?: string;
   icon?: React.FC<React.SVGProps<SVGElement>>;
+  image?: string;
 };
 
 type BackgroundContextType = {

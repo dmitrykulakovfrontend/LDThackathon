@@ -25,6 +25,10 @@ import {
   Tooltip,
   Legend,
   Label,
+  Bar,
+  BarChart,
+  TooltipProps,
+  ResponsiveContainer,
 } from "recharts";
 import EmployeesSrc from "@/assets/employees-statistics.png";
 import EmployeeSalarySrc from "@/assets/employee-salary.png";
@@ -33,16 +37,10 @@ import StatisticsIcon from "@/assets/statistics.svg";
 import { useBackground } from "@/contexts/useBackground";
 import { formatNumber } from "@/utils/formatting";
 import { API_URL } from "@/constants";
-const data = [
-  {
-    year: "2021",
-    income: 400000,
-  },
-  {
-    year: "2022",
-    income: 250000,
-  },
-];
+import {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 export type IndustryStatistic = {
   staff_mean: number;
   mean_salary_staff_industry: number;
@@ -76,9 +74,31 @@ function StatisticsPage() {
       setBackground({ color: undefined, icon: undefined });
     };
   }, []);
-
+  console.log(industryData);
   useEffect(() => {
     if (selectedIndustry) {
+      // const testData = {
+      //   amountInMsc: 55,
+      //   amountInSez: 76,
+      //   income22: 23234,
+      //   incomes: [
+      //     { year: "2021", income: 2343 },
+      //     { year: "2022", income: 23746 },
+      //   ],
+      //   mean_salary_staff_industry: 75,
+      //   staff_mean: 200,
+      // };
+      // for (let year of testData.incomes) {
+      //   year.income = year.income / 1000;
+      // }
+      // const lastYear = +testData.incomes[testData.incomes.length - 1].year;
+      // for (let i = 1; i <= 5; i++) {
+      //   testData.incomes.push({
+      //     year: `${lastYear + i}`,
+      //     income: 0,
+      //   });
+      // }
+      // setIndustryData(testData);
       fetch(`${API_URL}/invest/statistics`, {
         method: "POST",
         headers: {
@@ -90,9 +110,21 @@ function StatisticsPage() {
       })
         .then((res) => res.json())
         .then((data) => {
+          for (let year of data.incomes) {
+            year.income = year.income / 1000;
+          }
+          const lastYear = +data.incomes.at(-1)?.year;
+          for (let i = 1; i <= 5; i++) {
+            data.incomes.push({
+              year: `${i === 1 ? lastYear + 1 : ""}`,
+              income: 0,
+            });
+          }
           setIndustryData(data);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          console.log(e);
+        });
     }
   }, [selectedIndustry]);
   const arrowRotation = isDropdownActive ? "rotate-[135deg]" : "rotate-45";
@@ -129,12 +161,12 @@ function StatisticsPage() {
             ></span>
           </div>
         </label>
-        {industryData && (
+        {industryData && geojson && (
           <>
             <h2 className="text-lg font-semibold w-fit">
               Среднее кол-во персонала
             </h2>
-            <div className="flex w-full gap-5 mb-12">
+            <div className="flex w-full gap-5 mb-12 max-lg:flex-col ">
               <Card
                 label="Среднее кол-во персонала"
                 value={`${industryData.staff_mean.toFixed()} чел.`}
@@ -153,62 +185,89 @@ function StatisticsPage() {
                 src={IncomeSrc}
               />
             </div>
-            {geojson && industryData && (
-              <>
-                <div>
-                  <div className="p-4 rounded-t-3xl bg-white max-w-[535px]">
-                    Количество производства по районам
-                  </div>
-                  <HeatMap
-                    geojson={geojson}
-                    mscAmount={industryData.amountInMsc}
-                    sezAmount={industryData.amountInSez}
-                  />
+            <div className="flex mb-8 gap-5 max-md:flex-col">
+              <div className="flex-1">
+                <div className="p-4 rounded-t-3xl w-full  font-semibold text-lg bg-white ">
+                  Количество производства по районам
                 </div>
-              </>
-            )}
-            <h1 className="my-8 text-3xl font-bold text-center max-md:my-0">
-              Прибыль
-            </h1>
-            <AreaChart
-              width={750}
-              height={250}
-              data={data}
-              className="mt-4"
-              margin={{ top: 10, right: 30, left: 20, bottom: 0 }}
-            >
-              <defs>
-                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor="rgb(215, 22, 22)"
-                    stopOpacity={0.8}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor="rgb(215, 22, 22)"
-                    stopOpacity={0}
-                  />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="year" />
-              <YAxis dataKey="income" />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Tooltip
-                formatter={(value, name, props) => [`${value} руб`, "Прибыль"]}
-              />
-              <Legend
-                height={36}
-                formatter={(value, entry, index) => "Прибыль"}
-              />
-              <Area
-                type="monotone"
-                dataKey="income"
-                stroke="rgb(215, 22, 22)"
-                fillOpacity={1}
-                fill="url(#colorUv)"
-              />
-            </AreaChart>
+                <HeatMap
+                  geojson={geojson}
+                  mscAmount={industryData.amountInMsc}
+                  sezAmount={industryData.amountInSez}
+                />
+              </div>
+              <div className="flex-1 ">
+                <div className="p-4 w-full max-xl:w-[500px] max-md:w-full max-lg:w-[350px] pb-0 rounded-t-3xl font-semibold text-lg bg-white">
+                  <p className="w-full pb-4 border-b-2 border-ldt-red">
+                    График прибыли, млн руб.
+                  </p>
+                </div>
+                <div className="w-full max-xl:w-[500px] max-md:w-full max-lg:w-[350px] h-[370px]">
+                  <ResponsiveContainer>
+                    <BarChart
+                      margin={{ top: 50, right: 50, left: 25, bottom: 100 }}
+                      className="rounded-b-xl bg-white"
+                      data={industryData.incomes}
+                    >
+                      <defs>
+                        <linearGradient
+                          id="colorUv"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="5%"
+                            stopColor="rgb(215, 22, 22)"
+                            stopOpacity={0.8}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="rgb(215, 22, 22)"
+                            stopOpacity={0}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <XAxis
+                        dataKey="year"
+                        axisLine={{
+                          stroke: "rgba(151, 151, 151, 1)",
+                        }}
+                        tick={{
+                          fill: "rgba(151, 151, 151, 1)",
+                        }}
+                        tickLine={false}
+                      />
+                      <YAxis
+                        axisLine={{
+                          stroke: "rgba(151, 151, 151, 1)",
+                        }}
+                        tick={{
+                          fill: "rgba(151, 151, 151, 1)",
+                        }}
+                        tickSize={10}
+                        tickMargin={5}
+                        tickCount={10}
+                      />
+                      <Tooltip
+                        formatter={(value, name, props) => [
+                          `${(+value).toFixed()} млн. руб.`,
+                          "Прибыль",
+                        ]}
+                        content={<CustomTooltip />}
+                      />
+                      <Bar
+                        dataKey="income"
+                        barSize={10}
+                        shape={<RoundedSquareBar />}
+                        fill="url(#colorUv)"
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </div>
           </>
         )}
       </div>
@@ -216,6 +275,70 @@ function StatisticsPage() {
   );
 }
 
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+}: TooltipProps<ValueType, NameType>) => {
+  if (active && payload && payload.length) {
+    const value = +(payload[0].value || 0);
+    return (
+      <div className="bg-white p-4 text-ldt-dark-gray font-bold rounded-xl border flex flex-col gap-2 border-ldt-red">
+        <p className="label">{label}</p>
+        <p>Прибыль</p>
+        <p>
+          <span className="text-ldt-red font-bold">{`${value.toFixed()}`}</span>{" "}
+          млн. руб.
+        </p>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+const RoundedSquareBar = (props: any) => {
+  const { x, y, width, height } = props;
+  // Calculate the coordinates for the dashed line
+  const lineX1 = 0 + 85; // Adjust the distance from the bar
+  const lineX2 = x - 10;
+  const lineY1 = y;
+  const lineY2 = y;
+  // Define the radius for the rounded corners
+  const borderRadius = 4;
+
+  return (
+    <g>
+      {/* Render the rounded square shape */}
+      <line
+        x1={lineX1}
+        y1={lineY1}
+        x2={lineX2}
+        y2={lineY2}
+        stroke="black"
+        strokeDasharray="3 3" // Customize the dash pattern
+      />
+      <path
+        d={`M${x},${y + borderRadius}
+          A${borderRadius},${borderRadius} 0 0 1 ${x + borderRadius},${y}
+          L${x + width - borderRadius},${y}
+          A${borderRadius},${borderRadius} 0 0 1 ${x + width},${
+          y + borderRadius
+        }
+          L${x + width},${y + height - borderRadius}
+          A${borderRadius},${borderRadius} 0 0 1 ${x + width - borderRadius},${
+          y + height
+        }
+          L${x + borderRadius},${y + height}
+          A${borderRadius},${borderRadius} 0 0 1 ${x},${
+          y + height - borderRadius
+        }
+          Z`}
+        fill={props.fill}
+      />
+    </g>
+  );
+};
 type HeatMapProps = {
   geojson: GeoJsonObject;
   mscAmount: number;
@@ -255,7 +378,7 @@ function HeatMap({ geojson, mscAmount, sezAmount }: HeatMapProps) {
       zoom={10}
       center={[55.751244, 37.618423]}
       attributionControl={false}
-      className="h-[370px] w-[535px]  max-sm:w-[290px] max-sm:h-[300px] max-md:w-[380px] rounded-b-3xl"
+      className="w-full min-h-[370px]   max-sm:h-[300px]  rounded-b-3xl"
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <GeoJsonLayer

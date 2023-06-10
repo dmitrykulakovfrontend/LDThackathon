@@ -7,18 +7,16 @@ import com.cringeneers.LDThackathon.dto.MLPostDto;
 import com.cringeneers.LDThackathon.entity.InvestResult;
 import com.cringeneers.LDThackathon.repository.DistrictRepository;
 import com.cringeneers.LDThackathon.repository.InvestResultRepository;
+import com.cringeneers.LDThackathon.repository.RatesRepository;
 import com.cringeneers.LDThackathon.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -30,8 +28,7 @@ public class InvestService {
     private final static double RETIRE = 0.22;
     private final static double MEDIC = 0.05;
     private final static double SALARY_TAX = NDFL + RETIRE + MEDIC;
-    private final static double IP = 4000;
-    private final static double UL = 800;
+    private final static double IP = 800;
     private final static double ACCOUNT_BASE_PERSON = 500;
     private final static double SQUARE_PRICE = 100000;
     private final static double M1 = 0.025;
@@ -43,8 +40,8 @@ public class InvestService {
     private final static double PRICE_WATER = 44;
     private final static double WATER_CONNECTION = 500000;
     private final static double TERMO_CONNECTION = 500000;
-
     private final DistrictRepository districtRepository;
+    private final RatesRepository ratesRepository;
     private final RegionRepository regionRepository;
     private final BusinessService businessService;
     private final EquipmentService equipmentService;
@@ -79,7 +76,7 @@ public class InvestService {
         }
         investResponseDto.setSalaries(salaries);
         investResponseDto.setBuilding(new BigDecimal(investRequestDto.getSquare_buildings() * SQUARE_PRICE));
-        investResponseDto.setEntityRegistration(investRequestDto.getEntity().equalsIgnoreCase("ip") ? 4000.0 : 800.0  );
+        investResponseDto.setEntityRegistration(investRequestDto.getEntity().equalsIgnoreCase("ip") ? ratesRepository.findByRate("UL").getValue() : IP  );
         investResponseDto.setNdfl(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * NDFL)));
         investResponseDto.setMedic(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * MEDIC)));
         investResponseDto.setRetire(BigDecimal.valueOf((investResponseDto.getSalaries().doubleValue() / SALARY_TAX * RETIRE)));

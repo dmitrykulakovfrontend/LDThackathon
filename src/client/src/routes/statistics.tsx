@@ -292,13 +292,14 @@ const opacityTable: {
 ];
 
 function mapOpacity(value: number): number {
+  console.log(value);
   const mapping = opacityTable.find(
     (item) => value >= item.rangeStart && value <= item.rangeEnd
   );
   if (mapping) {
     return mapping.opacity;
   } else {
-    throw new Error("Value is outside the supported range.");
+    return 1;
   }
 }
 
